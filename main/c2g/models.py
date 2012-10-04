@@ -111,6 +111,7 @@ class Course(TimestampMixin, Stageable, Deletable, models.Model):
     preview_only_mode = models.BooleanField(default=True)
     institution_only = models.BooleanField(default=False)
     share_to = models.ManyToManyField("self",symmetrical=False,related_name='share_from',null=True, blank=True)
+    content_visibility = models.BooleanField(default=False)
 
     
     # Since all environments (dev, draft, prod) go against ready piazza, things will get
@@ -171,6 +172,7 @@ class Course(TimestampMixin, Stageable, Deletable, models.Model):
             handle = self.handle,
             institution_only = self.institution_only,
             piazza_id = int(time.mktime(time.gmtime())),
+            content_visibility = self.content_visibility,
         )
         ready_instance.save()
         self.image = ready_instance

@@ -7,7 +7,7 @@
 
 {% block m_column_content %}
 <div id="c2g_layout_m_column" class="span12">
-    {% if user.is_authenticated %}
+    {% if common_page_data.course.content_visibility or user.is_authenticated %}
         {% for section_structure in section_structures %}
             {% include "content_sections/ready/section.html" %}
         {% empty %}

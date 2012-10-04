@@ -12,6 +12,11 @@ from OAuthSimple import OAuthSimple
 def view(request, course_prefix, course_suffix):
     # Only use the ready course (for the piazza_id) since Piazza has no notion
     # of draft/live.
+    
+    if not request.common_page_data['is_course_member']:
+        messages.add_message(request,messages.ERROR, 'You must be a member of the course to view the content you chose.')
+        return HttpResponseRedirect(reverse('courses.views.main', args=(course_prefix, course_suffix)))
+        
     course = request.common_page_data['ready_course']
 
     lti_params = {
