@@ -1498,7 +1498,7 @@ var Khan = (function() {
             $('#submit-problemset-button').parent().hide();
         }
 
-        if (examples !== null && validator.examples && validator.examples.length > 0) {
+        if (examples !== null && validator.examples && validator.examples.length > 0 && exAssessType !== "survey") {
             $("#examples-show").show();
             examples.empty();
 
@@ -3067,7 +3067,7 @@ var Khan = (function() {
                         }
                         $('#next-question-button').unbind('click');
                         $('#next-question-button').click(function () {
-                            location.href = c2gConfig.progessUrl;
+                            location.href = c2gConfig.progressUrl;
                         });
                     }
                 } else {
