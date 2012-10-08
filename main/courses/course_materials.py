@@ -87,7 +87,7 @@ def get_course_materials(common_page_data, get_video_content=False, get_pset_con
                                     visible_status = "<span style='color:green;'>Live</span>"
 
                             item['visible_status'] = visible_status
-                        else:
+                        elif common_page_data['request'].user.is_authenticated():
                             video_recs = VideoActivity.objects.filter(video=video, student=common_page_data['request'].user)
                             if len(video_recs)>0:
                                 video_rec = video_recs[0]
@@ -125,7 +125,7 @@ def get_course_materials(common_page_data, get_video_content=False, get_pset_con
                                     visible_status = "<span style='color:green;'>Live</span>"
 
                             item['visible_status'] = visible_status
-                        else:
+                        elif common_page_data['request'].user.is_authenticated():
 
                             numCompleted = problem_set.get_progress(common_page_data['request'].user)
                             score = problem_set.get_score(common_page_data['request'].user)
