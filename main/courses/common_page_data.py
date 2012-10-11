@@ -19,34 +19,34 @@ def get_common_page_data(request, prefix, suffix):
     is_course_member = False
     
     user_groups = request.user.groups.all()
-    #logger.info("here")
+
     if request.user.is_superuser:
         is_course_member = True
         is_course_admin = True
         can_switch_mode = True
     else:
       for g in user_groups:
-	  if g.id == course.student_group_id:
-	      is_course_member = True
-	      break
-	  
-	  if g.id == course.instructor_group_id:
-	      can_switch_mode = True
-	      is_course_admin = True
-	      is_course_member = True
-	      break
-   
-	  if g.id == course.tas_group_id:
-	      can_switch_mode = True
-	      is_course_admin = True
-	      is_course_member = True
-	      break
+        if g.id == course.student_group_id:
+            is_course_member = True
+            break
+        
+        if g.id == course.instructor_group_id:
+            can_switch_mode = True
+            is_course_admin = True
+            is_course_member = True
+            break
+     
+        if g.id == course.tas_group_id:
+            can_switch_mode = True
+            is_course_admin = True
+            is_course_member = True
+            break
 
-	  if g.id == course.readonly_tas_group_id:
-	      can_switch_mode = True
-	      is_course_member = True
-	      break
-	      
+        if g.id == course.readonly_tas_group_id:
+            can_switch_mode = True
+            is_course_member = True
+            break
+            
     
     if can_switch_mode and ('course_mode' in request.session) and (request.session['course_mode'] == 'draft'):
         course_mode = 'draft'
