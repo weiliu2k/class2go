@@ -35,7 +35,7 @@ def get_common_page_data(request, prefix, suffix):
             is_course_admin = True
             is_course_member = True
             break
-     
+
         if g.id == course.tas_group_id:
             can_switch_mode = True
             is_course_admin = True
