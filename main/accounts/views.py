@@ -24,6 +24,7 @@ from django.core.validators import validate_email, RegexValidator
 from django.core.exceptions import ValidationError, MultipleObjectsReturned
 from django.http import HttpResponseBadRequest
 from django.contrib.auth.decorators import permission_required
+from django.db.models import Q
 import random
 import os
 import string
@@ -34,18 +35,15 @@ def index(request):
 
 
 def profile(request):
-    course_list = Course.objects.all()
-    groups = request.user.groups.all()
-    courses = []
-    for g in groups:
-        for c in course_list:
-            if g.id == c.student_group_id or g.id == c.instructor_group_id or g.id == c.tas_group_id or g.id == c.readonly_tas_group_id:
-                courses.append(c)
-                break
-    
+    courses = Course.objects.all()
+    user = request.user
+
+    if not user.is_superuser:
+        courses = courses.filter(Q(student_group__user=user)|Q(instructor_group__user=user)|Q(readonly_tas_group__user=user)|Q(tas_group__user=user))
+        courses = courses.distinct()
     
     allow_password_change  = True
-    if (not request.user.is_authenticated()) or (request.user.get_profile().institutions.filter(title='Stanford').exists()):
+    if (not user.is_authenticated()) or (user.get_profile().institutions.filter(title='Stanford').exists()):
         allow_password_change = False
     return render_to_response('accounts/profile.html',
                               {'request': request,
