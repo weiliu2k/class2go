@@ -12,6 +12,7 @@ class common_data(object):
     request.
     """
     def process_view (self, request, view_func, view_args, view_kwargs):
+        
         if (('course_prefix' not in view_kwargs) or 
             ('course_suffix' not in view_kwargs)):
             #No course information in the URL.  There is a special case that has it as a POST parameter (Why?)
@@ -25,10 +26,24 @@ class common_data(object):
                 #The course info is in the POST in this case
                 cp = request.POST.get('course_prefix')
                 cs = request.POST.get('course_suffix')
+                
+                try:
+                    course = Course.objects.get(mode='ready', handle=cp + '--' + cs)
+                    cp = course.prefix
+                    cs = course.suffix
+                except:
+                    raise Http404
+                
         else:
             cp = view_kwargs['course_prefix']
             cs = view_kwargs['course_suffix']
             
+            try:
+                course = Course.objects.get(mode='ready', handle=cp + '--' + cs)
+                cp = course.prefix
+                cs = course.suffix
+            except:
+                raise Http404
     
         try:
             request.common_page_data=get_common_page_data(request, cp, cs)
