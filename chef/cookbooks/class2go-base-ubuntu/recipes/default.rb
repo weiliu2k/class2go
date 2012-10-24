@@ -31,12 +31,14 @@ package "python-mysqldb" do
     action :install
 end
 
-easy_install_package "django" do
-    action :install
+execute "pip install django" do
+    user "root"
+    action :run
 end
 
-easy_install_package "South" do
-    action :install
+execute "pip install South" do
+    user "root"
+    action :run
 end
 
 ## Imaging -- a bit tricky
@@ -54,8 +56,9 @@ link "/usr/lib/libjpeg.so" do
     to "/usr/lib/x86_64-linux-gnu/libjpeg.so"
 end
 
-easy_install_package "PIL" do
-    action :install
+execute "pip install PIL" do
+    user "root"
+    action :run
 end
 
 # Use lynx to flatten out HTML emails

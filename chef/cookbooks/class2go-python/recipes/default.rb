@@ -1,30 +1,24 @@
-# Sef 7-Aug-2012:
-# Initial attempt to install with easy_install caused cryptic failures
-# libreadline.so.5 not found...  
-# possibly some interop problem with the quirky bitnami python setup?
-# don't know but easy_install works, so let's go with that for now.
-
-easy_install_package "django-storages" do
-    action :install
+execute "pip install django-storages" do
+    user "root"
+    action :run
 end
 
-easy_install_package "boto" do
-    action :install
+execute "pip install boto" do
+    user "root"
+    action :run
 end
 
-easy_install_package "django-celery" do
-    action :install
+execute "pip install django-celery" do
+    user "root"
+    action :run
 end
 
-easy_install_package "django-celery-email" do
-    action :install
+execute "pip install django-celery-email" do
+    user "root"
+    action :run
 end
 
-easy_install_package "pytz" do
-    action :install
-end
-
-
+#
 # We need to patch the storage boto backend (see issue #70)
 
 # -N to patch makes it ignore patches already applied.  Even then if one
