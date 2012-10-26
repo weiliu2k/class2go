@@ -174,6 +174,9 @@ def change_live_datetime(request):
                    'form': form})
 
 def is_member_of_course(course, user):
+    if user.is_superuser:
+        return True
+
     student_group_id = course.student_group.id
     instructor_group_id = course.instructor_group.id
     tas_group_id = course.tas_group.id
