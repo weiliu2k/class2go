@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="chrome=1">
+		<title>Fullscreen API</title>
+		<link rel="stylesheet" href="css/bootstrap.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+
+		<link rel="fullscreen stylesheet" href="css/fullscreen.css" type="text/css">
+		<link rel="quiz stylesheet" href="css/quiz.css" type="text/css">
+		<link rel="video player stylesheet" href="css/videoplayer.css" type="text/css">
+
+		<script src="js/popcorn-complete.min.js"></script>
+		<script src="js/videoplayer.js"></script>
+		<script>
+			var quizzes = eval("[{	start_time: 0.5, end_time: 1.0, html: '<h1>RAWR RAWR 1</h1>' },{start_time: 10, end_time: 10.8, html: 'Question 2' }]");
+			quizzes = quizzes.map(function(quiz) {
+				return (new QuizQn(quiz.start_time, quiz.end_time, quiz.html));});
+			var video = {"url": "http://www.youtube.com/embed/RD5VCBprVvo?autoplay=0&wmode=transparent&fs=0&controls=0&rel=0&modestbranding=1&showinfo=0&start=0&enablejsapi=1&disablekb=1&amp;"};
+
+			document.addEventListener("DOMContentLoaded", function() {
+				var popcornVideo = Popcorn.youtube("#player", video.url);
+				popcornVideo.controls(false);
+				var videoPlayer = new VideoPlayer(popcornVideo, "quiz");
+				videoPlayer.addCuesToVideo(quizzes);
+				videoPlayer.addControls("control");
+			}, false);
+
+		</script>
+	</head>
+	<body>
+
+		<div id="fs-container">
+			<div id="fs-inner">
+				<div id="fs">
+					<div id="container">
+						<div id="quiz"></div>
+						<div id="player"></div>
+						<div id="control">
+							<div id="enter-exit-fs" style="padding:3px; float:right;" onclick="enterFullscreen()"><i class="icon-fullscreen icon-white"></i></div>
+							<div style="display: inline-block; padding:3px; color:white; float:right;"><input type="checkbox" id="control-quiz" checked="checked" onclick="toggleLoadQuiz()">Show Quiz</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="js/fullscreen.js"></script>
+</body>
+</html>

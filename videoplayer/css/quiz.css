@@ -1,0 +1,117 @@
+#container {
+	width:854px;
+	height:480px;
+	position:fixed;
+	background-color:green;
+	text-align:center;
+}
+#quiz {
+	position:absolute;
+	top:0;
+	z-index:1;
+	width:100%;
+	height:100%;
+	background-color:blue;
+	visibility: hidden;
+}
+#player {
+	position:absolute;
+	top:0;
+	z-index:0;
+	width:100%;
+	height:100%;
+}
+#control {
+	bottom: 0;
+	height: 25px;
+	width:100%;
+	z-index:2;
+	position:absolute;
+	background-color: rgba(0,0,0,0.5);
+}
+.progress-bar {
+	position:relative;
+	margin-left:50px;
+	margin-right:190px;
+	height: 15px;
+	top: 5px;
+
+	-moz-border-radius:10px;
+	-ms-border-radius:10px;
+	-webkit-border-radius:10px;
+	border-radius:10px;
+
+	background: #e6e6e6;
+	background-image: -moz-linear-gradient(top, #e6e6e6, #d5d5d5);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #e6e6e6),color-stop(1, #d5d5d5));
+
+	box-shadow: inset 0 -3px 3px #d5d5d5;
+}
+.time-bar {
+	position:absolute;
+	top:0;
+	left:0;
+	width:0;
+	height:100%;
+	-moz-border-radius:15px;
+	-ms-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+
+	background: #4cbae8;
+	background-image: -moz-linear-gradient(top, #4cbae8, #39a2ce);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #4cbae8),color-stop(1, #39a2ce));
+
+	box-shadow: inset 0 -3px 3px #39a2ce;
+}
+.play {
+	float: left;
+	padding:3px;
+}
+.stop {
+	float: left;
+	padding:3px;
+	padding-right:10px;
+}
+.time {
+	float: right;
+	color: white;
+	padding:3px;
+}
+
+.mute {
+	float: right;
+	padding:3px;
+	width:10px
+}
+
+.volume-box {
+	height: 30px;
+
+	-moz-transition: all 0.1s ease-in-out; /* Firefox */
+	-ms-transition: all 0.1s ease-in-out; /* IE future proofing */
+	-o-transition: all 0.2s ease-in-out;  /* Opera */
+	-webkit-transition: all 0.1s ease-in-out; /* Safari and Chrome */
+	transition: all 0.1s ease-in-out;
+}
+
+.volume-box:hover {
+	height: 135px;
+	padding-top: 5px;
+}
+
+.volume-slider {
+	visibility: hidden;
+	opacity: 0;
+
+	-moz-transition: all 0.1s ease-in-out; /* Firefox */
+	-ms-transition: all 0.1s ease-in-out;  /* IE future proofing */
+	-o-transition: all 0.1s ease-in-out;  /* Opera */
+	-webkit-transition: all 0.1s ease-in-out; /* Safari and Chrome */
+	transition: all 0.1s ease-in-out;
+}
+.volume-box:hover .volume-slider {
+	position: relative;
+	visibility: visible;
+	opacity: 1;
+}
