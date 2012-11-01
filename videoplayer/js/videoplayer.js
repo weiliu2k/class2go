@@ -31,7 +31,15 @@ function pad(number, length) {
  * Quizzes can be enabled/disabled entirely:
  **/
 var enableQuizzes = true;
-function toggleQuizzes() {
+function toggleQuizzes(elemId) {
+	console.log("Found", elemId);
+	var elem = document.getElementById(elemId)
+		if (enableQuizzes) {
+			elem.innerHTML = "Show Quizzes";
+		}
+		else {
+			elem.innerHTML = "Hide Quizzes";
+		}
 	enableQuizzes = !enableQuizzes;
 }
 
@@ -46,9 +54,9 @@ function QuizQn(start, end, html) {
 }
 
 QuizQn.prototype.onStartFun = function(video, overlayElemId) {
+	var overlayElem = document.getElementById(overlayElemId);
 	if (enableQuizzes) {
 		video.pause();
-		var overlayElem = document.getElementById(overlayElemId);
 		overlayElem.innerHTML = this.html;
 		overlayElem.style.visibility = "visible";
 	}
@@ -100,6 +108,7 @@ function VideoPlayer(video, overlayElemId) {
 			}
 		}
 	};
+	this.volume = 1.0; //Set to max volume by default
 	/***
 	 * Adds controls to the video player.
 	 * Should supply the root name of the control element.
@@ -143,10 +152,34 @@ function VideoPlayer(video, overlayElemId) {
 			//Add volume controls
 			var muteElem = createDiv(controlElemId + "-mute", "mute");
 			muteElem.innerHTML = '<i class="icon-volume-up icon-white"></i>';
-			var volumeElem = createDiv(controlElemId + "-volume", "volume");
-			//TODO: add callback for volume controls
-			controlElem.appendChild(muteElem);
-			muteElem.appendChild(volumeElem);
+			muteElem.addEventListener("click", function() {
+				if (muteElem.muted) {
+					video.unmute();
+					video.volume(this.volume);
+				}
+				else {
+					video.mute();
+				}
+			muteElem.muted = !muteElem.muted;
+			}, false);
+
+			video.on("volumechange", function() {
+				if (video.volume() == 0) {
+					muteElem.innerHTML = '<i class="icon-volume-off icon-white"></i>';
+				}
+				else if (video.volume() < 0.5) {
+					muteElem.innerHTML = '<i class="icon-volume-down icon-white"></i>';
+				}
+				else {
+					muteElem.innerHTML = '<i class="icon-volume-up icon-white"></i>';
+				}
+			});
+
+			var volumeBoxElem = createDiv(controlElemId + "-volume-box", "volume-box");
+			var volumeSliderElem = createDiv(controlElemId + "-volume-slider", "volume-slider");
+			controlElem.appendChild(volumeBoxElem);
+			volumeBoxElem.appendChild(volumeSliderElem);
+			volumeBoxElem.appendChild(muteElem);
 
 			//Add time display:
 			var timeElem = createDiv(controlElemId + "-time", "time");
@@ -158,15 +191,14 @@ function VideoPlayer(video, overlayElemId) {
 				var time = video.currentTime();
 				var percentage = (time / maxTime) * 100.0;
 				timeBarElem.style.width = percentage + "%";
+
 				time = Math.round(time);
 				var seconds = time % 60;
 				var timeMin = (time - seconds) / 60;
 				var minutes = timeMin % 60;
 				var hours = (timeMin - minutes) / 60;
-				console.log(time, seconds, timeMin, minutes, hours);
 				timeElem.innerHTML = pad(hours,2) + ":" + pad(minutes, 2) + ":" + pad(seconds,2);
 			},false);
-
 
 			//Add progress bar controls
 			var progressBarElemId = controlElemId + "-progress-bar";
@@ -177,17 +209,17 @@ function VideoPlayer(video, overlayElemId) {
 			progressBarElem.appendChild(timeBarElem);
 			progressBarElem.addEventListener("mousedown", function(e) {
 				isProgressBarMouseDown = true;
-				seekTo(e.pageX, progressBarElemId, video);
+				seekTo(e.pageX, progressBarElemId, timeBarElemId,video);
 			}, false);
 			document.addEventListener("mouseup", function(e) {
 				if (isProgressBarMouseDown) {
 					isProgressBarMouseDown = false;
-					seekTo(e.pageX, progressBarElemId, video);
+					seekTo(e.pageX, progressBarElemId, timeBarElemId,video);
 				}
 			}, false);
 			document.addEventListener("mousemove", function(e) {
 				if (isProgressBarMouseDown) {
-					seekTo(e.pageX, progressBarElemId, video);
+					seekTo(e.pageX, progressBarElemId, timeBarElemId,video);
 				}
 			}, false);
 
@@ -210,7 +242,7 @@ VideoPlayer.prototype.showOverlay = function() {
  * Functions to support seek on the page
  **/
 this.isProgressBarMouseDown = false;
-function seekTo(xPos, progressBarElemId, video) {
+function seekTo(xPos, progressBarElemId, timeBarElemId,video) {
 	progressBarElemId = "#" + progressBarElemId;
 	var width = $(progressBarElemId).width();
 	var originPos = $(progressBarElemId).offset().left;
@@ -231,6 +263,9 @@ function seekTo(xPos, progressBarElemId, video) {
 		else {
 			video.play(time);
 		}
+		var time = video.currentTime();
+		var percentage = (time / maxTime) * 100.0;
+		document.getElementById(timeBarElemId).style.width = percentage + "%";
 	}
 }
 

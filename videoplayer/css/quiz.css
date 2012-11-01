@@ -2,8 +2,13 @@
 	width:854px;
 	height:480px;
 	position:fixed;
-	background-color:green;
 	text-align:center;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 #quiz {
 	position:absolute;
@@ -32,14 +37,14 @@
 .progress-bar {
 	position:relative;
 	margin-left:50px;
-	margin-right:190px;
+	margin-right:215px;
 	height: 15px;
 	top: 5px;
 
-	-moz-border-radius:10px;
-	-ms-border-radius:10px;
-	-webkit-border-radius:10px;
-	border-radius:10px;
+	-moz-border-radius:3px;
+	-ms-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
 
 	background: #e6e6e6;
 	background-image: -moz-linear-gradient(top, #e6e6e6, #d5d5d5);
@@ -47,16 +52,23 @@
 
 	box-shadow: inset 0 -3px 3px #d5d5d5;
 }
+.progress-bar:hover {
+	cursor: pointer;
+}
+.time-bar:hover {
+	cursor: pointer;
+}
+
 .time-bar {
 	position:absolute;
 	top:0;
 	left:0;
 	width:0;
 	height:100%;
-	-moz-border-radius:15px;
-	-ms-border-radius:15px;
-	-webkit-border-radius:15px;
-	border-radius:15px;
+	-moz-border-radius:3px;
+	-ms-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
 
 	background: #4cbae8;
 	background-image: -moz-linear-gradient(top, #4cbae8, #39a2ce);
@@ -68,25 +80,33 @@
 	float: left;
 	padding:3px;
 }
+.play:hover {
+	cursor: pointer;
+}
+
 .stop {
 	float: left;
 	padding:3px;
 	padding-right:10px;
+}
+.stop:hover {
+	cursor: pointer;
 }
 .time {
 	float: right;
 	color: white;
 	padding:3px;
 }
-
 .mute {
-	float: right;
+	margin-top:3px;
 	padding:3px;
-	width:10px
+}
+.mute:hover {
+	cursor: pointer;
 }
 
 .volume-box {
-	height: 30px;
+	float: right;
 
 	-moz-transition: all 0.1s ease-in-out; /* Firefox */
 	-ms-transition: all 0.1s ease-in-out; /* IE future proofing */
@@ -95,13 +115,9 @@
 	transition: all 0.1s ease-in-out;
 }
 
-.volume-box:hover {
-	height: 135px;
-	padding-top: 5px;
-}
-
 .volume-slider {
 	visibility: hidden;
+	margin-top: -105px;
 	opacity: 0;
 
 	-moz-transition: all 0.1s ease-in-out; /* Firefox */
@@ -110,8 +126,32 @@
 	-webkit-transition: all 0.1s ease-in-out; /* Safari and Chrome */
 	transition: all 0.1s ease-in-out;
 }
+.volume-box:hover {
+	color: #676767;
+	cursor: pointer;
+}
 .volume-box:hover .volume-slider {
 	position: relative;
 	visibility: visible;
 	opacity: 1;
+	cursor: pointer;
 }
+
+#toggle-fs {
+	padding:3px;
+	float:right;
+}
+#toggle-quiz {
+	width:100px;
+	float: right;
+	padding:3px;
+	color:white;
+	float:right;
+}
+#toggle-quiz:hover {
+	cursor: pointer;
+}
+#toggle-fs:hover {
+	cursor: pointer;
+}
+

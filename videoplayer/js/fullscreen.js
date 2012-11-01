@@ -54,12 +54,12 @@ function enterFullscreen() {
 			elem.requestFullscreen();
 		}
 	}
-	document.getElementById('enter-exit-fs').onclick = exitFullscreen;
+	document.getElementById('toggle-fs').onclick = exitFullscreen;
 }
 
 function exitFullscreen() {
 	console.log("exitFullscreen()");
 	document.cancelFullScreen();
-	document.getElementById('enter-exit-fs').onclick = enterFullscreen;
+	document.getElementById('toggle-fs').onclick = enterFullscreen;
 }
 
