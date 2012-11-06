@@ -1,6 +1,10 @@
 from django.utils.log import getLogger
 from django.http import HttpResponse, HttpResponseRedirect
 import re
+from django.conf import settings
+
+MAINTENANCE_LANDING_PAGE = getattr(settings, 'MAINTENANCE_LANDING_PAGE', False)
+
 
 class convenience_redirector(object):
     """
@@ -39,6 +43,11 @@ class convenience_redirector(object):
         Get the domain name from the host header (parse it apart from the port).
         Check it against the regex, then if there's a match do the redirect
         """
+
+        if MAINTENANCE_LANDING_PAGE and not request.get_full_path() == '/': #redirect all pathes to '/' if we are in maintenance mode
+            return HttpResponseRedirect('/')
+       
+        
         if ('HTTP_HOST' not in request.META):
             return None #if we can't determine HOST we will do no redirect
         
