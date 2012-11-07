@@ -17,8 +17,8 @@ def home(request):
     #    common_page_data = get_common_page_data(request, course_prefix, course_suffix)
     #except:
     raise Http404
-    
-    
+
+
     now = datetime.now()
     courses = Course.objects.filter(calendar_start__gt=now, mode="ready")
     available_course_list = []
@@ -27,10 +27,10 @@ def home(request):
             course_student_member = 'True'
         else:
             course_student_member = 'False'
-        
+
         viewable_handle = course.handle.replace('--', '/')
         available_course_list.append((course.title, course.handle, viewable_handle, course_student_member))
-        
+
     return render_to_response('courses/signup.html', {'request': request, 'available_course_list': available_course_list}, context_instance=RequestContext(request))
 
 def healthcheck(request):
@@ -50,7 +50,7 @@ def tos(request):
 
 def privacy(request):
     return render_to_response('privacy.html',{},RequestContext(request))
-    
+
 def faq(request):
     return render_to_response('faq.html',{},context_instance=RequestContext(request))
 
@@ -67,7 +67,7 @@ def contactus(request):
         course=None
         staffmail=''
 
-    return render_to_response('contactus.html', 
+    return render_to_response('contactus.html',
                               {'request': request,
                                'course': course,
                                'staffmail' : staffmail,
@@ -78,5 +78,10 @@ def test_messages(request):
     messages.add_message(request,messages.SUCCESS, 'Hello World Success')
     messages.add_message(request,messages.WARNING, 'Hello World Warning')
     messages.add_message(request,messages.ERROR, 'Hello World Error')
-            
+
     return HttpResponse("Messages Submitted, go back to regular page to view")
+
+
+def test_video(request):
+    return render_to_response('videoplayer/videoplayer.html',{},RequestContext(request))
+

@@ -210,7 +210,7 @@ try:
 except NameError:
     # TODO: fail if not defined
     pass
-    
+
 try:
     AWS_SECURE_STORAGE_BUCKET_NAME
 except NameError:
@@ -351,7 +351,7 @@ BROKER_TRANSPORT='sqs'
 BROKER_USER = AWS_ACCESS_KEY_ID
 BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY
 BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-west-2', 
+    'region': 'us-west-2',
     'queue_name_prefix' : INSTANCE+'-',
     'visibility_timeout' : 7200,
 }

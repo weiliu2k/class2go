@@ -7,17 +7,31 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-   
+
     # Health check endpoint.  Used by AWS load balancer.  Want something stable that
     # won't be redirected or change
     url(r'_health$', 'c2g.views.healthcheck'),
-                       
+
     # Testing the error pages (404 and 500)
     url(r'^_throw500$', 'c2g.views.throw500'),
     url(r'^_throw404$', 'c2g.views.throw404'),
 
     #Testing messages
     url(r'^_test_messages$', 'c2g.views.test_messages'),
+
+    # Add video player demo
+    url(r'^_test_video$', 'c2g.views.test_video'),
+    url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': '/home/tlow/DevProjects/class2go/main/static/js',
+    }),
+    url(r'^css/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': '/home/tlow/DevProjects/class2go/main/static/css',
+    }),
+    url(r'^img/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': '/home/tlow/DevProjects/class2go/main/static/img',
+    }),
+
+
 
     url(r'^honor_code$', 'c2g.views.hc'),
     url(r'^terms_of_service$', 'c2g.views.tos'),
@@ -26,7 +40,7 @@ urlpatterns = patterns('',
     url(r'^faq$', 'c2g.views.faq'),
 
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/unenroll/?$', 'courses.views.unenroll'),
-                       
+
     # testing new exercise ui
     url(r'^new-ui$', 'courses.exercises.views.show_new_ui'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/exams/?$', 'courses.exams.views.listAll'),
@@ -36,21 +50,21 @@ urlpatterns = patterns('',
 
     #emailoptout
     url(r'^email_optout/(?P<code>[a-zA-Z0-9]+)/?$', 'courses.email_members.views.optout', name='maillist_optout'),
-    
+
     # Commented out the following 2 urls since point to a signup page which is
     # no longer required.
 #    url(r'^courses/?$', 'c2g.views.home', name='c2g_home'),
 #    url(r'^courses/signup/?$', 'courses.actions.signup'),
 
 #    url(r'^class2go/', include('class2go.foo.urls')),
-   
+
     #shibboleth login
     url(r'^shib-login/?$', 'accounts.views.shib_login', name='shib_login'),
-                       
-    
+
+
     #impersonate
     url(r'^impersonate/(?P<username>[\w.@+-]+)/?$', 'accounts.views.impersonate', name='impersonate'),
-                       
+
     #for data collection
     url(r'^videos/save/', 'courses.videos.actions.save_video_progress'),
     url(r'^problemsets/attempt/(?P<problemId>\d+)/?$', 'problemsets.views.attempt'),
@@ -172,11 +186,11 @@ urlpatterns = patterns('',
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/files/upload$', 'courses.files.views.upload'),
     url(r'^upload_file/?', 'courses.files.actions.upload'),
     url(r'^delete_file/?', 'courses.files.actions.delete_file'),
-                       
+
     #Content Sharing
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/copy_section/?$', 'courses.content_sections.views.copy_content_form'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/copy_section/send/?$', 'courses.content_sections.views.copy_content'),
-                      
+
 
     # Landing Page
     url(r'^/?$', 'courses.landing.views.landing'),
@@ -185,15 +199,15 @@ urlpatterns = patterns('',
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/preview/$', 'courses.preview.views.preview'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/preview_reg/$', 'courses.preview.views.preview_reg'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/preview_login/$', 'courses.preview.views.preview_login'),
-    
+
     #Email
-    url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/email_members/$', 'courses.email_members.views.email_members'),             
-    
+    url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/email_members/$', 'courses.email_members.views.email_members'),
+
     #Reports
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/browse_reports/?$', 'courses.reports.views.main'),
     url(r'^generate_report$', 'courses.reports.views.generate_report'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/reports/(?P<report_subfolder>[a-zA-Z0-9_-]+)/(?P<report_name>.+)$', 'courses.reports.views.download_report'),
-    
+
     #Current course redirects THIS SHOULD PROBABLY ALWAYS BE THE LAST ITEM THAT HAS TO DO WITH COURSES
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/?$', 'courses.views.current_redirects'),
 
