@@ -22,13 +22,13 @@ urlpatterns = patterns('',
     # Add video player demo
     url(r'^_test_video$', 'c2g.views.test_video'),
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': '/home/tlow/DevProjects/class2go/main/static/js',
+        'document_root': 'static/js',
     }),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': '/home/tlow/DevProjects/class2go/main/static/css',
+        'document_root': 'static/css',
     }),
     url(r'^img/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': '/home/tlow/DevProjects/class2go/main/static/img',
+        'document_root': 'static/img',
     }),
 
 
