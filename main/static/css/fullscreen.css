@@ -10,21 +10,24 @@
 :-webkit-full-screen .tohide {
 	display: none;
 }
+:-moz-full-screen .tohide {
+	display: none;
+}
 :-moz-full-screen:not(:root) {
-	width: 90% !important;
+	width: 100% !important;
 	float: none !important;
 }
 :-moz-full-screen #fs-inner {
 	display: table-cell;
-	vertical-align: middle;
+	vertical-align: bottom;
 }
 :-moz-full-screen #fs {
-	width: 90%;
+	width: 100%;
 	margin: auto;
 }
 :-moz-full-screen #container {
-	position: relative;
 	width: 100%;
+	position: static;
 	height: 100%;
 }
 :-webkit-full-screen #container {
