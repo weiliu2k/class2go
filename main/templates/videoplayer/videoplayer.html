@@ -29,7 +29,7 @@
 				var popcornVideo = Popcorn.youtube("#player", video.url);
 				popcornVideo.controls(false);
 				var videoPlayer = new VideoPlayer(popcornVideo, "quiz");
-				videoPlayer.addSubtitlesToVideo(subtitles);
+				videoPlayer.addSubtitlesToVideo(subtitles, "subtitles");
 				videoPlayer.addCuesToVideo(quizzes);
 				videoPlayer.addControls("control");
 				$("#volume-slider").slider({
@@ -55,6 +55,7 @@
 				<div id="fs">
 					<div id="container">
 						<div id="quiz"></div>
+						<div id="subtitles"></div>
 						<div id="player"></div>
 						<div id="control">
 							<div id="toggle-fs" class="select" onclick="enterFullscreen()"><i class="icon-fullscreen icon-white"></i></div>

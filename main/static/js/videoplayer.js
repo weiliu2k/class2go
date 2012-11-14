@@ -117,7 +117,7 @@ function VideoPlayer(video, overlayElemId) {
 	 * Add subtitles to the video:
 	 * 	-NOTE: popcorn.js has a native sbv support which I'm not sure about.
 	 **/
-	this.addSubtitlesToVideo = function(subtitles) {
+	this.addSubtitlesToVideo = function(subtitles, subtitlesId) {
 		if (subtitles) {
 			for (var i = 0; i < subtitles.length; i++) {
 				(function(i) {
@@ -127,7 +127,6 @@ function VideoPlayer(video, overlayElemId) {
 						end: subtitle.end,
 						text: subtitle.caption,
 						multiline: true,
-						escape: true,
 					});
 				})(i);
 			}
@@ -175,24 +174,25 @@ function VideoPlayer(video, overlayElemId) {
 			},false);
 			controlElem.appendChild(stopElem);
 
-			//Add captioning support (warning: only for HTML5 youtube player)
-			var captionElem = createDiv("caption", "caption");
-			captionElem.innerHTML = 'HCaptions';
-			captionElem.addEventListener("click", function() {
-				if (captionElem) {
-					if (captionElem.style.visibility == "visible") {
-						console.log("hiding captions")
-						captionElem.style.visibility = "hidden";
-						captionElem.innerHTML = 'SCaptions';
+			//Add subtitleing support (warning: only for HTML5 youtube player)
+			var subtitleElem = createDiv("subtitle", "subtitle");
+			subtitleElem.innerHTML = 'HCaption';
+			subtitleElem.addEventListener("click", function() {
+				var subtitleTextElem = document.getElementById("text");
+				if (subtitleTextElem) {
+					if (subtitleTextElem.style.visibility == "visible") {
+						console.log("hiding subtitles")
+						subtitleTextElem.style.visibility = "hidden";
+						subtitleElem.innerHTML = 'SCaption';
 					}
 					else {
-						console.log("showing captions")
-						captionElem.style.visibility = "visible";
-						captionElem.innerHTML = 'HCaptions';
+						console.log("showing subtitles")
+						subtitleTextElem.style.visibility = "visible";
+						subtitleElem.innerHTML = 'HCaption';
 					}
 				}
 			});
-			controlElem.appendChild(captionElem);
+			controlElem.appendChild(subtitleElem);
 
 			//Add volume controls
 			var muteElem = createDiv("mute", "mute");

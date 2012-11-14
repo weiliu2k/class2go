@@ -171,14 +171,14 @@
 #toggle-fs:hover {
 	cursor: pointer;
 }
-.caption {
+.subtitle {
 	width:60px;
 	float: right;
 	padding:3px;
 	color:white;
 	float:right;
 }
-.caption:hover {
+.subtitle:hover {
 	cursor: pointer;
 }
 
