@@ -1,0 +1,836 @@
+0:00:00.000,0:00:04.050
+Continuing on a theme of routing, in this
+lecture, I'm going to be telling you about
+
+0:00:04.050,0:00:06.098
+something called the Spanning Tree
+Protocol.
+
+0:00:06.098,0:00:10.070
+The Spanning Tree Protocol is actually
+used for Ethernet switches.
+
+0:00:10.086,0:00:15.003
+We normally think of routing as operating
+at the, at the, at the IP or the network
+
+0:00:15.003,0:00:17.085
+layer.
+But, anything that, any situation where we
+
+0:00:17.085,0:00:22.024
+want to send packets along a particular
+path, path that we choose carefully, we
+
+0:00:22.024,0:00:26.013
+can think of that as routing.
+So, Ethernet switches need to decide how
+
+0:00:26.013,0:00:30.030
+to route or forward packets to the correct
+set of destinations as well.
+
+0:00:30.030,0:00:33.039
+So, that's what we're going to be looking
+at in this video.
+
+0:00:33.039,0:00:36.061
+So, we're going to continue with this
+theme of routing.
+
+0:00:36.061,0:00:41.078
+And I'm going to describe something that,
+at first, won't seem like routing because
+
+0:00:41.078,0:00:47.020
+we normally use the term routing to refer
+to the network layer and, and IP, IP
+
+0:00:47.020,0:00:50.035
+addressing.
+But, routing really means any mechanism
+
+0:00:50.035,0:00:55.034
+for delivering packets in a, in a mindful
+way from a source to a destination.
+
+0:00:55.034,0:01:00.022
+And so, in that sense, Ethernet routes
+packets, too. It's forwarding packets from
+
+0:01:00.022,0:01:05.025
+a source to a destination, it just happens
+to be doing this based on the Ethernet
+
+0:01:05.025,0:01:08.035
+address.
+So, in this video, I'm going to be talking
+
+0:01:08.035,0:01:13.056
+about how Ethernet forwards packets.
+So we know how addresses are learned in
+
+0:01:13.056,0:01:16.023
+Ethernet.
+And, but, but how does it prevent loops
+
+0:01:16.023,0:01:19.085
+from happening?
+It we, we know that it will learn the
+
+0:01:19.085,0:01:24.069
+address and until it's learned the address
+and knows the correct direction to send
+
+0:01:24.069,0:01:29.012
+the packet, it will flood to everyone.
+How do we make sure that those flooded
+
+0:01:29.012,0:01:34.014
+messages, those protocol messages are not
+are not looping in the network forever?
+
+0:01:34.014,0:01:36.094
+After all, there's no TTL field in the
+Ethernet.
+
+0:01:36.094,0:01:41.020
+So, Ethernet does this by building a
+spanning tree over which packets are
+
+0:01:41.020,0:01:43.041
+forward, forwarded.
+And, we're going to see that,
+
+0:01:43.041,0:01:48.025
+specifically, in a moment, this works in
+quite a different way from the from what
+
+0:01:48.025,0:01:51.034
+we've seen so far.
+Because instead of building a spanning
+
+0:01:51.093,0:01:56.099
+tree per destination or per, per router,
+In Ethernet we're going to build a single
+
+0:01:56.099,0:02:01.098
+spanning tree for the entire network.
+In other words, it's going to constrain
+
+0:02:01.098,0:02:07.030
+the overall topology to only use those
+ports belonging to a single spanning tree.
+
+0:02:07.030,0:02:11.043
+So, just recall briefly how an Ethernet
+switch forwards packets.
+
+0:02:11.043,0:02:15.080
+First of all, it examines the header of
+each arriving Ethernet frame.
+
+0:02:15.080,0:02:21.015
+If it finds that the Ethernet destination
+address is in its forwarding table, it's
+
+0:02:21.015,0:02:24.081
+going to forward the frame to the correct
+outgoing port.
+
+0:02:24.081,0:02:28.073
+If the Ethernet destination address is not
+found in the table, it's going to
+
+0:02:28.073,0:02:33.086
+broadcast the frame to all out going ports
+because it doesn't know which one to send
+
+0:02:33.086,0:02:36.064
+it to, it's just going to send it to every
+one.
+
+0:02:36.064,0:02:41.059
+And, now we've learned about flooding we
+can see why it would do that we can be
+
+0:02:41.059,0:02:44.031
+sure it will reach it's eventual
+destination.
+
+0:02:44.031,0:02:49.020
+And then, it learns entries in the table
+are learned by examining the Ethernet
+
+0:02:49.020,0:02:53.048
+source address of arriving packets.
+In other words, when it looks at the
+
+0:02:53.048,0:02:58.001
+source address, it will learn that in
+order to reach that particular source
+
+0:02:58.001,0:03:01.002
+address,
+It sends packets out through the port
+
+0:03:01.002,0:03:06.046
+through which that packet arrived, so that
+must be on the direction between towards
+
+0:03:06.046,0:03:10.025
+the source.
+But, this all presupposes that packets
+
+0:03:10.025,0:03:14.068
+don't loop in the network forever. And
+that, in fact, the,
+
+0:03:14.068,0:03:20.062
+The, particularly in the learning process,
+that the Ethernet source address actually
+
+0:03:20.062,0:03:25.091
+is on the shortest path or on a reasonable
+path back towards that address.
+
+0:03:25.091,0:03:32.066
+So, how does it, how does it know that?
+And, in fact, the whole learning process
+
+0:03:32.066,0:03:38.006
+could lead to loops.
+So, let's see an example of, of what might
+
+0:03:38.006,0:03:42.030
+happen.
+If we have a network with ah,, let's say,
+
+0:03:42.030,0:03:49.029
+this is source and a destination, and in
+between we have a sequence of switches,
+
+0:03:49.029,0:03:54.001
+something like this, that are all
+connected like, like this.
+
+0:02:55.050,0:03:59.041
+So, B is then directly connected here, and
+then A is connected to a switch here.
+
+0:03:59.041,0:04:04.089
+In the learning processes, as we've
+described, the first time that A sends to
+
+0:04:04.089,0:04:10.058
+B, and let's say it's going to send it's
+going to send its packet in here destined
+
+0:04:10.058,0:04:13.054
+to B.
+This first switch is not going to know
+
+0:04:13.054,0:04:19.023
+where to send it because it's never heard
+from A and B, about A and B before. So,
+
+0:04:19.023,0:04:25.073
+it's going to flood its message out all
+of these ports. That's going to come down
+
+0:04:25.073,0:04:27.055
+here.
+It's going to, to go out here.
+
+0:04:27.055,0:04:32.001
+It's going to, to come down here. But,
+because this what this switch here will do
+
+0:04:32.001,0:04:36.077
+is send it out of all the ports except the
+one that it learnt, that it heard from,
+
+0:04:36.077,0:04:41.023
+This is also going to come from here back
+down here, and go around this loop
+
+0:04:41.023,0:04:44.081
+forever. And this one is going to go
+around this loop forever,
+
+0:04:44.081,0:04:48.085
+And there's another loop here. And so, you
+can quickly get the picture.,
+
+0:04:48.085,0:04:51.096
+These packets are going to be looping
+around forever.
+
+0:04:51.096,0:04:56.078
+They are going to get delivered to B.
+B will respond and the address will get
+
+0:04:56.078,0:04:59.089
+learned.
+But, in the meantime, we've created this
+
+0:04:59.089,0:05:04.062
+huge loop of flooded addresses.
+So, we need to make sure that doesn't
+
+0:05:04.062,0:05:08.017
+happen.
+The Spanning Tree Protocol that I'm going
+
+0:05:08.017,0:05:11.064
+to describe now was invented to solve this
+problem.
+
+0:05:11.064,0:05:16.056
+So, rather than deciding how we route
+along a spanning tree for, for each
+
+0:05:16.056,0:05:21.099
+address, or to reach each destination,
+it's going to, to build one spanning tree
+
+0:05:21.099,0:05:23.087
+for the entire network.
+So,
+
+0:05:23.087,0:05:30.021
+Just to give you an example, I'm going to
+redraw my, or, a, a switch, network here
+
+0:05:30.021,0:05:35.042
+that has a bunch of loops in it.
+Won't be exactly the same as the one
+
+0:05:35.042,0:05:39.012
+before, but roughly the same.
+So, here with A and B.
+
+0:05:39.012,0:05:45.009
+What it's going to do is it's going to go
+through and disable some ports in, in the
+
+0:05:45.009,0:05:48.044
+network to prevent this loop from
+happening.
+
+0:05:48.044,0:05:54.046
+So, one example of what it might do is,
+essentially switch off this link here so
+
+0:05:54.046,0:05:59.080
+that loop at the top is prevented.
+And, it could switch off the loop, the,
+
+0:05:59.080,0:06:03.099
+the, the link here and prevent this loop
+down, down here.
+
+0:06:03.099,0:06:10.089
+So we end up with a, a spanning tree in
+this case which is like this of which all
+
+0:06:10.089,0:06:14.025
+the switches are on that spanning tree so
+it spans.
+
+0:06:14.025,0:06:19.047
+It's a tree so that there are no loops.
+And, A and B can talk to each other over
+
+0:06:19.047,0:06:24.075
+that spanning, over that spanning tree.
+So, it gives us a rough idea of what we're
+
+0:06:24.075,0:06:29.032
+going to see next.
+So, preventing loops.
+
+0:06:29.032,0:06:35.026
+The Spanning Tree Protocol, it's, it's
+going to start by recognizing that the
+
+0:06:35.026,0:06:40.000
+topology of switches is a graph,
+And we've seen many examples of these
+
+0:06:40.000,0:06:42.085
+before.
+And, the Spanning Tree Protocol is going
+
+0:06:42.085,0:06:47.040
+to find a subgraph that spans all of the
+vertices, all of the switches without
+
+0:06:47.040,0:06:49.083
+creating any loops,
+It's a spanning tree.
+
+0:06:49.083,0:06:54.014
+And the distributed protocol is going to
+run across all of these switches,
+
+0:06:54.014,0:06:58.081
+And it's going to start by deciding which
+switch is the root of the tree, of the
+
+0:06:58.081,0:07:01.048
+single spanning tree that it's going to
+create.
+
+0:07:01.048,0:07:05.055
+And then, which ports are allowed to
+forward packets along the tree.
+
+0:07:05.055,0:07:10.013
+Let's look at an example here.
+This is a, a just an example spanning
+
+0:07:10.013,0:07:12.089
+tree.
+So, the step one is it's going to pick a
+
+0:07:12.089,0:07:17.002
+single a single root.
+And the way that it's going to do this is,
+
+0:07:17.002,0:07:21.002
+just exchange ID numbers and pick the one
+with the lowest ID.
+
+0:07:21.002,0:07:26.026
+So, I'm just going to assume here that
+it's, it's exchanged enough to decide that
+
+0:07:26.026,0:07:29.092
+S1 is the root.
+And then, it's going to forward packets on
+
+0:07:29.092,0:07:34.068
+the ports on the shortest hop count path
+to the root.
+
+0:07:34.068,0:07:39.029
+And so, S6 would send along here, S2 would
+send along here,
+
+0:07:39.029,0:07:44.031
+S4, we've seen many examples of this now
+of how to create this.
+
+0:07:44.031,0:07:50.038
+S8, well, there's an up count of two here
+and an up count of two here that's, that's
+
+0:07:50.038,0:07:54.050
+somewhat arbitrarily design that it's
+going to send this way.
+
+0:07:54.050,0:08:00.030
+And then S3 that's got an hop count this
+two this way and one, two, three this way
+
+0:08:00.030,0:08:03.065
+so it will send this way.
+S9 will send this way.
+
+0:08:03.065,0:08:07.021
+So, there's a spending tree that covers
+all of then.
+
+0:08:07.021,0:08:10.043
+And here's another one that, that, that
+could be created.
+
+0:08:10.043,0:08:14.060
+It's, it's almost the same as the one
+previously because it had a couple of ties
+
+0:08:14.060,0:08:17.095
+that I could break.
+So, this is the logical spanning tree that
+
+0:08:17.095,0:08:22.034
+has been created. And, of course, there
+are no loops in it and it spans all of the
+
+0:08:22.034,0:08:24.092
+switches.
+So, the thing that remains to do is to
+
+0:08:24.092,0:08:28.076
+figure out, how it does this?
+We know what it's going to end up with, so
+
+0:08:28.076,0:08:32.028
+how does it get there?
+So, let's take a look at how Spanning Tree
+
+0:08:32.028,0:08:35.030
+Protocol works.
+There's a little bit of detail here and
+
+0:08:35.030,0:08:37.094
+I'm going to, to go through this one step
+at a time.
+
+0:08:37.094,0:08:42.084
+So, the first thing that happens is that
+all switches broad, broadcast a special
+
+0:08:42.084,0:08:46.020
+type of packet called a Bridge Protocol
+Data Unit.
+
+0:08:46.020,0:08:51.071
+Protocol Data Unit is just a little bit of
+an old fashioned term for a Packet, and
+
+0:08:51.071,0:08:57.002
+Bridge is an older name for Switches
+before Ethernet switches were popularized
+
+0:08:57.002,0:09:02.033
+in the 1990's they were called bridges.
+So, Bridge Protocol Data Unit is usually
+
+0:09:02.033,0:09:06.036
+abbreviated to BPDU.
+This isn't in the context in which this
+
+0:09:06.036,0:09:09.079
+term BPDU is, is used, so don't worry too
+much about it.
+
+0:09:09.079,0:09:14.044
+It's essentially the special control
+messages that are sent around, in order to
+
+0:09:14.044,0:09:18.001
+build the spanning tree.
+The BPDU contains three pieces of
+
+0:09:18.001,0:09:21.063
+information.
+The ID of who it is that's sending it, and
+
+0:09:21.063,0:09:25.065
+that's the, the switch ID.
+So, in my previous example, S1, S2, S3,
+
+0:09:25.065,0:09:31.041
+it's usually actually derived from the MAC
+address just so that it's unique and it
+
+0:09:31.041,0:09:36.083
+may be manually configured by the, by the
+administrator. But, we'll just use the
+
+0:09:36.083,0:09:40.032
+switch IDs on, on the PowerPoint pictures
+for now.
+
+0:09:40.032,0:09:44.053
+It contains the ID of who it currently
+believes to be the root,
+
+0:09:44.053,0:09:47.051
+And we'll see how this evolves, in a
+moment.
+
+0:09:47.051,0:09:50.097
+And, it's the distance from the sender to
+the root.
+
+0:09:50.097,0:09:55.096
+In other words, what it believes is the
+distance from itself to the root.
+
+0:09:55.096,0:10:00.066
+And this is the, the best, the best,
+estimate that it has right now.
+
+0:10:00.066,0:10:04.061
+So, to start with, every switch is going
+to, is going to boot up and think that
+
+0:10:04.061,0:10:07.039
+it's the root.
+It's going to claim that it's the root.
+
+0:10:07.039,0:10:11.068
+In other words, it's going to put it's
+idea of it's sender to be the same as the
+
+0:10:11.068,0:10:15.079
+idea of the root, and because they are one
+and the same, it's going to say the
+
+0:10:15.079,0:10:20.019
+distance field to zero because that's the
+distance from the sender to the root.
+
+0:10:20.019,0:10:24.085
+And every switch is going to broadcast
+this value until it hears a better value.
+
+0:10:24.085,0:10:28.099
+In other words, a root with a smaller ID
+would be the most likely case.
+
+0:10:28.099,0:10:33.084
+So, if I'm currently advertising that I
+think that I'm root and then somebody else
+
+0:10:33.084,0:10:38.091
+sends me a message and says, I'm the root
+and its ID is lower than mine, then I will
+
+0:10:38.091,0:10:42.064
+start saying, okay, I believe that you're
+the root instead of me.
+
+0:10:42.064,0:10:47.031
+If there happens to be a root with the
+same ID, it's going to pick the one with
+
+0:10:47.031,0:10:52.045
+the shorter distance and ties are going to
+be broken by the smaller ID of the, of the
+
+0:10:52.045,0:10:55.056
+sender.
+So, if a switch hears a better message,
+
+0:10:55.056,0:11:01.012
+it's not only going to adopt to that value
+as the root, it's going to re-transmit
+
+0:11:01.012,0:11:05.004
+that message and it's going to add one to
+the distance.
+
+0:11:05.004,0:11:10.055
+And say, I'm going to forward my ID as the
+sender, the newly learned ID of the root,
+
+0:11:10.055,0:11:14.035
+And I'm going to go add with one value,
+one to the value that was told to me
+
+0:11:14.035,0:11:17.019
+because the hop count is now increased by
+one,
+
+0:11:17.019,0:11:21.083
+And I'm going to say that, that is the
+distance from the sender to the root.
+
+0:11:21.083,0:11:26.060
+So eventually, jumping down to here.
+Eventually, there will be only one root
+
+0:11:26.060,0:11:31.031
+that will originate this message and
+everybody else will retransmit them.
+
+0:11:31.031,0:11:36.047
+Because everybody will uniquely pick the
+same the same switch ID as the root.
+
+0:11:36.047,0:11:38.067
+Okay.
+Now, we know who the root is.
+
+0:11:38.067,0:11:44.011
+We now have to figure out how this spanning
+tree is built in order to send packets to
+
+0:11:44.011,0:11:47.093
+and from that root.
+So, the root port is, is picked on every
+
+0:11:47.093,0:11:51.004
+switch.
+It's the port on a switch that is closest
+
+0:11:51.004,0:11:54.054
+to the root.
+In other words, its the one through which
+
+0:11:54.054,0:11:59.034
+the BPDU was heard, the talk, the gate
+that was that shortest distance to the
+
+0:11:59.034,0:12:02.032
+root,
+So that's nice and easy thing to figure
+
+0:12:02.032,0:12:05.030
+out.
+And that will be the one through which it
+
+0:12:05.030,0:12:10.036
+sends messages, forwards messages to the
+root or receives them from the root.
+
+0:12:10.036,0:12:13.099
+Not only the BPDUs but also the forwarded
+packets.
+
+0:12:13.099,0:12:18.017
+The second type of port is what's called
+the designated port.
+
+0:12:18.017,0:12:23.010
+This is the port that neighbors agree to
+use in order to reach the port.
+
+0:12:23.010,0:12:28.031
+It's essentially the port through which
+eventually packets had destined to the
+
+0:12:28.031,0:12:30.091
+root, root will be received at this
+switch.
+
+0:12:30.091,0:12:35.071
+And packets coming from the root will be
+forwarded onto this, onto this port in
+
+0:12:35.071,0:12:40.030
+order to reach the other switches.
+All other ports are blocked from
+
+0:12:40.030,0:12:43.069
+forwarding.
+In other words, only those ports that are
+
+0:12:43.069,0:12:48.083
+the root ports or the designated ports
+will continue to forward regular packets.
+
+0:12:48.083,0:12:51.066
+All other ports are blocked from
+forwarding.
+
+0:12:51.066,0:12:56.080
+However, they will still send and receive
+BPDUs so that the control messages are
+
+0:12:56.080,0:13:01.088
+still send and receive so that we can
+continue to build the spanning tree such
+
+0:13:01.088,0:13:07.002
+that if something changes, a switch goes
+down or a link goes down, everybody will
+
+0:13:07.002,0:13:09.047
+converge on a new shortest, a new spanning
+tree.
+
+0:13:09.047,0:13:16.069
+Okay. So eventually, locally, only, only
+switch will only forward on the ports that
+
+0:13:16.069,0:13:22.092
+are root ports and designated ports.
+Let me finish this video on the Spanning
+
+0:13:22.092,0:13:26.012
+Tree Protocol by telling you about a brief
+history.
+
+0:13:26.012,0:13:30.062
+Spanning Tree Protocol was originally
+invented in 1985 by Radia Perlman.
+
+0:13:30.081,0:13:36.032
+At that time Ethernet switches were called
+bridges and networks were beginning to be
+
+0:13:36.032,0:13:41.008
+built with a large number of bridges.
+This was really before routing was, was
+
+0:13:41.008,0:13:44.071
+very popular.
+And as a consequence, they really needed a
+
+0:13:44.071,0:13:49.066
+quick method for, for reliably building a
+spanning tree that all of the packets
+
+0:13:49.066,0:13:53.085
+coul, could follow to, to prevent
+broadcast storms from escalating in the
+
+0:13:53.085,0:13:56.022
+network.
+It was standardized in 1990 by IEEE.
+
+0:13:56.022,0:14:00.063
+Still yet, we converged relatively slowly
+and this networks became bigger, this
+
+0:14:00.063,0:14:04.099
+became more and more of a problem.
+The timers that we used were quite long
+
+0:14:04.099,0:14:07.087
+and the, the, the method takes quite a
+while to converge.
+
+0:14:07.087,0:14:11.072
+And so, a more rapid version called the
+Rapid Spanning Tree Protocol was
+
+0:14:11.072,0:14:15.000
+introduced in 2004.
+Still, this built a single tree for the
+
+0:14:15.000,0:14:19.064
+entire network and the, the path followed
+by the packets would often be a some what
+
+0:14:19.064,0:14:24.005
+torturous path, it's not necessarily the
+shortest path between the source and
+
+0:14:24.005,0:14:28.036
+destination because these packets would
+always have to go through the roots.
+
+0:14:28.036,0:14:33.052
+So, more recently, the Shortest Path
+Bridging Protocol was introduced just in
+
+0:14:33.052,0:14:37.094
+2012, and this uses our old friend, the
+link state algorithm.
+
+0:14:38.000,0:14:41.060
+A little bit like Dijkstra's algorithm
+used in OSPF.
+
+0:14:41.060,0:14:46.097
+In order to build a shortest path tree,
+from each source to each destination.
+
+0:14:46.097,0:14:52.041
+And so, in, in, in the end, we've ended up
+with a method that is very similar to
+
+0:14:52.041,0:14:56.096
+what's used at, at layer three.
+This will probably be rolled out and
+
+0:14:56.096,0:15:03.032
+adopted over the next few years.
+That's the end of this video.
+

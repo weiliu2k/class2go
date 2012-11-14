@@ -37,7 +37,7 @@
 .progress-bar {
 	position:relative;
 	margin-left:50px;
-	margin-right:215px;
+	margin-right:250px;
 	height: 15px;
 	top: 5px;
 
@@ -52,11 +52,25 @@
 
 	box-shadow: inset 0 -3px 3px #d5d5d5;
 }
-.progress-bar:hover {
+.marker {
+	position:absolute;
+	top:0;
+	left:0;
+	margin-left:-3px;
+	height:100%;
+	width:4px;
+	background:red;
+}
+.marker:hover {
 	cursor: pointer;
 }
-.time-bar:hover {
-	cursor: pointer;
+.marker-bar {
+	position:absolute;
+	top:0;
+	left:0;
+
+	width:100%;
+	height:100%;
 }
 
 .time-bar {
@@ -100,6 +114,8 @@
 .mute {
 	margin-top:3px;
 	padding:3px;
+	position: absolute;
+	bottom: 0px;
 }
 .mute:hover {
 	cursor: pointer;
@@ -107,6 +123,7 @@
 
 .volume-box {
 	float: right;
+	padding: 3px;
 
 	-moz-transition: all 0.1s ease-in-out; /* Firefox */
 	-ms-transition: all 0.1s ease-in-out; /* IE future proofing */
@@ -142,7 +159,7 @@
 	float:right;
 }
 #toggle-quiz {
-	width:100px;
+	width:60px;
 	float: right;
 	padding:3px;
 	color:white;
@@ -152,6 +169,16 @@
 	cursor: pointer;
 }
 #toggle-fs:hover {
+	cursor: pointer;
+}
+.caption {
+	width:60px;
+	float: right;
+	padding:3px;
+	color:white;
+	float:right;
+}
+.caption:hover {
 	cursor: pointer;
 }
 
