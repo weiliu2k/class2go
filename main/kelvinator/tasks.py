@@ -218,13 +218,20 @@ def kelvinate(store_path_raw, frames_per_minute_target=2, notify_addr=None):
 ##  RESIZE
 ##
 
-# video sizes we support: key is size name (used for target subdirectory) and value
+# sizes we support: key is size name (used for target subdirectory) and value
 # are the parameters (as a list) that we'll pass to ffmpeg.
-sizes = { "large":  [ "-crf", "23", "-s", "1280x720" ],   # original size, compressed
-          "medium": [ "-crf", "27", "-s", "852x480" ],    # wvga at 16:9
-          "small":  [ "-crf", "30", "-s", "640x360" ],    
-          "tiny":   [ "-crf", "40", "-s", "320x180" ],
-        }
+video_params = [ "-c:v", "libx264",          # video codec
+                 "-profile:v", "baseline",   # most compatible
+                 "-strict", "-2",            # magic to allow aac audio enc
+               ]
+audio_params = [ "",
+               ]
+params = { "large":  [ "-crf", "23", "-s", "1280x720" ] + video,
+           "medium": [ "-crf", "27", "-s", "852x480" ] + video,
+           "small":  [ "-crf", "30", "-s", "640x360" ] + video,    
+           "tiny":   [ "-crf", "40", "-s", "320x180" ] + video,
+           "audio":   [ "-crf", "40", "-s", "320x180" ] + audio_params,
+         }
 
 
 # Actually transcode the video down 
@@ -235,7 +242,7 @@ def do_resize(notify_buf, working_dir, target_dir, video_file, target_size):
                  "-profile:v", "baseline",   # most compatible
                  "-strict", "-2",            # magic to allow aac audio enc
                ]
-    cmdline += sizes[target_size]
+    cmdline += params[target_size]
     cmdline += [ target_dir + "/" + video_file ]  # outfile
 
     infoLog(notify_buf, "RESIZE: " + " ".join(cmdline))
