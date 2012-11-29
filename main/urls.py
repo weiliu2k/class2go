@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^_test_messages$', 'c2g.views.test_messages'),
 
     # Add video player demo
+    url(r'^_test_demo$', 'c2g.views.test_demo'),
     url(r'^_test_video$', 'c2g.views.test_video'),
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {
         'document_root': 'static/js',
