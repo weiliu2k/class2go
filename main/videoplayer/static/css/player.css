@@ -1,0 +1,211 @@
+/**
+ * Videoplayer V2
+ *
+ * Video is 640x360
+ * Video controls are 25 height
+ * subtitles are 70 height
+ * Gallery is 200x455
+ * Player is 840x455
+ **/
+#player {
+	width:840px;
+	height:510px;
+}
+
+/**
+ * Contains the video, video control and subtitle text
+ **/
+#player-container {
+	height:100%;
+}
+#video-container {
+	width:100%;
+	height:100%;
+}
+
+/**
+ * Contains the gallery
+ **/
+#gallery-container {
+	width:200px;
+	height:100%;
+}
+
+
+/*****
+ * Player general controls:
+ * 	- fullscreen
+ * 	- show/hide quizzes
+ * 	- show/hide subtitles
+ * 	- show/hide gallery
+ *****/
+#player-controls {
+	width:100%;
+	height:30px;
+	background: #252525;
+	border-top-left-radius: 3px;
+}
+
+/*****
+ * Video controls
+ *  - play, stop
+ *  - seek bar
+ *  - time display
+ *  - volume
+ ****/
+#video {
+	width:100%;
+}
+#video-controls {
+	width:100%;
+	height:25px;
+	background:#252525;
+}
+
+
+/*****
+ * Gallery controls
+ *  - show subtitle transcript
+ *  - show thumbnails
+ *****/
+#gallery-sidebar {
+	overflow:hidden;
+	width:100%;
+	height:100%;
+}
+#transcript {
+	width:100%;
+	height:100%;
+	background: #888;
+	overflow-y:scroll;
+	padding-top:10px
+}
+.transcript-item{
+	color: white;
+	font-size: 0.9em;
+	line-height:130%;
+	margin-left:10px;
+	margin-right:10px;
+	text-align:center;
+	padding-bottom:10px;
+}
+.transcript-item:hover {
+	cursor : pointer;
+}
+.transcript-item-active{
+	color: black;
+	font-weight: bold;
+}
+#gallery {
+	width:100%;
+	height:100%;
+	background: #888;
+	overflow-y:scroll;
+	padding-top:10px
+}
+.gallery-item {
+	width:160px;
+	height:90px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 2px;
+	border-style: solid;
+	border-color: 222;
+	margin-bottom:10px;
+}
+.gallery-item:hover {
+	cursor:pointer;
+}
+.gallery-item-active {
+	border: 2px;
+	border-style: solid;
+	border-color: red;
+}
+#gallery-controls {
+	height:30px;
+	background: #252525;
+	border-top-right-radius: 3px;
+}
+
+/*****
+ * subtitles text styling
+ *****/
+#subtitle-container {
+	width:100%;
+	height:75px;
+	background:#353535;
+}
+#subtitle {
+	padding:10px;
+	text-align:center;
+	width:100%;
+	color:white;
+	font-size:1.25em;
+	line-height:140%;
+}
+
+
+/*****
+ * Quiz overlay styling
+ *   - note: hides the entire player
+ *   - contains "Return To Lecture" button
+ *   - contains a FS toggle button
+ *****/
+#overlay {
+	visibility: hidden;
+	z-index: 10;
+	background: black;
+	position:absolute;
+	top:0;
+	width: 100%;
+	height: 100%;
+}
+
+
+/****
+ * General style classes
+ ****/
+.r {
+	display:table-row;
+	width:100%;
+}
+.c {
+	display:table-cell;
+}
+.t {
+	display:table;
+	width:100%;
+	height:100%;
+}
+.controls {
+	padding:4px 6px;
+}
+.controls:hover {
+	cursor:pointer;
+}
+
+.controls-left {
+	float: left;
+}
+.controls-right {
+	float: right;
+}
+
+/***
+ * Animation classes
+ ***/
+.expandable {
+	overflow: hidden;
+	-moz-transition: width 1s cubic-bezier(0.47,0.13,0.28,0.90) 0s;
+	-ms-transition: width 1s cubic-bezier(0.47,0.13,0.28,0.90) 0s;
+	-o-transition: width 1s cubic-bezier(0.47,0.13,0.28,0.90) 0s;
+	-webkit-transition: width 1s cubic-bezier(0.47,0.13,0.28,0.90) 0s;
+}
+
+.fade {
+	opacity: 1;
+	-moz-transition: opacity 1s ease-in-out;
+	-ms-transition: opacity 1s ease-in-out;
+	-o-transition: opacity 1s ease-in-out;
+	-webkit-transition: opacity 1s ease-in-out;
+}

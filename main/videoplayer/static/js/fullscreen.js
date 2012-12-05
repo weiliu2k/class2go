@@ -1,6 +1,11 @@
 document.cancelFullScreen = document.webkitExitFullscreen || document.mozCancelFullScreen || document.exitFullscreen;
 
-var elem = document.querySelector(document.webkitExitFullscreen ? "#fs" : "#fs-container");
+var elem = "#fs";
+var isFullscreen = false;
+
+function initializeFS() {
+	elem = document.querySelector(document.webkitExitFullscreen ? "#fs" : "#fs-container");
+}
 
 document.addEventListener('keydown', function(e) {
 	switch (e.keyCode) {
@@ -24,7 +29,6 @@ function toggleFS(el) {
 			el.requestFullscreen();
 		}
 	}
-
 	el.ondblclick = exitFullscreen;
 }
 
@@ -32,11 +36,13 @@ function onFullScreenEnter() {
 	console.log("Entered fullscreen!");
 	elem.onwebkitfullscreenchange = onFullScreenExit;
 	elem.onmozfullscreenchange = onFullScreenExit;
+	isFullscreen = true;
 };
 
 // Called whenever the browser exits fullscreen.
 function onFullScreenExit() {
 	console.log("Exited fullscreen!");
+	isFullscreen = false;
 };
 
 // Note: FF nightly needs about:config full-screen-api.enabled set to true.
@@ -54,6 +60,7 @@ function enterFullscreen() {
 			elem.requestFullscreen();
 		}
 	}
+	// Toggle resize
 	document.getElementById('toggle-fs').onclick = exitFullscreen;
 }
 

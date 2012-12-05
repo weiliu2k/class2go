@@ -1,39 +1,3 @@
-#container {
-	width:854px;
-	height:480px;
-	position:fixed;
-	text-align:center;
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-#quiz {
-	position:absolute;
-	top:0;
-	z-index:1;
-	width:100%;
-	height:100%;
-	background-color:blue;
-	visibility: hidden;
-}
-#player {
-	position:absolute;
-	top:0;
-	z-index:0;
-	width:100%;
-	height:100%;
-}
-#control {
-	bottom: 0;
-	height: 25px;
-	width:100%;
-	z-index:2;
-	position:absolute;
-	background-color: rgba(0,0,0,0.5);
-}
 .progress-bar {
 	position:relative;
 	margin-left:50px;
@@ -112,10 +76,8 @@
 	padding:3px;
 }
 .mute {
-	margin-top:3px;
 	padding:3px;
-	position: absolute;
-	bottom: 0px;
+	z-index:1;
 }
 .mute:hover {
 	cursor: pointer;
@@ -124,18 +86,13 @@
 .volume-box {
 	float: right;
 	padding: 3px;
-
-	-moz-transition: all 0.1s ease-in-out; /* Firefox */
-	-ms-transition: all 0.1s ease-in-out; /* IE future proofing */
-	-o-transition: all 0.2s ease-in-out;  /* Opera */
-	-webkit-transition: all 0.1s ease-in-out; /* Safari and Chrome */
-	transition: all 0.1s ease-in-out;
+	z-index:2;
 }
 
 .volume-slider {
 	visibility: hidden;
-	margin-top: -105px;
 	opacity: 0;
+	z-index:2;
 
 	-moz-transition: all 0.1s ease-in-out; /* Firefox */
 	-ms-transition: all 0.1s ease-in-out;  /* IE future proofing */
@@ -154,10 +111,6 @@
 	cursor: pointer;
 }
 
-#toggle-fs {
-	padding:3px;
-	float:right;
-}
 #toggle-quiz {
 	width:60px;
 	float: right;

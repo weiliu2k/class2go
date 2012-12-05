@@ -20,18 +20,10 @@ urlpatterns = patterns('',
     url(r'^_test_messages$', 'c2g.views.test_messages'),
 
     # Add video player demo
-    url(r'^_test_video$', 'c2g.views.test_video'),
-    url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': 'static/js',
-    }),
-    url(r'^css/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': 'static/css',
-    }),
-    url(r'^img/(?P<path>.*)$', 'django.views.static.serve', {
-        'document_root': 'static/img',
-    }),
-
-
+    url(r'^videoplayer$', 'videoplayer.views.main'),
+    url(r'^videoplayer/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': 'videoplayer/static/',
+        }),
 
     url(r'^honor_code$', 'c2g.views.hc'),
     url(r'^terms_of_service$', 'c2g.views.tos'),

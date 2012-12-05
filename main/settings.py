@@ -189,6 +189,8 @@ INSTALLED_APPS = (
                       'db_scripts',
                       'convenience_redirect',
                       'exception_snippet',
+                      #videoplayer
+                      'videoplayer',
                       )
 if INSTANCE != "prod":
     INSTALLED_APPS += (
