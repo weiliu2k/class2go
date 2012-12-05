@@ -85,3 +85,6 @@ def test_messages(request):
 def test_video(request):
     return render_to_response('videoplayer/videoplayer.html',{},RequestContext(request))
 
+def test_demo(request):
+    return render_to_response('videoplayer/videotest.html',{},RequestContext(request))
+
