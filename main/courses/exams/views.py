@@ -77,7 +77,6 @@ def show_exam(request, course_prefix, course_suffix, exam_slug):
     if exam.timed:
         startobj, created=StudentExamStart.objects.get_or_create(student=request.user, exam=exam)
         endtime = startobj.time_created + datetime.timedelta(minutes=exam.minutesallowed)
-        secondsleft = (endtime - timeopened).seconds
 
         if timeopened > endtime :
             editable = False
@@ -85,10 +84,9 @@ def show_exam(request, course_prefix, course_suffix, exam_slug):
 
     else:
         endtime = None
-        secondsleft = None
 
     return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data, 'json_pre_pop':"{}",
-                              'scores':"{}",'editable':editable, 'secondsleft':secondsleft, 'allow_submit':allow_submit,
+                              'scores':"{}",'editable':editable, 'allow_submit':allow_submit,
                               'exam':exam, 'endtime':endtime, 'timeopened':timeopened}, RequestContext(request))
 
 @require_POST
@@ -112,16 +110,14 @@ def show_populated_exam(request, course_prefix, course_suffix, exam_slug):
     if exam.timed:
         startobj, created=StudentExamStart.objects.get_or_create(student=request.user, exam=exam)
         endtime = startobj.time_created + datetime.timedelta(minutes=exam.minutesallowed)
-        secondsleft = (endtime - timeopened).seconds
 
         if timeopened > endtime :
             editable = False
             allow_submit = False
     else:
         endtime = None
-        secondsleft = None
     
-    return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data, 'exam':exam, 'json_pre_pop':json_pre_pop, 'scores':scores, 'editable':editable, 'endtime':endtime, 'secondsleft':secondsleft,
+    return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data, 'exam':exam, 'json_pre_pop':json_pre_pop, 'scores':scores, 'editable':editable, 'endtime':endtime, 
         'allow_submit':allow_submit, 'timeopened':timeopened}, RequestContext(request))
 
 

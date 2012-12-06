@@ -15,6 +15,9 @@ urlpatterns = patterns('',
     # Testing the error pages (404 and 500)
     url(r'^_throw500$', 'c2g.views.throw500'),
     url(r'^_throw404$', 'c2g.views.throw404'),
+                       
+    # Get server epoch
+    url(r'^server_epoch/?$', 'c2g.views.server_epoch'),
 
     #Testing messages
     url(r'^_test_messages$', 'c2g.views.test_messages'),

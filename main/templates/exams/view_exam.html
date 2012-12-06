@@ -27,9 +27,9 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
 
     {% if endtime %}
         {% if timeopened < endtime %}
-          <h3> <b style="color:green">  You must submit this exam by {{endtime}}.  You have roughly <div style="display:inline" id="timeremaining">00:00:00</div> left. (This time is only approximate).</b></h3>
+            <h3> <b style="color:green">  You must submit this exam by {{endtime}} PST.  You have roughly <div style="display:inline" id="timeremaining">00:00:00</div> left. (This time is only approximate.) </b></h3>
         {% else %}
-        <h3> <b style="color:red"> Your time on the exam expired at {{endtime}} PST. </b></h3>
+            <h3> <b style="color:red"> Your time on the exam expired at {{endtime}} PST. </b></h3>
         {% endif %}
     {% endif %}
 
@@ -281,9 +281,8 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
                       
     {% endif %}
 
-    {% if secondsleft %}
-    var secondsleft = {{secondsleft}};
-    var browserEndTime = (new Date().getTime()/1000) + secondsleft; //more reliable to convert endtime to browser perspective
+    {% if endtime and timeopened < endtime %}
+                      
     var getHMS=function(seconds) {
         var H = Math.floor(seconds / 3600);
         var M = Math.floor((seconds % 3600) / 60);
@@ -297,7 +296,25 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
         if (S < 10) Sstring = "0"+Sstring;
         return Hstring + ":" + Mstring + ":" + Sstring;
     }
-    $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000));
+                      
+    var endtimeInServerEpoch = {{endtime|date:"U"}};
+    var nowInServerEpoch = {{timeopened|date:"U"}}; //Default value, updated via ajax
+    var secondsleft = endtimeInServerEpoch-nowInServerEpoch;
+    var browserEndTime = (new Date().getTime()/1000) + secondsleft; //more reliable to convert endtime to browser perspective
+    $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000)); //Update time remaining ASAP
+
+    //Do ajax call to improve back/forward button behavior (it doesn't cache)
+    //Also note this basically synchs the browser with the server once per page load,
+    //Not continuously at some beat.
+    $.ajax("{% url 'c2g.views.server_epoch' %}", {
+        cache:false,
+        success:function(data){
+            nowInServerEpoch=JSON.parse(data);
+            secondsleft = endtimeInServerEpoch-nowInServerEpoch;
+            browserEndTime = (new Date().getTime()/1000) + secondsleft;
+            $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000)); //Update time remaining ASAP
+        }
+    });
                       
     var setTimeLeft = function() {
        $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000));
