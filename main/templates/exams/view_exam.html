@@ -157,8 +157,8 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
         var enabled = ('{{editable}}' == 'True') ? true : false;
         if (!enabled) {
             // disable all inputs
-            $('input').attr('disabled','disabled');
-            $('textarea').attr('disabled','disabled');
+            $('#main-content input').attr('disabled','disabled');
+            $('#main-content textarea').attr('disabled','disabled');
 
             // hide submit button
             var submitBtn = $('input[type|="submit"]').not('#login_button');
@@ -271,12 +271,13 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
         window.repopulateForm(prePopData);
     }
 
-    {% if common_page_data.course.mode == "ready" and not allow_submit %}
+    {% if not allow_submit %}
                       
     $('input[type|="submit"]').not('#login_button').attr('disabled','disabled');
     $("#reEnableForm").attr('disabled','disabled');
     $('#main-content input').attr('disabled','disabled');
-                  
+    $('#main-content textarea').attr('disabled','disabled');
+
                       
     {% endif %}
 
