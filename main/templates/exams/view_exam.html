@@ -6,33 +6,44 @@
 <div class="alert alert-error" id="nojswarn">
 You don't have Javascript enabled or jQuery was not loaded.  This page won't work!  Please re-enable Javascript.
 </div>
-{% autoescape off %}
 
 {% if common_page_data.course.mode == "ready" and not exam.is_live %}
 
     This exam will go live on {{ exam.live_datetime }} PST.
 
 
+
 {% else %}
 
     {% if common_page_data.course.mode == "ready" and exam.past_due %}
 
-       <h3>This exam was closed on {{ exam.due_date }} PST.  Submissions are disabled. </h3>
+        <h3>This exam was closed on {{ exam.due_date }} PST.  Submissions are disabled. </h3>
 
-    {% if score %}
-    <h4><b style="color:red">Your grade: {{score}}/{{exam.total_score}}</b></h4>
+        {% if score %}
+        <h4><b style="color:red">Your grade: {{score}}/{{exam.total_score}}</b></h4>
+        {% endif %}
+
     {% endif %}
 
+    {% if endtime %}
+        {% if timeopened < endtime %}
+          <h3> <b style="color:green">  You must submit this exam by {{endtime}}.  You have roughly <div style="display:inline" id="timeremaining">00:00:00</div> left. (This time is only approximate).</b></h3>
+        {% else %}
+        <h3> <b style="color:red"> Your time on the exam expired at {{endtime}} PST. </b></h3>
+        {% endif %}
     {% endif %}
 
     <noscript>
     <div class="alert alert-error">Your browser does not have JavaScript enabled. Please enable it before taking this exam</div>
     </noscript>
-    {{ exam.html_content }}
+    {% autoescape off %}
+
+        {{ exam.html_content }}
+
+    {% endautoescape %}
 
 {% endif %}
 
-{% endautoescape %}
 {% endblock m_column_content %}
 
 
@@ -260,7 +271,7 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
         window.repopulateForm(prePopData);
     }
 
-    {% if common_page_data.course.mode == "ready" and exam.past_due %}
+    {% if common_page_data.course.mode == "ready" and not allow_submit %}
                       
     $('input[type|="submit"]').not('#login_button').attr('disabled','disabled');
     $("#reEnableForm").attr('disabled','disabled');
@@ -268,11 +279,34 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
                   
                       
     {% endif %}
+
+    {% if secondsleft %}
+    var secondsleft = {{secondsleft}};
+    var browserEndTime = (new Date().getTime()/1000) + secondsleft; //more reliable to convert endtime to browser perspective
+    var getHMS=function(seconds) {
+        var H = Math.floor(seconds / 3600);
+        var M = Math.floor((seconds % 3600) / 60);
+        var S = Math.floor(seconds % 60);
+        var Hstring = "" + H;
+        var Mstring = "" + M;
+        var Sstring = "" + S;
+
+        if (H < 10) Hstring = "0"+Hstring;
+        if (M < 10) Mstring = "0"+Mstring;
+        if (S < 10) Sstring = "0"+Sstring;
+        return Hstring + ":" + Mstring + ":" + Sstring;
+    }
+    $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000));
                       
+    var setTimeLeft = function() {
+       $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000));
+    }
+    setInterval(setTimeLeft,1000);
+    {% endif %}
+
     });
  
- 
-
+    
     
 </script>
 {% endblock addl_scripts %}
