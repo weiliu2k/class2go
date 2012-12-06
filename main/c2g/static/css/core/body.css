@@ -83,7 +83,7 @@ a:hover [class^="icon-"] {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     -khtml-border-radius: 10px;
-    -o-border-radius: 10px; 
+    -o-border-radius: 10px;
     background: #f4f4e0;
     background: -moz-linear-gradient(top, #f4f4e0, #ffffff);
     background: -webkit-gradient(linear, left top, left bottom, from(#f4f4e0), to(#ffffff));
@@ -132,8 +132,8 @@ a.thumbnail:hover {
   margin-top:0;
 }
 
-.dropdown-menu li > a:hover, 
-.dropdown-menu li > a:focus, 
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
 .dropdown-submenu:hover > a {
   display: block;
   border-top:0;
@@ -255,15 +255,15 @@ body.home {
     margin-bottom:0;
 }
 .databases {
-    background:#fff url(/static/graphics/core/dbLogo.jpg) no-repeat top left; 
+    background:#fff url(/static/graphics/core/dbLogo.jpg) no-repeat top left;
     padding:20px 20px 20px 320px;
 }
 .computernetworking {
-    background:url(/static/graphics/core/computer-networking.jpg) no-repeat top left; 
+    background:url(/static/graphics/core/computer-networking.jpg) no-repeat top left;
     padding:20px 20px 20px 320px;
 }
 .solarcells {
-    background:url(/static/graphics/core/solarcells.jpg) no-repeat top left; 
+    background:url(/static/graphics/core/solarcells.jpg) no-repeat top left;
     padding:20px 20px 20px 320px;
 }
 .home h3 a {
@@ -299,8 +299,6 @@ small.date {
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
     -o-border-radius: 5px;
-    position:relative;
-    clear:left;
 }
 .announcement p {
     margin-bottom:0;
@@ -576,7 +574,7 @@ ul.unstyled.course-list {
 .course-list-item .icon-book,
 .course-list-item .icon-file,
 .course-list-item .icon-facetime-video {
-    font-size:24px; 
+    font-size:24px;
     color:#999;
     opacity:.3;
     padding-left:5px;
@@ -826,7 +824,7 @@ a [class*=" icon-"] {
     text-decoration: inherit;
 }
 
-[class^="icon-"], 
+[class^="icon-"],
 [class*=" icon-"] {
     background:none; /* Fixes 404 for glyphicons-halflings.png */
 }

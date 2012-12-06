@@ -20,12 +20,17 @@
 
 {% block m_column_content %}
 <div id="c2g_layout_m_column" class="span9">
-    <h3 class="section-title pull-left">Recent Announcements</h3>
-    <div class="pull-right">
+		{% if common_page_data.course_mode == 'ready' %}
+		<div style="float:right; top:0px; left:0px; padding-left:15px; padding-bottom:2em;">
+			<iframe src="http://webchat.freenode.net?nick={{ user.username }}&channels={{ common_page_data.course_prefix }}-{{ common_page_data.course_suffix}}&uio=MT1mYWxzZSY3PWZhbHNlJjI9dHJ1ZSY0PXRydWUmMz1mYWxzZSY5PXRydWUmMTA9dHJ1ZSYxMT01MSYxMj10cnVlJjE0PWZhbHNlbe" width="400" height="400"></iframe>
+		</div>
+		{% endif %}
+		<h3 class="section-title">Recent Announcements</h3>
+    <div =style="clear:both;">
         {% if many_announcements %}
             <a class="btn" href="{% url 'courses.announcements.views.list' common_page_data.course_prefix common_page_data.course_suffix %}">View all announcements</a>
         {% endif %}
-        
+
         {% if common_page_data.is_course_admin and common_page_data.course_mode == 'draft' %}
             <button class="btn" onclick="document.getElementById('new_announcement_div').style.display='block';">New announcement</button>
             <!--a class="btn" href="{% url 'courses.announcements.views.admin' common_page_data.course_prefix common_page_data.course_suffix %}">Manage Announcements</a-->
@@ -35,7 +40,7 @@
     {% if common_page_data.is_course_admin %}
         {% include "announcements/new_announcement.html" %}
     {% endif %}
-    
+
     {% for announcement in announcement_list %}
         {% include "announcements/announcement.html" %}
     {% empty %}
