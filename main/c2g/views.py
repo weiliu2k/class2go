@@ -1,7 +1,9 @@
+import time
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.template import Context, loader
 from django.template import RequestContext
+from django.views.decorators.cache import never_cache
 from datetime import datetime
 from models import Course
 from courses.actions import is_member_of_course
@@ -32,6 +34,10 @@ def home(request):
         available_course_list.append((course.title, course.handle, viewable_handle, course_student_member))
         
     return render_to_response('courses/signup.html', {'request': request, 'available_course_list': available_course_list}, context_instance=RequestContext(request))
+
+@never_cache
+def server_epoch(request):
+    return HttpResponse(int(time.time()))
 
 def healthcheck(request):
     return HttpResponse("I'm alive!")

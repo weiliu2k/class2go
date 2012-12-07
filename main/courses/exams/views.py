@@ -18,7 +18,7 @@ AWS_SECURE_STORAGE_BUCKET_NAME = getattr(settings, 'AWS_SECURE_STORAGE_BUCKET_NA
 
 logger = logging.getLogger(__name__)
 
-from c2g.models import Exercise, Video, VideoToExercise, ProblemSet, ProblemSetToExercise, Exam, ExamRecord, ExamScore, ExamScoreField
+from c2g.models import Exercise, Video, VideoToExercise, ProblemSet, ProblemSetToExercise, Exam, ExamRecord, ExamScore, ExamScoreField, StudentExamStart
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.shortcuts import render_to_response
@@ -46,6 +46,7 @@ def listAll(request, course_prefix, course_suffix, show_types=["exam",]):
     
     scores = []
 
+
     for e in exams:
         if ExamScore.objects.filter(course=course, exam=e, student=request.user).exists():
             scores.append(ExamScore.objects.filter(course=course, exam=e, student=request.user)[0].score)
@@ -67,10 +68,26 @@ def show_exam(request, course_prefix, course_suffix, exam_slug):
         exam = Exam.objects.get(course=course, is_deleted=0, slug=exam_slug)
     except Exam.DoesNotExist:
         raise Http404
-    
+
+    timeopened = datetime.datetime.now()
+
+    editable = not exam.past_due()  #editable controls whether the inputs are enabled or disabled
+    allow_submit = not exam.past_due() #allow submit controls whether diabled inputs can be reenabled and whether to show the submit button
+
+    if exam.timed:
+        startobj, created=StudentExamStart.objects.get_or_create(student=request.user, exam=exam)
+        endtime = startobj.time_created + datetime.timedelta(minutes=exam.minutesallowed)
+
+        if timeopened > endtime :
+            editable = False
+            allow_submit = False
+
+    else:
+        endtime = None
+
     return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data, 'json_pre_pop':"{}",
-                              'scores':"{}",'editable':True,
-                              'exam':exam}, RequestContext(request))
+                              'scores':"{}",'editable':editable, 'allow_submit':allow_submit,
+                              'exam':exam, 'endtime':endtime, 'timeopened':timeopened}, RequestContext(request))
 
 @require_POST
 @auth_view_wrapper
@@ -86,7 +103,22 @@ def show_populated_exam(request, course_prefix, course_suffix, exam_slug):
     except Exam.DoesNotExist:
         raise Http404
 
-    return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data, 'exam':exam, 'json_pre_pop':json_pre_pop, 'scores':scores, 'editable':editable}, RequestContext(request))
+    allow_submit = not exam.past_due() #allow submit controls whether diabled inputs can be reenabled and whether to show the submit button
+
+    timeopened = datetime.datetime.now()
+
+    if exam.timed:
+        startobj, created=StudentExamStart.objects.get_or_create(student=request.user, exam=exam)
+        endtime = startobj.time_created + datetime.timedelta(minutes=exam.minutesallowed)
+
+        if timeopened > endtime :
+            editable = False
+            allow_submit = False
+    else:
+        endtime = None
+    
+    return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data, 'exam':exam, 'json_pre_pop':json_pre_pop, 'scores':scores, 'editable':editable, 'endtime':endtime, 
+        'allow_submit':allow_submit, 'timeopened':timeopened}, RequestContext(request))
 
 
 @auth_view_wrapper
@@ -225,13 +257,23 @@ def collect_data(request, course_prefix, course_suffix, exam_slug):
     except Exam.DoesNotExist:
         raise Http404
 
+    if exam.timed:
+        startobj, created=StudentExamStart.objects.get_or_create(student=request.user, exam=exam)
+        endtime = startobj.time_created + datetime.timedelta(minutes=(exam.minutesallowed))
+    else:
+        endtime = None
+
+
     postdata = request.POST['json_data'] #will return an error code to the user if either of these fail (throws 500)
     json.loads(postdata)
     
     record = ExamRecord(course=course, exam=exam, student=request.user, json_data=request.POST['json_data'])
     record.save()
-    
-    return HttpResponse("Submission has been saved.")
+
+    if exam.timed:
+        return HttpResponse("Submission has been saved at " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    else:
+        return HttpResponse("Submission has been saved.")
 
 
 
