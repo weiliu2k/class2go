@@ -180,7 +180,7 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
             });
         }
     };
-
+/*
     allFieldsets.each(function() {
         if (!$(this).attr('no-shuffle')) {
             var tmpChoices = $(this).find('label');
@@ -194,6 +194,7 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
             }
         }
     });
+ */
                       
     $('input[type=submit]').not('#login_button').click(function () {
         var userSelections = {};
@@ -284,6 +285,8 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
     {% if endtime and timeopened < endtime %}
                       
     var getHMS=function(seconds) {
+        var sign = (seconds>=0) ? "" : "-" ;
+        seconds=Math.abs(seconds);
         var H = Math.floor(seconds / 3600);
         var M = Math.floor((seconds % 3600) / 60);
         var S = Math.floor(seconds % 60);
@@ -294,7 +297,7 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
         if (H < 10) Hstring = "0"+Hstring;
         if (M < 10) Mstring = "0"+Mstring;
         if (S < 10) Sstring = "0"+Sstring;
-        return Hstring + ":" + Mstring + ":" + Sstring;
+        return sign + Hstring + ":" + Mstring + ":" + Sstring;
     }
                       
     var endtimeInServerEpoch = {{endtime|date:"U"}};
@@ -317,7 +320,9 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
     });
                       
     var setTimeLeft = function() {
-       $("#timeremaining").text(getHMS(browserEndTime-new Date().getTime()/1000));
+       timeleft = browserEndTime-new Date().getTime()/1000;
+       $("#timeremaining").text(getHMS(timeleft));
+       if (timeleft < 0) $("#timeremaining").css('color','red');
     }
     setInterval(setTimeLeft,1000);
     {% endif %}
