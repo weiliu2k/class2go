@@ -254,12 +254,16 @@ body.home {
     font-weight:300;
     margin-bottom:0;
 }
+.databases {
+    background:#fff url(/static/graphics/core/dbLogo.jpg) no-repeat top left; 
+    padding:20px 20px 20px 320px;
+}
 .computernetworking {
-    background:#fff url(/static/graphics/core/computer-networking.jpg) no-repeat top left; 
+    background:url(/static/graphics/core/computer-networking.jpg) no-repeat top left; 
     padding:20px 20px 20px 320px;
 }
 .solarcells {
-    background:#fff url(/static/graphics/core/solarcells.jpg) no-repeat top left; 
+    background:url(/static/graphics/core/solarcells.jpg) no-repeat top left; 
     padding:20px 20px 20px 320px;
 }
 .home h3 a {
@@ -553,15 +557,35 @@ small.date {
 }
 
 ul.unstyled.course-list {
-  border-bottom:1px solid #eee;
+  /* border-bottom:1px solid #eee; */
   margin:0;
+}
+
+h3.course-section-heading {
+    border-bottom:1px solid #eee; 
 }
 
 .course-list-item {
   overflow:hidden;
   padding:8px 0 4px;
-  border-bottom: 0;
+  border-bottom: 0; 
+  /* border-bottom: 1px solid #eee; */
 }
+
+.course-list-item.zebra_light {
+    background-color: white;
+}
+.course-list-item.zebra_dark {
+    background-color: #eeeeee;
+}
+
+.course-list-item.zebra_light {
+    background-color: white;
+}
+.course-list-item.zebra_dark {
+    background-color: #eeeeee;
+}
+
 .course-list-item .progress {
     height:14px;
     width:100px;

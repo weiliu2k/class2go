@@ -3,7 +3,8 @@
 # This is meant to run as -e so failures are real
 #
 
-JENKINS_DB_NAME=${C2G_JENKINS_DB_NAME:-"c2g_jenkins"}
+# JOB_NAME is set by Jenkins
+JENKINS_DB_NAME="c2g_jenkins_${JOB_NAME}"
 HOSTNAME=`hostname`
 INVALID_HOSTNAME="prod"
 PROD_DB_NAME="class2go"
@@ -39,11 +40,10 @@ if [[ $DATABASES =~ $INVALID_HOSTNAME ]]; then
     exit 1
 fi
 
+# Make sure we have a clean database
 mysql --batch -e "drop database if exists ${JENKINS_DB_NAME}; create database ${JENKINS_DB_NAME} default character set 'utf8' default collate 'utf8_unicode_ci';"
 
-python main/manage.py syncdb --noinput
-
-python main/manage.py migrate --noinput
-
-python main/manage.py db_populate
+# no further database operations are needed on jenkins as the test
+# runner will fire all sync and migration jobs and the tests themselves
+# have database fixtures, so no need to db_populate
 
