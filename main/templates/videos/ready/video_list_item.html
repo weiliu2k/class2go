@@ -1,16 +1,29 @@
-<li class="course-list-item">
-    <div class="pull-left">
+<!-- video_list_item -->
+    <div class="pull-left icon">
         <em class="icon-facetime-video"></em>
     </div>
     <div class="course-list-content">
-        <h4><a href="{% url 'courses.videos.views.view' common_page_data.course_prefix common_page_data.course_suffix item.video.slug %}">{{item.video.title}}</a> ({{item.video.runtime}}){% if item.video.dl_link %}<a href="{{item.video.dl_link}}" class="btn btn-mini" title="download"><em class="icon-download-alt"></em> Download</a>{% endif %}</h4>
-	<div>{{item.video.description}}</div>
-        {% if item.completed_percent > 90 %}
-        <div class="progress progress-success progress-striped">
-        {% else %}
-        <div class="progress progress-info progress-striped">
-        {% endif %}
-            <div class="bar" style="width:{{item.completed_percent}}%"></div>
+        <h4 class="pull-left"><a href="{% url 'courses.videos.views.view' common_page_data.course_prefix common_page_data.course_suffix item.video.slug %}" title="{{item.video.description}}">{{item.video.title}}</a> ({{item.video.runtime}})</h4>
+        <div class="pull-right">
+            {% if item.video.has_storage %}
+                {% for tag, url, size, sizedesc in item.video.dl_links_all %}
+                <div class="btn-group" style="float: left">
+                    <a href="{{url}}" onclick="record_video_download( {{item.video.id}}, {{common_page_data.request.user.id}}, {{item.video.course_id}}, '{{tag}}' );">
+                        <button class="btn btn-mini" title="{{sizedesc}} ({{size|filesizeformat}})">
+                            <em class="icon-download-alt"></em>&nbsp;{{tag}}
+                        </button>
+                    </a>
+                </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% if item.completed_percent > 90 %}
+                <div class="progress progress-success progress-striped" style="margin-left:3px;">
+            {% else %}
+                <div class="progress progress-info progress-striped" style="margin-left:3px;">
+            {% endif %}
+                    <div class="bar" style="width:{{item.completed_percent}}%"></div>
+            </div>
         </div>
     </div>
-</li>
+    {% include "content_group_buttons.html" %}

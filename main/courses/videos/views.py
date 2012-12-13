@@ -1,21 +1,17 @@
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
-from django.template import Context, loader
-from c2g.models import Course, Video, VideoToExercise, Exercise, PageVisitLog
-
-from c2g.models import Course, Video, VideoActivity, ProblemActivity
-from courses.common_page_data import get_common_page_data
-from courses.course_materials import get_course_materials
-import datetime
-from courses.videos.forms import *
-from courses.forms import *
-import gdata.youtube
-import gdata.youtube.service
-from django.db.models import Q
-
 from django.template import RequestContext
+
+from c2g.models import ContentGroup, Exercise, Exam, PageVisitLog, ProblemActivity, Video, VideoActivity, VideoToExercise
 from courses.actions import auth_view_wrapper, auth_is_course_admin_view_wrapper
+from courses.common_page_data import get_common_page_data
+from courses.course_materials import get_course_materials, get_children, group_data
+from courses.videos.forms import *
+from courses.views import get_full_contentsection_list
+from courses.forms import *
+
 
 @auth_view_wrapper
 def list(request, course_prefix, course_suffix):
@@ -23,6 +19,8 @@ def list(request, course_prefix, course_suffix):
         common_page_data = get_common_page_data(request, course_prefix, course_suffix)
     except:
         raise Http404
+
+    request.session['headless'] = request.GET.get('headless')
 
     if 'id' in request.GET:
         #process Video model instance with this youtube id
@@ -101,7 +99,33 @@ def view(request, course_prefix, course_suffix, slug):
     has_ex = VideoToExercise.objects.filter(is_deleted=False, video=video).exists()
 
     no_ex = 1 if (not has_ex) or request.session['video_quiz_mode'] != "quizzes included" else 0
-    return render_to_response('videos/view.html', {'common_page_data': common_page_data, 'video': video, 'video_rec':video_rec, 'prev_slug': prev_slug, 'next_slug': next_slug, 'no_ex':no_ex}, context_instance=RequestContext(request))
+    
+    course = common_page_data['course']
+    full_contentsection_list, full_index_list = get_full_contentsection_list(course, filter_children=True)
+
+    if request.user.is_authenticated():
+        is_logged_in = 1
+    else:
+        is_logged_in = 0    
+
+    key = 'video:'+str(video.id)
+    l1items, l2items = group_data(ContentGroup.objects.getByCourse(course=course))
+    downloadable_content = get_children(key, l1items, l2items)
+
+    return render_to_response('videos/view.html', 
+                              {
+                               'common_page_data':    common_page_data, 
+                               'video':               video, 
+                               'video_rec':           video_rec, 
+                               'prev_slug':           prev_slug, 
+                               'next_slug':           next_slug, 
+                               'no_ex':               no_ex,
+                               'contentsection_list': full_contentsection_list, 
+                               'full_index_list':     full_index_list,
+                               'is_logged_in':        is_logged_in,
+                               'downloadable_content':downloadable_content,
+                              },
+                              context_instance=RequestContext(request))
 
 @auth_is_course_admin_view_wrapper
 def edit(request, course_prefix, course_suffix, slug):
@@ -124,8 +148,14 @@ def upload(request, course_prefix, course_suffix):
 
     data = {'common_page_data': common_page_data}
 
+    try:
+        psets = Exam.objects.filter(course_id=common_page_data['course'].id) 
+    except:
+        raise Http404 
+
     form = S3UploadForm(course=common_page_data['course'])
     data['form'] = form
+    data['psets'] = psets
 
     return render_to_response('videos/s3upload.html',
                               data,
@@ -170,18 +200,47 @@ def manage_exercises(request, course_prefix, course_suffix, video_slug):
             #don't catch video DoesNotExist here because we want some tangible error to happen if
             #the video id changes in form submission, like emailing us
             video = Video.objects.get(id=request.POST['video_id'])
+            video_time = request.POST['video_time']
             file_content = request.FILES['file']
             file_name = file_content.name
 
-            exercise = Exercise()
-            exercise.handle = request.POST['course_prefix'] + '--' + request.POST['course_suffix']
-            exercise.fileName = file_name
-            exercise.file.save(file_name, file_content)
-            exercise.save()
+            exercises = Exercise.objects.filter(handle=course_prefix+"--"+course_suffix,is_deleted=0)
+            exercise_exists = False
+            for exercise in exercises:
+                if exercise.fileName == file_name:
+                    #We don't wipe out all problem activites associated with this
+                    #existing exercise, but if it's a nontrivial overwrite, should we?
+                    exercise.file = file_content
+                    exercise.save()
+                    exercise_exists = True
 
-            video_time = request.POST['video_time']
-            videoToEx = VideoToExercise(video=video, exercise=exercise, video_time=video_time, is_deleted=0, mode='draft')
-            videoToEx.save()
+                    #If exercise already in video, don't need to create new videoToEx, just update video_time
+                    #If exercise already in video but deleted, undelete
+                    #Otherwise create new videoToEx
+                    queryVideoToEx = VideoToExercise.objects.filter(video=video, exercise=exercise, mode='draft').order_by('-id')
+                    if queryVideoToEx.exists():
+                        existingVideoToEx = queryVideoToEx[0]
+                        if existingVideoToEx.is_deleted == 1:
+                            existingVideoToEx.is_deleted = 0
+                            existingVideoToEx.video_time = video_time
+                            existingVideoToEx.save()
+                        else:
+                            existingVideoToEx.video_time = video_time
+                            existingVideoToEx.save()
+                    else:
+                        videoToEx = VideoToExercise(video=video, exercise=exercise, video_time=video_time, is_deleted=0, mode='draft')
+                        videoToEx.save()
+                    break
+
+            if not exercise_exists:
+                exercise = Exercise()
+                exercise.handle = request.POST['course_prefix'] + '--' + request.POST['course_suffix']
+                exercise.fileName = file_name
+                exercise.file.save(file_name, file_content)
+                exercise.save()
+
+                videoToEx = VideoToExercise(video=video, exercise=exercise, video_time=video_time, is_deleted=0, mode='draft')
+                videoToEx.save()
             return HttpResponseRedirect(reverse('courses.videos.views.manage_exercises', args=(request.POST['course_prefix'], request.POST['course_suffix'], video.slug,)))
 
     #If form was not submitted then the form should be displayed or if there were errors the page needs to be rendered again
@@ -233,9 +292,18 @@ def add_existing_exercises(request):
     exercise_ids = request.POST.getlist('exercise')
     exercises = Exercise.objects.filter(id__in=exercise_ids)
     for exercise in exercises:
-        video_time = 0
-        videoToEx = VideoToExercise(video=video, exercise=exercise, is_deleted=False, video_time=video_time, mode="draft")
-        videoToEx.save()
+        #if this exercise has been deleted previously then just un-delete it
+        videoToExs = VideoToExercise.objects.filter(video=video, exercise_id=exercise.id, mode = 'draft', is_deleted=1).order_by('-id')
+        if videoToExs.exists():
+            videoToEx = videoToExs[0]
+            videoToEx.is_deleted = 0
+            videoToEx.video_time = 0
+            videoToEx.save()
+        #else create a new one
+        else:
+            videoToEx = VideoToExercise(video=video, exercise=exercise, is_deleted=0, video_time=0, mode='draft')
+            videoToEx.save()       
+        
     return HttpResponseRedirect(reverse('courses.videos.views.manage_exercises', args=(request.POST['course_prefix'], request.POST['course_suffix'], video.slug,)))
 
 

@@ -1,5 +1,5 @@
 {% extends "course_base.html" %}
-{% block title %}Stanford Online | {{common_page_data.course.title}} | Videos{% endblock %}
+{% block title %}Videos | {{common_page_data.course.title}}{% endblock %}
 {% block videos_link_class %}class="active"{% endblock videos_link_class %}
 
 {% block course_page_title %}Videos (<a href="{% url 'courses.views.main' common_page_data.course_prefix common_page_data.course_suffix %}">{{common_page_data.course.title}}</a>){% endblock course_page_title %}
@@ -17,3 +17,21 @@
     {% endif %}
 </div>
 {% endblock m_column_content %}
+
+{% block addl_scripts %}
+<!-- included in video list.html; see also course_materials.html -->
+<script type="text/javascript">
+    function record_video_download(video_id, user_id, course_id, format) {
+        $.ajax({type:"POST", 
+                url: "/videos/record_download/", 
+                async:false, 
+                data: {video_id: video_id, 
+                       user_id: user_id, 
+                       course_id: course_id, 
+                       format: format, 
+                       csrfmiddlewaretoken: '{{ csrf_token }}'
+                       }
+               });
+    }
+</script>
+{% endblock addl_scripts%}

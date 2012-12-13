@@ -1,36 +1,28 @@
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
-from django.template import Context, loader
-from c2g.models import Course, Video
-from django.template import RequestContext
-from django.core.urlresolvers import reverse
-
-import subprocess
-from celery import task
-
-from c2g.models import Course, Video, VideoActivity
-from courses.common_page_data import get_common_page_data
-
-from courses.videos.forms import *
+from atom import ExtensionElement
+from gdata.media import YOUTUBE_NAMESPACE
 import gdata.youtube
 import gdata.youtube.service
-from gdata.media import YOUTUBE_NAMESPACE
-from atom import ExtensionElement
-import urllib2, urllib, json
 import re
+import urllib2, urllib, json
+
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
+from django.template import RequestContext
+from django.views.decorators.http import require_POST
+
+from c2g.models import Video, VideoActivity, VideoDownload
+from courses.actions import auth_is_course_admin_view_wrapper
+from courses.common_page_data import get_common_page_data
+from courses.videos.forms import *
+import kelvinator.tasks
 import settings
 
-import kelvinator.tasks
-
-from datetime import datetime
-from courses.actions import auth_is_course_admin_view_wrapper
-from django.views.decorators.http import require_POST
 
 ### Videos ###
 
 @require_POST
 def switch_quiz_mode(request):
-    common_page_data = request.common_page_data
     request.session['video_quiz_mode'] = request.POST.get('to_mode')
     return redirect(request.META['HTTP_REFERER'])
 
@@ -132,13 +124,27 @@ def save_video_progress(request):
             video.save()
     if videoRec.start_seconds != long(playTime):
         videoRec.start_seconds = playTime
+        if long(playTime) > videoRec.max_end_seconds:
+            videoRec.max_end_seconds = playTime
         videoRec.save()
     return HttpResponse("saved")
+
+@require_POST
+def record_download(request):
+
+    video_id = request.POST['video_id']
+    user_id = request.POST['user_id']
+    course_id = request.POST['course_id']
+    format = request.POST['format']
+    
+    video_download = VideoDownload(student_id = user_id, video_id = video_id, course_id = course_id, format = format)
+    video_download.save()
+    
+    return HttpResponse("")
 
 def oauth(request):
     if 'code' in request.GET:
         code = request.GET.get('code')
-#        print code
         client_id = settings.GOOGLE_CLIENT_ID
         client_secret = settings.GOOGLE_CLIENT_SECRET
         redirect_uri = "http://" + request.META['HTTP_HOST'] + "/oauth2callback"
@@ -148,7 +154,7 @@ def oauth(request):
         content = json.loads(result.read())
 
         yt_service = gdata.youtube.service.YouTubeService(additional_headers={'Authorization': "Bearer "+content['access_token']})
-        yt_service.developer_key = settings.YT_SERVICE_DEVELOPER_KEY 
+        yt_service.developer_key = settings.YT_SERVICE_DEVELOPER_KEY
 
         video = Video.objects.get(pk=request.GET.get('state'))
 
@@ -161,13 +167,16 @@ def oauth(request):
                     label='Education')],
             )
         
-        extension = ExtensionElement('accessControl', namespace=YOUTUBE_NAMESPACE, attributes={'action': 'list', 'permission': 'denied'})
-        video_entry = gdata.youtube.YouTubeVideoEntry(media=my_media_group, extension_elements=[extension])
+        if request.session['video_privacy'] == "public":
+            video_entry = gdata.youtube.YouTubeVideoEntry(media=my_media_group)
+        else:
+            #upload as unlisted
+            extension = ExtensionElement('accessControl', namespace=YOUTUBE_NAMESPACE, attributes={'action': 'list', 'permission': 'denied'})
+            video_entry = gdata.youtube.YouTubeVideoEntry(media=my_media_group, extension_elements=[extension])
 
+        video.file.len = video.file.size # monkeypatch bug in InsertVideoEntry
         entry = yt_service.InsertVideoEntry(video_entry, video.file)
-        #print entry.id.ToString()
         match = re.search('http://gdata.youtube.com/feeds/api/videos/([a-zA-Z0-9_-]+)</ns0:id>', entry.id.ToString())
-        #print match.group(1)
         video.url = match.group(1)
         video.duration = entry.media.duration.seconds
         video.save()
@@ -178,8 +187,6 @@ def oauth(request):
         parts = str(video.handle).split("--")
         return HttpResponseRedirect(reverse('courses.videos.views.manage_exercises', args=(parts[0], parts[1], video.slug)))
 
-#    return redirect('courses.videosviews.list', course_prefix, course_suffix)
-    #return redirect("http://" + request.META['HTTP_HOST'] + "/nlp/Fall2012/videos")
 
 def GetOAuth2Url(request, video):
     client_id = settings.GOOGLE_CLIENT_ID
@@ -195,11 +202,14 @@ def GetOAuth2Url(request, video):
 def upload(request):
     course_prefix = request.POST.get("course_prefix")
     course_suffix = request.POST.get("course_suffix")
+    exam_id = request.POST.get("exam_id")
     common_page_data = get_common_page_data(request, course_prefix, course_suffix)
 
     data = {'common_page_data': common_page_data}
 
     if request.method == 'POST':
+        request.session['video_privacy'] = request.POST.get("video_privacy")
+
         # Need partial instance with course for form slug validation
         new_video = Video(course=common_page_data['course'])
         form = S3UploadForm(request.POST, request.FILES, course=common_page_data['course'], instance=new_video)
@@ -207,7 +217,8 @@ def upload(request):
             new_video.index = new_video.section.getNextIndex()
             new_video.mode = 'draft'
             new_video.handle = course_prefix + "--" + course_suffix
-
+            new_video.exam_id = exam_id 
+            
             # Bit of jiggery pokery to so that the id is set when the upload_path function is called.
             # Now storing file with id appended to the file path so that thumbnail and associated manifest files
             # are easily associated with the video by putting them all in the same directory.
@@ -219,10 +230,10 @@ def upload(request):
             new_video.create_ready_instance()
             #print new_video.file.url
 
-            # TODO: don't hardcode the AWS location 
-            s3_path="https://s3-us-west-2.amazonaws.com/"+common_page_data['aws_storage_bucket_name']+"/"+urllib.quote_plus(new_video.file.name,"/")
-            
-            kelvinator.tasks.kelvinate.delay(s3_path, 2)
+            # kick off remote jobs
+            kelvinator.tasks.kelvinate.delay(new_video.file.name)
+            kelvinator.tasks.resize.delay(new_video.file.name, "large")
+            kelvinator.tasks.resize.delay(new_video.file.name, "small")
 
             if new_video.url:
                 return redirect('courses.videos.views.list', course_prefix, course_suffix)

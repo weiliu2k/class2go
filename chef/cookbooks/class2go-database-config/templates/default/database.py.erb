@@ -9,14 +9,16 @@ DATABASES = {
     },
     'celery': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/opt/class2go/celery/celerydb.sqlite',
+        'NAME': '/opt/<%= @appname %>/celery/celerydb.sqlite',
     },
 }
 
 # When PRODUCTION=True we don't show stackdumps on errors.  Careful, no quotes.
 PRODUCTION = <%= @node[:main][:production] %>
+MAINTENANCE_LANDING_PAGE = <%= @node[:main][:maint] %>
 
 INSTANCE = '<%= @node[:main][:instance] %>'
+APP = '<%= @appname %>'
 
 # full stackdumps go to this address
 ADMINS = (
