@@ -264,11 +264,11 @@ video_params = [ "-c:v", "libx264",          # video codec
                ]
 audio_params = [ "",
                ]
-params = { "large":  [ "-crf", "23", "-s", "1280x720" ] + video_params,
+sizes = { "large":   [ "-crf", "23", "-s", "1280x720" ] + video_params,
            "medium": [ "-crf", "27", "-s", "852x480" ] + video_params,
            "small":  [ "-crf", "30", "-s", "640x360" ] + video_params,    
            "tiny":   [ "-crf", "40", "-s", "320x180" ] + video_params,
-           "audio":   [ "-crf", "40", "-s", "320x180" ] + audio_params,
+           "audio":  [ "-crf", "40", "-s", "320x180" ] + audio_params,
          }
 
 
@@ -280,7 +280,7 @@ def do_resize(notify_buf, working_dir, target_dir, video_file, target_size):
                  "-profile:v", "baseline",   # most compatible
                  "-strict", "-2",            # magic to allow aac audio enc
                ]
-    cmdline += params[target_size]
+    cmdline += sizes[target_size]
     cmdline += [ target_dir + "/" + video_file ]  # outfile
 
     infoLog(notify_buf, "RESIZE: " + " ".join(cmdline))
