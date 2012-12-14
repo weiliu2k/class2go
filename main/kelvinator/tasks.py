@@ -264,10 +264,10 @@ video_params = [ "-c:v", "libx264",          # video codec
                ]
 audio_params = [ "",
                ]
-params = { "large":  [ "-crf", "23", "-s", "1280x720" ] + video,
-           "medium": [ "-crf", "27", "-s", "852x480" ] + video,
-           "small":  [ "-crf", "30", "-s", "640x360" ] + video,    
-           "tiny":   [ "-crf", "40", "-s", "320x180" ] + video,
+params = { "large":  [ "-crf", "23", "-s", "1280x720" ] + video_params,
+           "medium": [ "-crf", "27", "-s", "852x480" ] + video_params,
+           "small":  [ "-crf", "30", "-s", "640x360" ] + video_params,    
+           "tiny":   [ "-crf", "40", "-s", "320x180" ] + video_params,
            "audio":   [ "-crf", "40", "-s", "320x180" ] + audio_params,
          }
 
