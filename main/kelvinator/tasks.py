@@ -276,7 +276,7 @@ def do_resize(notify_buf, working_dir, target_dir, video_file, target_size):
     cmdline += sizes[target_size]
     cmdline += [ target_dir + "/" + video_file ]  # outfile
 
-    infoLog(notify_buf, "RESIZE: " + " ".join(cmdline))
+    infoLog(notify_buf, "RESIZE (%s): " % target_size + " ".join(cmdline))
     returncode = subprocess.call(cmdline)
 
     if returncode == 0:
@@ -308,6 +308,14 @@ def upload(notify_buf, target_dir, target_part, prefix, suffix, video_id, video_
     store_file.write(local_file.read())
     local_file.close()
     store_file.close()
+
+
+def resizes_to_do():
+    """
+    Convenience method so we don't have to hardcode the list of what jobs we want
+    to kick off in other places.  Just returns a list.
+    """
+    return ['large', 'small']
 
 
 # Main Resize Task (CELERY)
