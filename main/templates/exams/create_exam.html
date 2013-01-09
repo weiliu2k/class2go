@@ -85,8 +85,8 @@ Form{% endblock course_page_title %}
         Create a new
     {% endif %}
     Exam / ProblemSet / Survey</h2>
-
-
+    
+    
     
     <div class="control-group">
         <input type="button" id="xml-entry-btn" class="btn" value="Import XML" title="Click to import XML" />
@@ -142,6 +142,16 @@ Form{% endblock course_page_title %}
         </div>
     </div>
 
+   <div class="control-group">
+        <a href="javascript:" class="btn toggle" data-toggle="button" id="wrap">Wrap</a>
+
+        <input class="btn" type="button" id="check_metadata" value="Check Metadata XML" />
+
+        <input type="button" id="exercise_submit_and_close" class="btn" value="Save to Server &amp; Close" /> 
+        <input type="button" id="exercise_submit" class="btn" value="Save to Server"/> 
+        <a class="btn" href={{returnURL}}> Close </a>
+
+    </div>
     
        
     <div class="well control-group">
