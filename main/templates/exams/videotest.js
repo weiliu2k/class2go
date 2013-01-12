@@ -240,7 +240,7 @@
             $(continueVideoBtn).attr('value', 'Continue Video');
             $(continueVideoBtn).addClass('btn');
             $(continueVideoBtn).addClass('continue-video-btn');
-            $('#exam-pane').append($(continueVideoBtn));
+            $('#exam-pane .exam-navigation').append($(continueVideoBtn));
             //$(continueVideoBtn).click(removeExamStage);
 
             var currentQuestionId = "";
@@ -309,3 +309,11 @@
             .then(console.log("DONE!"));
 
         });
+
+        if (video_rec_id) {
+	    window.onbeforeunload = function() {
+		vidTime = Math.floor(window.popcornVideo.currentTime());
+		duration = window.popcornVideo.duration();
+		$.ajax({type:"POST", url: "/videos/save/", async:false, data: {videoRec: video_rec_id, playTime: vidTime, duration: duration, csrfmiddlewaretoken: csrf_token}});
+	    }
+	}

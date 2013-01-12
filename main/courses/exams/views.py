@@ -90,18 +90,41 @@ def show_exam(request, course_prefix, course_suffix, exam_slug):
         raise Http404
 
     incomplete_record = get_or_update_incomplete_examrecord(course, exam, request.user)
-
     too_many_attempts = exam.max_attempts_exceeded(request.user)
-    
+
+    too_recent = False
+    last_record = last_completed_record(exam, request.user, include_contentgroup=True)
+
+    if last_record and (datetime.datetime.now() - last_record.last_updated) < datetime.timedelta(minutes=exam.minutes_btw_attempts):
+        too_recent = True
+
     #self.metadata_xml = xml #The XML metadata for the entire problem set.
     metadata_dom = parseString(exam.xml_metadata) #The DOM corresponding to the XML metadata
     questions = metadata_dom.getElementsByTagName('video')
 
     return render_to_response('exams/view_exam.html', {'common_page_data':request.common_page_data,
-                              'json_pre_pop':incomplete_record.json_data,
+                              'json_pre_pop':incomplete_record.json_data, 'too_recent':too_recent,
+                              'last_record':last_record, 
                               'scores':"{}",'editable':True,'single_question':exam.display_single,'videotest':False,
                               'allow_submit':True, 'too_many_attempts':too_many_attempts,
                               'exam':exam, 'question_times':exam.xml_metadata}, RequestContext(request))
+
+def last_completed_record(exam, student, include_contentgroup=False):
+    """Helper function to get the last completed record of this exam.
+       If include_contentgroup is True, will include records from
+       all of the other exams in the contentgroup.
+    """
+    try:
+        if include_contentgroup:
+            cginfo = ContentGroup.groupinfo_by_id('exam',exam.id)
+            exam_list = cginfo.get('exam',[exam]) #default to a singleton list consisting of just this exam
+            record = ExamRecord.objects.filter(exam__in=exam_list, complete=True, student=student).latest('last_updated')
+        else:
+            record = ExamRecord.objects.filter(exam=exam, complete=True, student=student).latest('last_updated')
+        return record
+
+    except ExamRecord.DoesNotExist:
+        return None
 
 @require_POST
 @auth_view_wrapper
@@ -266,7 +289,11 @@ def view_submissions_to_grade(request, course_prefix, course_suffix, exam_slug):
         try:
             sub_obj = json.loads(latest_sub['json_data']).iteritems()
             for k,v in sub_obj:
-                outstring = '"%s","%s","%s"\n' % (latest_sub['student__username'], k, parse_val(v))
+                vals = parse_val(v)
+                if exam.exam_type == 'survey':
+                    outstring = '"%s","%s","%s","%s"\n' % (latest_sub['student__username'], k, vals[1], vals[0])
+                else:
+                    outstring = '"%s","%s","%s"\n' % (latest_sub['student__username'], k, vals[0])
                 outfile.write(outstring)
         except ValueError:
             could_not_parse += latest_sub['student__username']+ " " #Don't output if the latest submission was erroneous
@@ -301,7 +328,7 @@ def parse_val(v):
         return v
     else:
         try:
-           return(v['value'])
+           return(v['value'], v['report'])
         except TypeError, AttributeError:
             return str(v)
 
