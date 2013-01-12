@@ -10,13 +10,13 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, redirect, HttpResponseRedirect
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
+from django.conf import settings
 
 from c2g.models import Exam, Video, VideoActivity, VideoDownload
 from courses.actions import auth_is_course_admin_view_wrapper
 from courses.common_page_data import get_common_page_data
 from courses.videos.forms import *
 import kelvinator.tasks
-import settings
 
 
 ### Videos ###
@@ -163,8 +163,8 @@ def record_download(request):
 def oauth(request):
     if 'code' in request.GET:
         code = request.GET.get('code')
-        client_id = settings.GOOGLE_CLIENT_ID
-        client_secret = settings.GOOGLE_CLIENT_SECRET
+        client_id = getattr(settings, 'GOOGLE_CLIENT_ID')
+        client_secret = getattr(settings, 'GOOGLE_CLIENT_SECRET')
         redirect_uri = "http://" + request.META['HTTP_HOST'] + "/oauth2callback"
 
         post_data = [('code', code), ('client_id', client_id), ('client_secret', client_secret), ('redirect_uri', redirect_uri), ('grant_type', 'authorization_code')]
@@ -172,7 +172,7 @@ def oauth(request):
         content = json.loads(result.read())
 
         yt_service = gdata.youtube.service.YouTubeService(additional_headers={'Authorization': "Bearer "+content['access_token']})
-        yt_service.developer_key = settings.YT_SERVICE_DEVELOPER_KEY
+        yt_service.developer_key = getattr(settings, 'YT_SERVICE_DEVELOPER_KEY')
 
         video = Video.objects.get(pk=request.GET.get('state'))
 
@@ -207,7 +207,7 @@ def oauth(request):
 
 
 def GetOAuth2Url(request, video):
-    client_id = settings.GOOGLE_CLIENT_ID
+    client_id = getattr(settings, 'GOOGLE_CLIENT_ID')
     redirect_uri = "http://" + request.META['HTTP_HOST'] + "/oauth2callback"
     response_type = "code"
     scope = "https://gdata.youtube.com"
@@ -250,8 +250,6 @@ def upload(request):
                     exam.image.live_datetime = new_video.live_datetime
                     exam.image.save()
 
-        
-        
             # Bit of jiggery pokery to so that the id is set when the upload_path function is called.
             # Now storing file with id appended to the file path so that thumbnail and associated manifest files
             # are easily associated with the video by putting them all in the same directory.
@@ -262,13 +260,18 @@ def upload(request):
             new_video.create_ready_instance()
             #print new_video.file.url
 
-            
-            
-
-            # kick off remote jobs
-            kelvinator.tasks.kelvinate.delay(new_video.file.name)
-            kelvinator.tasks.resize.delay(new_video.file.name, "large")
-            kelvinator.tasks.resize.delay(new_video.file.name, "small")
+            awsKey=getattr(settings, 'AWS_ACCESS_KEY_ID', "")
+            awsSecret=getattr(settings, 'AWS_SECRET_ACCESS_KEY', "")
+            if awsKey == 'local' or awsSecret == 'local':
+                # process locally
+                kelvinator.tasks.kelvinate(new_video.file.name)
+                for size in kelvinator.tasks.resizes_to_do():
+                    kelvinator.tasks.resize(new_video.file.name, size)
+            else:
+                # kick off remote jobs
+                kelvinator.tasks.kelvinate.delay(new_video.file.name)
+                for size in kelvinator.tasks.resizes_to_do():
+                    kelvinator.tasks.resize.delay(new_video.file.name, size)
 
             if new_video.url:
                 return redirect('courses.videos.views.list', course_prefix, course_suffix)

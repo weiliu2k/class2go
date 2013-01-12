@@ -14,7 +14,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from optparse import make_option
 
-import kelvinator.tasks
+from kelvinator.tasks import resizes_to_do
 from c2g.models import Video
 
 class Command(BaseCommand):
@@ -162,12 +162,12 @@ class Command(BaseCommand):
                     r"(\w*)/(\w*)/videos/(\w*)/([^/]+)$")
             foundManifests = filterStoragePaths(store_contents, 
                     r"(\w*)/(\w*)/videos/(\w*)/jpegs/(manifest.txt)$")   # dummy filename
-            foundSmalls = filterStoragePaths(store_contents, 
-                    r"(\w*)/(\w*)/videos/(\w*)/small/([^/]+)$")
-            foundLarges = filterStoragePaths(store_contents, 
-                    r"(\w*)/(\w*)/videos/(\w*)/large/([^/]+)$")
+            foundResize = {}
+            for size in resizes_to_do():
+                foundResize[size] = filterStoragePaths(store_contents, 
+                        r"(\w*)/(\w*)/videos/(\w*)/%s/([^/]+)$" % size)
 
-            return (foundVideos, foundManifests, foundSmalls, foundLarges)
+            return (foundVideos, foundManifests, foundResize)
 
 
         ## MAIN
@@ -180,34 +180,42 @@ class Command(BaseCommand):
         awsSecret=getattr(settings, 'AWS_SECRET_ACCESS_KEY')
         awsBucket=getattr(settings, 'AWS_STORAGE_BUCKET_NAME')
 
+<<<<<<< HEAD
+        (storeVideoSet, storeManifestSet, storeResize) = \
+                searchStorage(awsKey, awsSecret, awsBucket, options['handle'])
+=======
         (storeVideoSet, storeManifestSet, storeSmallSet, storeLargeSet) = \
                 searchStorage(awsKey, awsSecret, awsBucket, options['class'], options['term'])
+>>>>>>> master
         if not options['quiet']: 
             print "Bucket: " + awsBucket
             print "\tvideos found: %d" % len(storeVideoSet)
             print "\tmanifests found: %d" % len(storeManifestSet)
-            print "\tsmall formats found: %d" % len(storeSmallSet)
-            print "\tlarge formats found: %d" % len(storeLargeSet)
+            for size in resizes_to_do():
+                print "\ti%s formats found: %d" % (size, len(storeResize[size]))
 
         missingVideoSet = dbVideoSet.difference(storeVideoSet)
         missingThumbSet = dbVideoSet.difference(missingVideoSet).difference(storeManifestSet)
-        missingSmallSet = dbVideoSet.difference(missingVideoSet).difference(storeSmallSet)
-        missingLargeSet = dbVideoSet.difference(missingVideoSet).difference(storeLargeSet)
+        missingResizeSet = {}
+        for size in resizes_to_do():
+            missingResizeSet[size] = dbVideoSet.difference(missingVideoSet).difference(storeResize[size])
         if not options['quiet']: 
             print "in database, but not in storage: %d" % len(missingVideoSet)
             print "in database and storage, but no thumbnails: %d" % len(missingThumbSet)
-            print "in database and storage, but no small format: %d" % len(missingSmallSet)
-            print "in database and storage, but no large format: %d" % len(missingSmallSet)
+            for size in resizes_to_do():
+                print "in database and storage, but no %s format: %d" % (size, len(missingResizeSet[size]))
             print "=================================="
 
-        problems = sorted(missingThumbSet.union(missingSmallSet).union(missingLargeSet))
+        problemSet = missingThumbSet
+        for size in resizes_to_do():
+            problemSet = problemSet.union(missingResizeSet[size])
+        problems = sorted(problemSet)
         for p in problems:
             if p in missingThumbSet:
                 print "./manage.py kelvinate " + p.fixup_params()
-            if p in missingSmallSet:
-                print "./manage.py resize small " + p.fixup_params()
-            if p in missingLargeSet:
-                print "./manage.py resize large " + p.fixup_params()
+            for size in resizes_to_do():
+                if p in missingResizeSet[size]:
+                    print "./manage.py resize %s " % size + p.fixup_params()
 
         for m in missingVideoSet:
             print "# missing video file \"%s\" for %s " % (m.file, m.fixup_params())
