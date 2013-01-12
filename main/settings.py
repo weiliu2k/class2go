@@ -175,6 +175,7 @@ INSTALLED_APPS = (
                       'django.contrib.sites',
                       'django.contrib.messages',
                       'django.contrib.staticfiles',
+                      'django.contrib.humanize',
                       # Uncomment the next line to enable the admin:
                       'django.contrib.admin',
                       # Uncomment the next line to enable admin documentation:
@@ -383,7 +384,7 @@ CELERY_QUEUES = {
 
 CELERY_ROUTES = {'kelvinator.tasks.kelvinate': {'queue': APP+'-long', 'routing_key': APP+'-long'},
                  'kelvinator.tasks.resize':    {'queue': APP+'-long', 'routing_key': APP+'-long'},
-                 'celerytest.tasks.echo_-long': {'queue': APP+'-long', 'routing_key': APP+'-long'},
+                 'celerytest.tasks.echo_long': {'queue': APP+'-long', 'routing_key': APP+'-long'},
                 }
 
 # Testing related settings

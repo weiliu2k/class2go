@@ -2,6 +2,7 @@ from c2g.models import *
 from operator import itemgetter
 import json
 import re
+from django.db.models import Count
 
 mean = lambda k: sum(k)/len(k)
 
@@ -258,6 +259,83 @@ def get_quiz_data(ready_quiz, get_visits = False):
     return {'quiz_summary': quiz_summary, 'exercise_summaries': exercise_summaries, 'per_student_data': per_student_data}
     
 
+def get_assessment_data(ready_exam, get_visits = False):
+    # get_assessment_data: Returns a dict of dicts with assessment data
+    # The format of the output will be as follows. 
+    # exam_summary contains for each field:
+    #     total_attempts{human_name, # total attempts}
+    #     distinct_students{human_name, # distinct students}
+    #     mean_score{human_name, mean score}
+    #     max_score{human_name, max score}
+    #     correct_attempts{human_name, # correct attempts}
+    #     correct_first_attempts{human_name, # correct first attempts}
+    #     correct_second_attempts{human_name, # correct second attempts}
+    #     correct_third_attempts{human_name, # correct third attempts}
+    
+    total_attempts = {}
+    human_field = {}
+    distinct_students = {}
+    mean_score = {}
+    max_score = {}
+    correct_attempts = {}
+    correct_first_attempts = {}
+    correct_second_attempts = {}
+    correct_third_attempts = {}
+    
+    #Get total_attempts and unique students
+    field_attempts = ExamRecordScoreField.objects.values('human_name', 'field_name').select_related('parent').filter(parent__record__exam_id=ready_exam.id).annotate(total_attempts=Count('parent__record__attempt_number'), unique_students=Count('parent__record__student', distinct=True), mean_score=Avg('subscore'), max_score=Max('subscore'))
+    for field_attempt in field_attempts:
+        total_attempts[field_attempt['field_name']] = field_attempt['total_attempts']
+        human_field[field_attempt['field_name']] = field_attempt['human_name']
+        distinct_students[field_attempt['field_name']] = field_attempt['unique_students']
+        mean_score[field_attempt['field_name']] = field_attempt['mean_score']
+        max_score[field_attempt['field_name']] = field_attempt['max_score']
+    
+    #Get correct attempts
+    field_correct_attempts = ExamRecordScoreField.objects.values('human_name', 'field_name').select_related('parent').filter(parent__record__exam_id=ready_exam.id, correct=1).annotate(correct_attempts=Count('correct'))
+    for field_correct_attempt in field_correct_attempts:
+        correct_attempts[field_correct_attempt['field_name']] = field_correct_attempt['correct_attempts']
+    
+    #Get correct first attempts
+    field_correct_first_attempts = ExamRecordScoreField.objects.values('human_name', 'field_name').select_related('parent').filter(parent__record__exam_id=ready_exam.id, correct=1, parent__record__attempt_number=1).annotate(correct_first_attempts=Count('correct'))
+    for field_correct_first_attempt in field_correct_first_attempts:
+        correct_first_attempts[field_correct_first_attempt['field_name']] = field_correct_first_attempt['correct_first_attempts']
+    
+    #Get correct second attempts
+    field_correct_second_attempts = ExamRecordScoreField.objects.values('human_name', 'field_name').select_related('parent').filter(parent__record__exam_id=ready_exam.id, correct=1, parent__record__attempt_number=2).annotate(correct_second_attempts=Count('correct'))
+    for field_correct_second_attempt in field_correct_second_attempts:
+        correct_second_attempts[field_correct_second_attempt['field_name']] = field_correct_second_attempt['correct_second_attempts']
+    
+    #Get correct third attempts
+    field_correct_third_attempts = ExamRecordScoreField.objects.values('human_name', 'field_name').select_related('parent').filter(parent__record__exam_id=ready_exam.id, correct=1, parent__record__attempt_number=3).annotate(correct_third_attempts=Count('correct'))
+    for field_correct_third_attempt in field_correct_third_attempts:
+        correct_third_attempts[field_correct_third_attempt['field_name']] = field_correct_third_attempt['correct_third_attempts']
+    
+    exam_summary = {}
+    exam_summary['title'] = ready_exam.title
+    exam_summary['assessment_type'] = ready_exam.assessment_type
+    exam_summary['total_attempts'] = total_attempts
+    exam_summary['human_field'] = human_field
+    exam_summary['distinct_students'] = distinct_students
+    exam_summary['mean_score'] = mean_score
+    exam_summary['max_score'] = max_score
+    exam_summary['correct_attempts'] = correct_attempts
+    exam_summary['correct_first_attempts'] = correct_first_attempts
+    exam_summary['correct_second_attempts'] = correct_second_attempts
+    exam_summary['correct_third_attempts'] = correct_third_attempts
+    
+    return exam_summary
+
+def get_full_assessment_data(ready_exam, get_visits = False):
+
+    #Get total score for each student that has attempted the exam
+    student_scores = ExamScore.objects.values('student__username', 'student__first_name', 'student__last_name', 'score').select_related('student').filter(exam_id=ready_exam.id).order_by('student__username')
+
+    #Get data for each field attempted
+    student_field_scores = ExamRecordScoreField.objects.values('human_name', 'field_name', 'parent__record__student__username', 'parent__record__student__first_name', 'parent__record__student__last_name').select_related('parent').filter(parent__record__exam_id=ready_exam.id).annotate(correct=Max('correct'), sub_score=Max('subscore'), total_attempts=Count('parent__record__attempt_number')).order_by('parent__record__student__username')
+    
+    return student_scores, student_field_scores
+    
 
 def compute_score_summative(first_correct_attempt_number, first_correct_attempt_time_created, resubmission_penalty, submissions_permitted, grace_deadline, partial_credit_deadline, late_penalty):
     if (first_correct_attempt_number > submissions_permitted):

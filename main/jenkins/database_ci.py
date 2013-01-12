@@ -31,7 +31,7 @@ AWS_ACCESS_KEY_ID = 'local'
 AWS_SECRET_ACCESS_KEY = 'local'
 AWS_STORAGE_BUCKET_NAME = 'local'
 
-# MEDIA_ROOT = '/opt/class2go/uploads'
+MEDIA_ROOT = '/var/lib/jenkins/test-data-sandbox/uploads'
 
 PIAZZA_ENDPOINT = "https://piazza.com/basic_lti"
 PIAZZA_KEY = "class2go.testing"
@@ -47,4 +47,6 @@ SES_SMTP_PASSWD = ''
 YT_SERVICE_DEVELOPER_KEY = ''
 GOOGLE_CLIENT_ID = ''
 GOOGLE_CLIENT_SECRET = ''
+
+GRADER_ENDPOINT='http://example.com/test'
 
