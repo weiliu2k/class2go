@@ -67,6 +67,9 @@ AWS_SECURE_STORAGE_BUCKET_NAME = 'dev-secure-c2g' # Optional. If not defined her
 # Generally don't need to set this in dev
 # KELVINATOR_WORKING_DIR = '/mnt'
 
+# For local extraction or resize, this is the place where to find the ffmpeg command.
+# FFMPEG_COMMAND="/usr/local/bin/ffmpeg"
+
 # Place where we should spool uploads.  Django defaults to /tmp, which is fine on
 # dev machines, but in AWS we want this to be on ephemeral storage
 # FILE_UPLOAD_TEMP_DIR = '/mnt'
