@@ -261,49 +261,44 @@ def kelvinate(store_path_raw, frames_per_minute_target=2, notify_addr=None):
 
 # VBR with mp3lame;
 # http://ffmpeg.org/trac/ffmpeg/wiki/Encoding%20VBR%20(Variable%20Bit%20Rate)%20mp3%20audio
+#
+# tried changing sample rate ("-ar", "22050") but that didn't seem to make
+# a difference
 
-
-video_codec = [ "-c:v", "libx264",          # video: codec
-                "-profile:v", "baseline",   # video: most compatible
+video_codec = [ "-c:v", "libx264",
+                "-profile:v", "baseline",   # most compatible options
               ]
-audio_codec = [ "-c:a", "libmp3lame",       # audio: codec
+audio_codec = [ "-c:a", "libmp3lame",
               ]
 sizes = { "large":  video_codec \
                     + [ "-crf", "23" ] \
                     + [ "-s", "1280x720" ] \
                     + audio_codec \
-                    + ["-ar", "44100"] \
-                    + ["-aq", "7"], # 7=100 Kbps
+                    + ["-q:a", "7"],        # vbr, 80..120 Kbps
           "medium": video_codec \
                     + [ "-crf", "27" ] \
                     + [ "-s", "852x480" ] \
                     + audio_codec\
-                    + ["-ar", "44100"] \
-                    + ["-aq", "7"], # 7=100 Kbps
+                    + ["-q:a", "7"],        # vbr, 80..120 Kbps
           "small":  video_codec \
                     + [ "-crf", "30", ] \
                     + [ "-s", "640x360" ] \
                     + audio_codec \
-                    + ["-ar", "22050"] \
-                    + ["-aq", "9"], # 9=65 Kbps
+                    + ["-q:a", "9"],        # vbr, 45..85 Kbps
           "tiny":   video_codec \
                     + [ "-crf", "40"] \
                     + [ "-s", "320x180" ] \
                     + audio_codec \
-                    + ["-ar", "22050"] \
-                    + ["-aq", "9"], # 9=65 Kbps
-          "audio":  [ "-vn" ] + audio_codec,
+                    + ["-q:a", "9"],        # vbr, 45..85 Kbps
+          "audio":  [ "-vn" ] + audio_codec \
+                    + ["-q:a", "7"],        # vbr, 80..120 Kbps
         }
 
 
 # Actually transcode the video down 
 def do_resize(notify_buf, working_dir, target_dir, video_file, target_size):
     cmdline = [ ffmpeg_cmd() ]
-    cmdline += [ "-i", working_dir + "/" + video_file,  # infile
-                 "-c:v", "libx264",          # video codec
-                 "-profile:v", "baseline",   # most compatible
-                 "-strict", "-2",            # magic to allow aac audio enc
-               ]
+    cmdline += [ "-i", working_dir + "/" + video_file, ]  # infile
     cmdline += sizes[target_size]
     cmdline += [ target_dir + "/" + video_file ]  # outfile
 
