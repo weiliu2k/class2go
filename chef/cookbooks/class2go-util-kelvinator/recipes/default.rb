@@ -3,30 +3,19 @@ package "python-setuptools" do
     action :install
 end
 
-package "python-pip" do
+# before we were distributing this ourselves, not anymore.  Remove if there.
+bash "clear out /usr/local/bin/ffmpeg" do
+    code <<-SCRIPT_END
+if [ -e /usr/local/bin/ffmpeg ]; then
+    rm /usr/local/bin/ffmpeg
+fi
+SCRIPT_END
+    action run:
+end
+
+# we need x264 for video, mp3lame for audio
+package "ffmpeg" do
     action :install
 end
 
-# Now that we are install PIL in the base0cookboook, do we still need this for ffmpeg?
-# because we certainly don't need for PIL anymore.
-package "python-dev" do
-    action :install
-end
-
-# this is redundant now
-execute "pip pil" do
-    command "pip install pil"
-    user "root"
-    action :run
-end
-
-package "libx264-dev" do
-    action :install
-end
-
-cookbook_file "/usr/local/bin/ffmpeg" do
-    owner "root"
-    mode 00777
-    action :create
-end
 
