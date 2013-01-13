@@ -258,17 +258,42 @@ def kelvinate(store_path_raw, frames_per_minute_target=2, notify_addr=None):
 
 # sizes we support: key is size name (used for target subdirectory) and value
 # are the parameters (as a list) that we'll pass to ffmpeg.
-video_params = [ "-c:v", "libx264",          # video: codec
-                 "-profile:v", "baseline",   # video: most compatible
-                 "-c:a", "libmp3lame",       # audio: codec
-                 "-ab", "64k",               # audio: good enough quality
-               ]
-sizes = { "large":   [ "-crf", "23", "-s", "1280x720" ] + video_params,
-           "medium": [ "-crf", "27", "-s", "852x480" ] + video_params,
-           "small":  [ "-crf", "30", "-s", "640x360" ] + video_params,    
-           "tiny":   [ "-crf", "40", "-s", "320x180" ] + video_params,
-           "audio":  [],  # TODO
-         }
+
+# VBR with mp3lame;
+# http://ffmpeg.org/trac/ffmpeg/wiki/Encoding%20VBR%20(Variable%20Bit%20Rate)%20mp3%20audio
+
+
+video_codec = [ "-c:v", "libx264",          # video: codec
+                "-profile:v", "baseline",   # video: most compatible
+              ]
+audio_codec = [ "-c:a", "libmp3lame",       # audio: codec
+              ]
+sizes = { "large":  video_codec \
+                    + [ "-crf", "23" ] \
+                    + [ "-s", "1280x720" ] \
+                    + audio_codec \
+                    + ["-ar", "44100"] \
+                    + ["-aq", "7"], # 7=100 Kbps
+          "medium": video_codec \
+                    + [ "-crf", "27" ] \
+                    + [ "-s", "852x480" ] \
+                    + audio_codec\
+                    + ["-ar", "44100"] \
+                    + ["-aq", "7"], # 7=100 Kbps
+          "small":  video_codec \
+                    + [ "-crf", "30", ] \
+                    + [ "-s", "640x360" ] \
+                    + audio_codec \
+                    + ["-ar", "22050"] \
+                    + ["-aq", "9"], # 9=65 Kbps
+          "tiny":   video_codec \
+                    + [ "-crf", "40"] \
+                    + [ "-s", "320x180" ] \
+                    + audio_codec \
+                    + ["-ar", "22050"] \
+                    + ["-aq", "9"], # 9=65 Kbps
+          "audio":  [ "-vn" ] + audio_codec,
+        }
 
 
 # Actually transcode the video down 
