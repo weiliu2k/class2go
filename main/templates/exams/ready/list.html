@@ -3,38 +3,33 @@
 
 
 {% block title %}
-{% if "exam" in reverse_show %}Exams{% endif %}
-{% if "problemset" in reverse_show %}Quizzes{% endif %}
-{% if "survey" in reverse_show %}Surveys{% endif %}
-{% if "interactive_exercise" in reverse_show %}Interactive Exercises{% endif %}
+{% if "exam" in request.path %}Exams{% endif %}
+{% if "problemset" in request.path %}Quizzes/Exercises{% endif %}
+{% if "survey" in request.path %}Surveys{% endif %}
  | {{common_page_data.course.title}}
 {% endblock title %}
 
 
 {% block course_page_title %}
-{% if "exam" in reverse_show %}Exams{% endif %}
-{% if "problemset" in reverse_show %}Quizzes{% endif %}
-{% if "survey" in reverse_show %}Surveys{% endif %}
-{% if "interactive_exercise" in reverse_show %}Interactive Exercises{% endif %}
+{% if "exam" in request.path %}Exams{% endif %}
+{% if "problemset" in request.path %}Quizzes/Exercises{% endif %}
+{% if "survey" in request.path %}Surveys{% endif %}
  (<a href="{% url 'courses.views.main' common_page_data.course_prefix common_page_data.course_suffix %}">{{common_page_data.course.title}}</a>)
 {% endblock course_page_title %}
 
 
 {% block exam_link_class %}
-{% if "exam" in reverse_show %}class="active"{% endif %}
+{% if "exam" in request.path %}class="active"{% endif %}
 {% endblock exam_link_class %}
 
 {% block problemsets_link_class %}
-{% if "problemset" in reverse_show %}class="active"{% endif %}
+{% if "problemset" in request.path %}class="active"{% endif %}
 {% endblock problemsets_link_class %}
 
 {% block survey_link_class %}
-{% if "survey" in reverse_show %}class="active"{% endif %}
+{% if "survey" in request.path %}class="active"{% endif %}
 {% endblock survey_link_class %}
 
-{% block interactive_exercise_link_class %}
-{% if "interactive_exercise" in reverse_show %}class="active"{% endif %}
-{% endblock interactive_exercise_link_class %}
 
 
 {% block m_column_content %}
