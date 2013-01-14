@@ -61,7 +61,11 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
     This exam will go live on {{ exam.live_datetime }} PST.
 
     <br />
+    {% if exam.exam_type == "interactive_exercise" %}
+    <a href="{% url 'problemset_list' common_page_data.course.prefix common_page_data.course.suffix %}">Return to {{exam.get_human_type}} list.</a>
+    {% else %}
     <a href="{% url exam.list_view common_page_data.course.prefix common_page_data.course.suffix %}">Return to {{exam.get_human_type}} list.</a>
+    {% endif %}
 
 {% elif too_recent %}
     
@@ -69,7 +73,11 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
         There must be a {{exam.minutes_btw_attempts}} minute wait after that time.</h3>
 
     <br />
+    {% if exam.exam_type == "interactive_exercise" %}
+    <a href="{% url 'problemset_list' common_page_data.course.prefix common_page_data.course.suffix %}">Return to {{exam.get_human_type}} list.</a>
+    {% else %}
     <a href="{% url exam.list_view common_page_data.course.prefix common_page_data.course.suffix %}">Return to {{exam.get_human_type}} list.</a>
+    {% endif %}
 
 {% else %}
 
