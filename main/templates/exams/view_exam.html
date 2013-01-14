@@ -7,7 +7,7 @@
 {% endblock exam_link_class %}
 
 {% block problemsets_link_class %}
-{% if "problemset" in exam.exam_type and not videotest %}class="active"{% endif %}
+{% if "problemset" in exam.exam_type and not videotest %}class="active"{% elif "interactive_exercise" in exam.exam_type and not videotest %}class="active"{% endif %}
 {% endblock problemsets_link_class %}
 
 {% block survey_link_class %}

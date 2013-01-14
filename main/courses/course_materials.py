@@ -21,9 +21,7 @@ def get_course_materials(common_page_data, get_video_content=False, get_pset_con
             exams = Exam.objects.getByCourse(course=COURSE)
         if exam_types:
             exams = exams.filter(exam_type__in=exam_types)
-        
-        print unicode(list(exams))
-                
+                        
         l1items, l2items = get_contentgroup_data(COURSE)
 
         if get_video_content:
