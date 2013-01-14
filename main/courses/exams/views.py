@@ -69,11 +69,6 @@ def listAll(request, course_prefix, course_suffix, show_types=["exam",]):
         
         form = None
         
-        if show_types:
-            ex_type = show_types[0]
-        else:
-            ex_type = "exam"
-                    
         return render_to_response('exams/ready/list.html', {'common_page_data': request.common_page_data, 'section_structures':section_structures, 'form':form, }, context_instance=RequestContext(request))
 
 
