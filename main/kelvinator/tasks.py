@@ -56,8 +56,9 @@ def extract(notify_buf, working_dir, jpeg_dir, video_file, start_offset, extract
 
 def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_per_minute_target):
     """
-    Sherif's method for figuring out what frames to keep from the candidate
-    set to reach the targeted number of slides.
+    Use min-cut method for scene detection, and then pick the middle frame from within
+    that scene.  Method by Yinan Na and Ruoyu Ding (Stanford MSCS students), project
+    for CS231A Computer Vision.
     """
 
     # from http://mail.python.org/pipermail/image-sig/1997-March/000223.html
@@ -73,8 +74,11 @@ def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_
         cuts = [];
         for i in range(3, len(candidates)-4):
             cur_score = candidates[i][0]
-            if cur_score > threshold and cur_score > candidates[i-1][0] and cur_score > candidates[i-2][0] and cur_score > candidates[i-3][0] and cur_score > candidates[i+1][0] and cur_score > candidates[i+2][0] and cur_score > candidates[i+3][0] :
+            if cur_score > threshold and \
+               cur_score > candidates[i-1][0] and cur_score > candidates[i-2][0] and cur_score > candidates[i-3][0] and \
+               cur_score > candidates[i+1][0] and cur_score > candidates[i+2][0] and cur_score > candidates[i+3][0]:
                 cuts.append(candidates[i])
+
         return cuts
 
     image_list = os.listdir(jpeg_dir)
@@ -105,7 +109,8 @@ def difference(notify_buf, working_dir, jpeg_dir, extraction_frame_rate, frames_
             difference_matrix[i, j] = computeDiff(jpeg_dir+"/"+image_list[i], jpeg_dir+"/"+image_list[j])
     difference_matrix = difference_matrix + difference_matrix.transpose()
     
-    # callate shot boundary scores for each frames, score = cut(A,B)/associate(A) + cut(A,B)/associate(B) 
+    # calculate shot boundary scores for each frames,
+    # score = cut(A,B)/associate(A) + cut(A,B)/associate(B)
     candidates = []
     for i in range(k, image_num-1-k):
         cutAB = np.sum(difference_matrix[i-k:i, i:i+k])
