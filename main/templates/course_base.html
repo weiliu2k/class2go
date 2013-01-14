@@ -43,17 +43,14 @@
 		    {% endif %}
                 </li>
 		{% endif %}
-                <li {% block forums_link_class %}{% endblock forums_link_class %}>
-                    <a href="{% url 'courses.forums.views.view' common_page_data.course_prefix common_page_data.course_suffix %}">Forum</a>
-                </li>
-                {% if common_page_data.course.has_problem_sets or common_page_data.course.has_interactive_exercises  %}
-                <li {% block problemsets_link_class %}{% endblock problemsets_link_class %}>
-                    <a href=" {% url 'problemset_list' common_page_data.course_prefix common_page_data.course_suffix %}">Quizzes/Exercises</a>
-                </li>
-                {% endif %}
                 {% if common_page_data.course.has_videos %}
                 <li {% block videos_link_class %}{% endblock videos_link_class %}>
                     <a href="{% url 'courses.videos.views.list' common_page_data.course_prefix common_page_data.course_suffix %}">Videos</a>
+                </li>
+                {% endif %}
+                {% if common_page_data.course.has_problem_sets or common_page_data.course.has_interactive_exercises  %}
+                <li {% block problemsets_link_class %}{% endblock problemsets_link_class %}>
+                    <a href=" {% url 'problemset_list' common_page_data.course_prefix common_page_data.course_suffix %}">Quizzes/Exercises</a>
                 </li>
                 {% endif %}
                 {% if common_page_data.course.has_exams %}
@@ -66,6 +63,9 @@
                     <a href="{% url 'survey_list' common_page_data.course_prefix common_page_data.course_suffix %}">Surveys</a>
                 </li>
                 {% endif %}
+                <li {% block forums_link_class %}{% endblock forums_link_class %}>
+                    <a href="{% url 'courses.forums.views.view' common_page_data.course_prefix common_page_data.course_suffix %}">Forum</a>
+                </li>
                 {% if user.is_authenticated %}
                 <li class="visible-phone">
                     <a href="/accounts/profile">My Account</a>
