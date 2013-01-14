@@ -60,7 +60,7 @@ urlpatterns = patterns('',
     #problemset subtype of exam
     #This and the exams list use the same view, so any reversing should be done using the name, i.e. 'survey_list', otherwise it
     #will be always return /exams/
-    url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/problemsets/?$', 'courses.exams.views.listAll', {'show_types':['problemset',]}, name='problemset_list'),
+    url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/problemsets/?$', 'courses.exams.views.listAll', {'show_types':['problemset','interactive_exercise']}, name='problemset_list'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/problemsets/(?P<exam_slug>[a-zA-Z0-9_-]+)/?$', 'courses.exams.views.show_exam', name='problemset_show'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/problemsets/(?P<exam_slug>[a-zA-Z0-9_-]+)/snapshot/?$', 'courses.exams.views.show_populated_exam', name='problemset_populated'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/problemsets/(?P<exam_slug>[a-zA-Z0-9_-]+)/graded/?$', 'courses.exams.views.show_graded_exam', name='problemset_graded'),
