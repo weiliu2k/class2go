@@ -62,7 +62,12 @@ function buglist-active {
 
 function buglist-recently-closed {
     set_yesterday
-    ghi list -s closed --since "${YESTERDAY}"
+    echo "Issues:"
+    ghi list -q -s closed --since "${YESTERDAY}" | grep -v ↑
+    echo
+    echo "Pull Requests:"
+    ghi list -q -s closed --since "${YESTERDAY}" | grep ↑
+
 }
 
 function buglist-hot {
