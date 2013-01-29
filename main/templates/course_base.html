@@ -108,6 +108,11 @@
                         </li>
                     {% endif %}
                 {% endif %}
+				{% if common_page_data.course_mode = 'ready' %}
+					<li>
+	                    <a href="{% url 'courses.exams.views.show_grades' common_page_data.course_prefix common_page_data.course_suffix %}">Grades</a>
+	                </li>
+			    {%endif%}
             </ul>
         </div>
     </div>

@@ -801,6 +801,12 @@ ul.ui-sortable li:hover {
     border-style:dashed;
 }
 
+/* Grades
+-------------------------------------------------- */
+.grades_total { 
+  font-weight:bold;
+}
+
 /* Create Problem Sets
 -------------------------------------------------- */
 .create-problemset h4 a {
