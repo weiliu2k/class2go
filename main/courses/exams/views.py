@@ -80,6 +80,120 @@ def listAll(request, course_prefix, course_suffix, show_types=["exam",]):
         return render_to_response('exams/ready/list.html', {'common_page_data': request.common_page_data, 'section_structures':section_structures, 'reverse_show':ex_type+'_show', 'form':form, }, context_instance=RequestContext(request))
 
 
+def get_score(attempt):
+  return attempt.score
+
+def get_total_score(quiz_total, survey_total, exercise_total, exam_total):
+  total = dict()
+  total['possible'] = quiz_total['total'] + survey_total['total'] + exercise_total['total'] + exam_total['total']
+  total['your_score'] = quiz_total['your_score'] + survey_total['your_score'] + exercise_total['your_score'] + exam_total['your_score']
+  return total
+
+@auth_view_wrapper
+def show_grades(request, course_prefix, course_suffix):
+  course = request.common_page_data['course']
+  student = request.user
+  
+  #Quizzes
+  quizzes = Exam.objects.filter(
+    course=course, 
+    mode='ready',
+    is_deleted=0, 
+    exam_type='problemset',
+    due_date__lte = datetime.date.today()
+  ).order_by('due_date')
+  quizzes_to_scores = dict()
+  quiz_total = dict()
+  quiz_total['total'] = 0
+  quiz_total['your_score'] = 0
+  for quiz in quizzes: 
+    quiz_total['total'] += quiz.total_score
+    attempts = ExamRecord.objects.filter(exam=quiz, student=student, complete=True)
+    if len(attempts) > 0: 
+      quizzes_to_scores[quiz] = attempts
+      quiz_total['your_score'] += max(map(get_score, attempts))
+    else: 
+      quizzes_to_scores[quiz] = list()
+  
+  #Surveys
+  surveys = Exam.objects.filter(
+    course=course, 
+    mode='ready',
+    is_deleted=0, 
+    exam_type='survey',
+    due_date__lte = datetime.date.today()
+  ).order_by('due_date')
+  surveys_to_scores = dict()
+  survey_total = dict()
+  survey_total['total'] = 0
+  survey_total['your_score'] = 0
+  for survey in surveys: 
+    survey_total['total'] += survey.total_score
+    attempts = ExamRecord.objects.filter(exam=survey, student=student, complete=True)
+    if len(attempts) > 0: 
+      surveys_to_scores[survey] = attempts
+      survey_total['your_score'] += max(map(get_score, attempts))
+    else: 
+      surveys_to_scores[survey] = list()
+  
+  #interactive_exercise
+  exercises = Exam.objects.filter(
+    course=course, 
+    mode='ready',
+    is_deleted=0, 
+    exam_type='interactive_exercise',
+    due_date__lte = datetime.date.today()
+  ).order_by('due_date')
+  exercises_to_scores = dict()
+  exercise_total = dict()
+  exercise_total['total'] = 0
+  exercise_total['your_score'] = 0
+  for exercise in exercises: 
+    exercise_total['total'] += exercise.total_score
+    attempts = ExamRecord.objects.filter(exam=exercise, student=student, complete=True)
+    if len(attempts) > 0: 
+      exercises_to_scores[exercise] = attempts
+      exercise_total['your_score'] += max(map(get_score, attempts))
+    else: 
+      exercises_to_scores[exercise] = list()
+  
+  #exams
+  exams = Exam.objects.filter(
+    course=course, 
+    mode='ready',
+    is_deleted=0, 
+    exam_type='exam',
+    due_date__lte = datetime.date.today()
+  ).order_by('due_date')
+  exam_to_scores = dict()
+  exam_total = dict()
+  exam_total['total'] = 0
+  exam_total['your_score'] = 0
+  for exam in exams: 
+    exam_total['total'] += exam.total_score
+    attempts = ExamRecord.objects.filter(exam=exam, student=student, complete=True)
+    if len(attempts) > 0: 
+      exam_to_scores[exam] = attempts
+      exercise_total['your_score'] += max(map(get_score, attempts))
+    else: 
+      exam_to_scores[exam] = list()
+  
+  total = get_total_score(quiz_total, survey_total, exercise_total, exam_total)
+  
+  return render_to_response('exams/grades.html', {
+                                                    'common_page_data':request.common_page_data, 
+                                                    'quizzes_to_scores':quizzes_to_scores, 
+                                                    'quiz_total':quiz_total,
+                                                    'surveys_to_scores':surveys_to_scores, 
+                                                    'survey_total':survey_total, 
+                                                    'exercises_to_scores':exercises_to_scores,
+                                                    'exercise_total':exercise_total, 
+                                                    'exam_to_scores':exam_to_scores,
+                                                    'exam_total':exam_total, 
+                                                    'total':total, 
+                                                    }, RequestContext(request) )
+
+
 # Create your views here.
 @auth_view_wrapper
 def show_exam(request, course_prefix, course_suffix, exam_slug):

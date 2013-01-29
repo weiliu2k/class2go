@@ -1,0 +1,166 @@
+{% extends "course_base.html" %}
+{% load url from future %}
+
+{% block m_column_content %}
+<div id="c2g_layout_m_column" class="span12">
+    {% if user.is_authenticated %}
+		<h2>Total</h2>
+		<table class="table" style="width:50%">
+			<tr>
+				<th>Your Score</th>
+				<th>Possible Points</th>
+			</tr>
+			<tr>
+				<td>{{total.your_score}}</td>
+				<td>{{total.possible}}</td>
+			</tr>
+		</table>
+		<br/>
+		<h2>Quizzes</h2>
+		<table class="table" style="width:100%">
+			<tr>
+				<th>Assignment</th>
+				<th>Due Date</th>
+				<th>Class Average</th>
+				<th>Total Possible</th>
+				<th>Your Score</th>
+			</tr>
+		{% for quiz, attempts in quizzes_to_scores.items %}
+			<tr>
+				<td>{{quiz.title}}</td>
+				<td>{{quiz.due_date}}</td>
+				<td>-</td>
+				<td>{{quiz.total_score}} {{quiz.parent}}</td>
+				<td> </td>
+			</tr>
+			{% for attempt in attempts %}
+				<tr>
+					<td>{{quiz.title}} Attempt #{{forloop.counter}}</td>
+					<td/>`
+					<td/>
+					<td/>
+					<td>{{attempt.score}}</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+			<tr>
+				<td class="total">Total</td>
+				<td></td>
+				<td></td>
+				<td>{{quiz_total.total}}</td>
+				<td>{{quiz_total.your_score}}</td>
+			</tr>
+		</table>
+		<br/>
+		<h2>Surveys</h2>
+		<table class="table" style="width:100%">
+			<tr>
+				<th>Assignment</th>
+				<th>Due Date</th>
+				<th>Class Average</th>
+				<th>Total Possible</th>
+				<th>Your Score</th>
+			</tr>
+		{% for survey, attempts in surveys_to_scores.items %}
+			<tr>
+				<td>{{survey.title}}</td>
+				<td>{{survey.due_date}}</td>
+				<td>-</td>
+				<td>{{survey.total_score}}</td>
+				<td> </td>
+			</tr>
+			{% for attempt in attempts %}
+				<tr>
+					<td>{{survey.title}} Attempt #{{forloop.counter}}</td>
+					<td/>`
+					<td/>
+					<td/>
+					<td>{{attempt.score}}</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+			<tr>
+				<td class="total">Total</td>
+				<td></td>
+				<td></td>
+				<td>{{survey_total.total}}</td>
+				<td>{{survey_total.your_score}}</td>
+			</tr>
+		</table>
+		<br/>
+		<h2>Interactive Exercises</h2>
+		<table class="table" style="width:100%">
+			<tr>
+				<th>Assignment</th>
+				<th>Due Date</th>
+				<th>Class Average</th>
+				<th>Total Possible</th>
+				<th>Your Score</th>
+			</tr>
+		{% for exercise, attempts in exercises_to_scores.items %}
+			<tr>
+				<td>{{exercise.title}}</td>
+				<td>{{exercise.due_date}}</td>
+				<td>-</td>
+				<td>{{exercise.total_score}}</td>
+				<td> </td>
+			</tr>
+			{% for attempt in attempts %}
+				<tr>
+					<td>{{exercise.title}} Attempt #{{forloop.counter}}</td>
+					<td/>`
+					<td/>
+					<td/>
+					<td>{{attempt.score}}</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+			<tr>
+				<td class="total">Total</td>
+				<td></td>
+				<td></td>
+				<td>{{exercise_total.total}}</td>
+				<td>{{exercise_total.your_score}}</td>
+			</tr>
+		</table>
+		<br/>
+		<h2>Exams</h2>
+		<table class="table" style="width:100%">
+			<tr>
+				<th>Assignment</th>
+				<th>Due Date</th>
+				<th>Class Average</th>
+				<th>Total Possible</th>
+				<th>Your Score</th>
+			</tr>
+		{% for exam, attempts in exams_to_scores.items %}
+			<tr>
+				<td>{{exam.title}}</td>
+				<td>{{exam.due_date}}</td>
+				<td>-</td>
+				<td>{{exam.total_score}}</td>
+				<td> </td>
+			</tr>
+			{% for attempt in attempts %}
+				<tr>
+					<td>{{exam.title}} Attempt #{{forloop.counter}}</td>
+					<td/>`
+					<td/>
+					<td/>
+					<td>{{attempt.score}}</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+			<tr>
+				<td class="total">Total</td>
+				<td></td>
+				<td></td>
+				<td>{{exam_total.total}}</td>
+				<td>{{exam_total.your_score}}</td>
+			</tr>
+		</table>
+    {% else %}
+        <h4>Please <a data-toggle="modal" href="#login-modal">log in</a> to see grades.</h4>
+    {% endif %}
+</div>
+{% endblock m_column_content %}
