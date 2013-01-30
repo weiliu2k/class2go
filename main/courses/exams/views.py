@@ -102,6 +102,7 @@ def show_grades(request, course_prefix, course_suffix):
     exam_type='problemset',
     due_date__lte = datetime.date.today()
   ).order_by('due_date')
+  quizzes = [quiz for quiz in quizzes if not quiz.is_child()]
   quizzes_to_scores = dict()
   quiz_total = dict()
   quiz_total['total'] = 0
