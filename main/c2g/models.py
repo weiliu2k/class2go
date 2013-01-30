@@ -18,10 +18,12 @@ import os
 import re
 import sys
 import time
+from urlparse import urlparse, urlunparse
 
 from django import forms
 from django.contrib.auth.models import Group, User
 from django.core.exceptions import ValidationError
+from django.core.files.storage import default_storage
 from django.db.models.signals import post_save
 from django.db import models
 
@@ -40,6 +42,16 @@ def get_file_path(instance, filename):
         return os.path.join(str(parts[0]), str(parts[1]), 'videos', str(instance.id), filename)
     if isinstance(instance, File):
         return os.path.join(str(parts[0]), str(parts[1]), 'files', filename)
+
+def remove_querystring(url):
+    """
+    remove_querystring("http://www.example.com:8080/salad?foo=bar#93")
+    'http://www.example.com:8080/salad'
+    """
+    split = urlparse(url)
+    combined = (split.scheme, split.netloc, split.path, '', '', '')
+    return urlunparse(combined)
+
 
 class TimestampMixin(models.Model):
     time_created = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -591,6 +603,51 @@ class StudentSection(TimestampMixin, Deletable, models.Model):
     class Meta:
         db_table = u'c2g_sections'
 
+class CourseCertificate(TimestampMixin, models.Model):
+    course = models.ForeignKey(Course, db_index=True)
+    assets = models.CharField(max_length=255, null=True)
+    storage = models.CharField(max_length=255, null=True)
+    type = models.CharField(max_length=64, default="completion")
+
+    @classmethod
+    def create(cls, course, type='completion'):
+        """Correctly instantiate a new CourseCertificate."""
+        c = cls(course=course, type=type)
+        c.assets = os.path.join(course.prefix, course.suffix, 'certificates', 'assets')
+        c.storage = os.path.join(course.prefix, course.suffix, 'certificates', 'storage')
+        c.save()
+        return c
+
+    def get_filename_by_user(self, user):
+        """Generate the filename used for certificate storage on disk.
+
+        If user is unspecified, return None.
+        """
+        return "%s-%s-%s-%s.pdf" % (user.username, str(user.id), self.course.handle, self.type)
+
+    def dl_link(self, user):
+        """Generate a download link for this certificate for the given user"""
+        filename = self.get_filename_by_user(user)
+        asset_path = os.path.join(self.storage, filename)
+        url = ''
+        if default_storage.exists(asset_path):
+            if is_storage_local():
+                url = get_site_url() + default_storage.url(asset_path)
+            else:
+                url = default_storage.url_monkeypatched(asset_path, response_headers={'response-content-disposition': 'attachement'})
+                url = remove_querystring(url)        # TODO: Remove when we have longer timeouts
+        return url
+
+    def __repr__(self):
+        s = u'CourseCertificate(pk=' + str(self.id) + ','
+        s += 'course_id=' + str(self.course_id) + ','
+        s += 'type=' + self.type + ','
+        s += 'assets=' + self.assets + ')'
+        return s
+
+    def __unicode__(self):
+        return repr(self)
+
 #Extended storage fields for Users, in addition to django.contrib.auth.models
 #Uses one-to-one as per django recommendations at
 #https://docs.djangoproject.com/en/dev/topics/auth/#django.contrib.auth.models.User
@@ -616,6 +673,8 @@ class UserProfile(TimestampMixin, models.Model):
     user_agent_first = models.CharField(max_length=256, null=True)
     referrer_first = models.CharField(max_length=256, null=True)
     accept_language_first = models.CharField(max_length=64, null=True)
+    
+    certificates = models.ManyToManyField(CourseCertificate)
     
     def __unicode__(self):
         return self.user.username
