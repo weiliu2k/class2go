@@ -17,6 +17,7 @@
 		</table>
 		<br/>
 		<h2>Quizzes</h2>
+		{% if quizzes_to_scores|length > 0 %}
 		<table class="table" style="width:100%">
 			<tr>
 				<th>Assignment</th>
@@ -51,8 +52,12 @@
 				<td>{{quiz_total.your_score}}</td>
 			</tr>
 		</table>
+		{% else %}
+			<p>There are no quizzes to display at this time.</p>
+		{% endif %}
 		<br/>
 		<h2>Surveys</h2>
+		{% if surveys_to_scores|length > 0 %}
 		<table class="table" style="width:100%">
 			<tr>
 				<th>Assignment</th>
@@ -87,8 +92,12 @@
 				<td>{{survey_total.your_score}}</td>
 			</tr>
 		</table>
+		{% else %}
+			<p>There are no surveys to display at this time.</p>
+		{% endif %}
 		<br/>
 		<h2>Interactive Exercises</h2>
+		{% if exercises_to_scores|length > 0 %}
 		<table class="table" style="width:100%">
 			<tr>
 				<th>Assignment</th>
@@ -123,8 +132,12 @@
 				<td>{{exercise_total.your_score}}</td>
 			</tr>
 		</table>
+		{% else %}
+			<p>There are no interactive exercises to display at this time.</p>
+		{% endif %}
 		<br/>
 		<h2>Exams</h2>
+		{% if exam_to_scores|length > 0 %}
 		<table class="table" style="width:100%">
 			<tr>
 				<th>Assignment</th>
@@ -159,6 +172,9 @@
 				<td>{{exam_total.your_score}}</td>
 			</tr>
 		</table>
+		{% else %}
+			<p>There are no exams to display at this time.</p>
+		{% endif %}
     {% else %}
         <h4>Please <a data-toggle="modal" href="#login-modal">log in</a> to see grades.</h4>
     {% endif %}
