@@ -833,8 +833,17 @@ ul.ui-sortable li:hover {
 
 /* Grades
 -------------------------------------------------- */
-.grades_total { 
+.grades_total td { 
   font-weight:bold;
+  padding:8px;
+}
+
+.grades-table td {
+  padding-left:8px;
+}
+
+.grades-table th {
+  text-decoration:underline;
 }
 
 /* Create Problem Sets
