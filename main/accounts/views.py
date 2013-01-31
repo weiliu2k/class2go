@@ -36,25 +36,44 @@ def index(request):
 
 def profile(request):
     
+    user = request.user
     group_list = request.user.groups.all()
     courses = Course.objects.filter(Q(student_group_id__in=group_list, mode='ready') | Q(instructor_group_id__in=group_list, mode='ready') | Q(tas_group_id__in=group_list, mode='ready') | Q(readonly_tas_group_id__in=group_list, mode='ready'))
     
-    if request.user.is_authenticated():
-        user_profile = request.user.get_profile()
+    user_profile = None
+    is_student_list = []
+    certs_list = {}
+    longest_certlist = 0
+    if user.is_authenticated():
+        user_profile = user.get_profile()
         is_student_list = user_profile.is_student_list(group_list, courses)
-    else:
-        user_profile = None
-        is_student_list = []
+
+        for cert in user_profile.certificates.all():
+            certinfo = (cert.type, cert.dl_link(user))
+            if certs_list.has_key(cert.course_id):
+                certs_list[cert.course_id].append(certinfo)
+                this_certlist = len(certs_list[cert.course_id])
+                if longest_certlist < this_certlist:
+                    longest_certlist = this_certlist
+            else:
+                certs_list[cert.course_id] = [certinfo]
+                if longest_certlist == 0: longest_certlist = 1
+
 
     allow_password_change  = True
-    if (not request.user.is_authenticated()) or (request.user.get_profile().institutions.filter(title='Stanford').exists()):
+    if (not user.is_authenticated()) or (user.get_profile().institutions.filter(title='Stanford').exists()):
         allow_password_change = False
 
     return render_to_response('accounts/profile.html',
-                              {'request': request,
+                              {
+                              'request': request,
                               'courses': courses,
                               'is_student_list': is_student_list,
-                              'show_pwd_change': allow_password_change,},
+                              'show_pwd_change': allow_password_change,
+                              'user_profile': user_profile,
+                              'certifications': certs_list,
+                              'longest_certs': range(longest_certlist),
+                              },
                               context_instance=RequestContext(request))
 
 def edit(request):
