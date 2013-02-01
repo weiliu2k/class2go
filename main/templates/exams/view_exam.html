@@ -773,8 +773,9 @@ You don't have Javascript enabled or jQuery was not loaded.  This page won't wor
                       
                       //console.log('input[name|=' + member + ']');
                       //console.log(selector);
-                $('input[name|=' + member + ']').filter(selector).attr('checked','checked');
-
+                $('input[name|=' + member + ']').filter(selector).attr('checked','checked').each(function(){
+                   $(this).closest('fieldset.hidden-fieldset').siblings('#chosen').val($.trim($(this).parent('label').text()));
+                });
             } 
 
         }
