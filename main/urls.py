@@ -56,6 +56,7 @@ urlpatterns = patterns('',
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/unenroll/?$', 'courses.views.unenroll'),
 
     # general exam stuff--These endpoints are hidden from student users and do not have to be named (i.e. aliased for each exam subtype)
+    url(r'^exams/parse_markdown/?$', 'courses.exams.views.parse_markdown', name='parse_markdown'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/exams/create/?$', 'courses.exams.views.create_exam'),
     url(r'^(?P<course_prefix>[a-zA-Z0-9_-]+)/(?P<course_suffix>[a-zA-Z0-9_-]+)/exams/save/?$', 'courses.exams.views.save_exam_ajax'),
     url(r'^delete_exam/?', 'courses.exams.actions.delete_exam'),
@@ -308,9 +309,9 @@ urlpatterns = patterns('',
 # when testing we get a warning about favicon, silence it by mapping to
 # the location of the file
 if settings.DEBUG and settings.SITE_NAME_SHORT:
-    site=settings.SITE_NAME_SHORT.lower()
-    urlpatterns += patterns('', 
-        url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', 
-            {'url': settings.STATIC_URL+'graphics/core/%s-favicon.ico' % site})
+    site=settings.SITE_NAME_SHORT
+    urlpatterns += patterns('',
+        url(r'^favicon.ico$', 'django.views.generic.simple.redirect_to',
+        {'url': settings.STATIC_URL+'graphics/sites/%s/favicon.ico' % site})
     )
    

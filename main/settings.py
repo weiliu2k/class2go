@@ -88,11 +88,13 @@ try:
     SITE_NAME_SHORT
     SITE_NAME_LONG
     SITE_TITLE
+    SITE_URL
 except NameError:
     SITE_ID = 1
     SITE_NAME_SHORT = 'Stanford'
     SITE_NAME_LONG = 'Stanford University'
     SITE_TITLE = 'Stanford Class2Go'
+    SITE_URL = 'https://class2go.stanford.edu'
 
 
 # If you set this to False, Django will make some optimizations so as not
@@ -237,7 +239,9 @@ CACHES = {
 
 thispath = path.dirname(path.realpath(__file__))
 TEMPLATE_DIRS = (
+    thispath+'/site_templates/'+SITE_NAME_SHORT,
     thispath+'/templates'
+
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -365,7 +369,7 @@ LOGGING = {
             'level':'INFO', #making this DEBUG will log _all_ SQL queries.
             'class':'logging.handlers.RotatingFileHandler',
             'formatter':'verbose',
-            'filename': LOGGING_DIR+APP+'-django.log',
+            'filename': LOGGING_DIR+'/'+APP+'-django.log',
             'maxBytes': 1024*1024*500,
             'backupCount': 3,
         },
@@ -408,8 +412,9 @@ SESSION_COOKIE_AGE = 3*30*24*3600
 
 
 # Database routing
-DATABASE_ROUTERS = ['c2g.routers.CeleryDBRouter',]
-
+DATABASE_ROUTERS = ['c2g.routers.CeleryDBRouter',
+                    'c2g.routers.ReadonlyDBRouter',
+                   ]
 
 # Actually send email
 try:
@@ -433,7 +438,7 @@ if PRODUCTION or EMAIL_ALWAYS_ACTUALLY_SEND:
 #Otherwise, send email to a file in the logging directory
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-    EMAIL_FILE_PATH = LOGGING_DIR + 'emails_sent.log'
+    EMAIL_FILE_PATH = LOGGING_DIR + '/emails_sent.log'
 
 #Max number of emails sent by each worker, defaults to 10
 #EMAILS_PER_WORKER = 10
@@ -449,7 +454,7 @@ BROKER_TRANSPORT='sqs'
 BROKER_USER = AWS_ACCESS_KEY_ID
 BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY
 BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-west-2', 
+    'region': 'us-west-2',
     'queue_name_prefix' : INSTANCE+'-',
     'visibility_timeout' : 3600*6,
 }
