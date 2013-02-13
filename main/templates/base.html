@@ -10,10 +10,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, target-densitydpi=device-dpi">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    {% if SITE_NAME_SHORT == 'Stanford' %}
-        <link rel='shortcut icon' type='image/x-icon' href='{{ STATIC_URL }}graphics/core/stanford-favicon.ico' />
-    {% endif %}
-    
+    <link rel='shortcut icon' type='image/x-icon' href='{{ STATIC_URL }}graphics/sites/{{ SITE_NAME_SHORT }}/favicon.ico' />
+
     {% block top_scripts %}
     <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic,700italic" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/core/bootstrap.css" />
@@ -52,7 +50,7 @@
                     Stanford University
                 </a>
                 {% else %}
-                <a href="http://www.uwa.edu.au">{{ SITE_NAME_LONG }}</a>
+                <a href="{{ SITE_URL }}">{{ SITE_NAME_LONG }}</a>
                 {% endif %}
             </h1>
             <p id="skip-nav"><a href="#main-content" class="hidden-accessible">{% trans 'Jump to content' %}</a></p>
