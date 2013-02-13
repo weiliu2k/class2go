@@ -2,12 +2,12 @@
 -------------------------------------------------- */
 
 body {
-    background-color: #f8f6ea;
+    background-color: #FBFBF9;
     position: relative;
     width: 100%;
-    min-width: 480px;
     min-height: 100%;
     font-family: 'Source Sans Pro', 'Helvetica Neue', helvetica, sans-serif;
+    font-size: 1em;
 }
 
 h1,h2,h3,h4 {margin:0;}
@@ -47,7 +47,7 @@ a {color:#820000;}
 a:hover {color:#820000;}
 .modal form {margin-bottom:0;}
 .well {border-color:#bdb7a1;}
-.well.tight {padding:10px 0;background:#f3efd8;}
+.well.tight {padding:10px 0;background:#e9e6df;}
 .well.tight .nav-list li {clear:left;}
 .well.tight .nav-list li a {
     padding:5px 15px;
@@ -67,7 +67,7 @@ a:hover {color:#820000;}
 
 .upcoming {
   padding:10px 0px;
-  background:#f3efd8;
+  background:#e9e6df;
 }
 .upcoming h4 {
   margin-left: 5px;
@@ -98,7 +98,7 @@ a:hover {color:#820000;}
 .modal-header {border-bottom:1px solid #ddcf99;}
 .modal-body {border-top:1px solid white;}
 .modal-footer {border-top:1px solid #ddcf99;background:#e3dfd5;}
-.nav-list .divider {background-color: #ddcf99;}
+.nav-list .divider {background-color: #aca68d;}
 
 .btn-primary {
     background-color: #8f2618;
@@ -157,8 +157,8 @@ a:hover [class^="icon-"] {
     color:#333;
     cursor: pointer;
 }
-.nav > li.active {
-    height: 34px;
+.nav > li, .nav > li.active {
+//    height: 34px;
 }
 .nav > li.active > a {
     border-bottom: 1px solid #999;
@@ -295,14 +295,14 @@ body.home {
     font-size:37px;
 }
 .home .hero-header .hero h2 {
-    font-weight:300;
+    font-weight: normal;
     line-height:1em;
 }
 .home .container-fluid {
     padding:0;
 }
 .home h3 {
-    font-weight:300;
+    font-weight: normal;
     font-size:30px;
     line-height:1em;
 }
@@ -337,7 +337,7 @@ body.home {
 .home-examples p {
     color:#fff;
     font-size:20px;
-    font-weight:300;
+    font-weight: normal;
     margin-bottom:0;
 }
 .databases {
@@ -353,7 +353,7 @@ body.home {
     padding:20px 20px 20px 320px;
 }
 .home h3 a {
-    font-weight:300;
+    font-weight: normal;
 }
 .home-primary .span5 {
     padding-left:20px;
@@ -460,7 +460,7 @@ small.date {
     margin-top:10px;
 }
 #c2g_layout_topbar h2 {
-  font-weight: 300;
+  font-weight: normal;
   font-size:30px;
 }
 #c2g_layout_topbar .top-nav a {
@@ -472,9 +472,6 @@ small.date {
     top:-32px;
     right:20px;
     font-size: 1.15em;
-}
-.top-nav strong {
-    font-weight: normal;
 }
 .top-nav li {
     float:right;
@@ -497,9 +494,22 @@ small.date {
     background: rgb(80,0,0);
 }
 .top-nav li span {
-    color:white;
+    color: white;
     padding:4px 5px;
     display:block;
+}
+
+.top-nav #clock em {
+    -webkit-font-smoothing: antialiased;
+    font-smooth: never;
+    font-weight: 100 !important;
+    font-size: 28px;
+    padding-top: 6px;
+    color: white;
+}
+.top-nav #clock #clock-bubble {
+    display: none;
+    position: absolute;
 }
 
 #c2g_layout_topbar .navbar {
@@ -588,7 +598,7 @@ small.date {
 -------------------------------------------------- */
 .registration .well {
     margin:0 auto;
-    background:#f8f6ea;
+    background:#fcfaf5;
     padding:0;
 }
 .registration .well fieldset {
@@ -728,14 +738,14 @@ h3.course-section-heading {
 }
 
 .course-list-item.zebra_light {
-    background-color: #f8f6ea;
+    background-color: #fcfaf5;
 }
 .course-list-item.zebra_dark {
     background-color: #e9e6df;
 }
 
 .course-list-item.zebra_light {
-    background-color: #f8f6ea;
+    background-color: #fcfaf5;
 }
 .course-list-item.zebra_dark {
     background-color: #e9e6df;
@@ -803,7 +813,7 @@ h3.course-section-heading {
     padding:10px 10px 0;
     border:1px solid #eee;
     margin-bottom:10px;
-    background:#f8f6ea;
+    background:#fcfaf5;
     border-radius:5px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
@@ -896,7 +906,7 @@ input[type="checkbox"] {
 }
 .class2go a {
     font-size:11px;
-    background:#f8f6ea;
+    background:#fcfaf5;
     padding:3px 10px;
     position:absolute;
     right:20px;
@@ -1689,10 +1699,10 @@ hr {
     border-bottom: 0;
     height: 1px;
     background: #bdb7a1 none;
-    background: -webkit-gradient(linear, left top, right top, from(#bdb7a1), to(#f8f6ea)); /* Safari 4-5, Chrome 1-9 */
-    background: -webkit-linear-gradient(left, #bdb7a1, #f8f6ea); /* Safari 5.1, Chrome 10+ */
-    background: -moz-linear-gradient(left, #bdb7a1, #f8f6ea); /* Firefox 3.6+ */
-    background: -ms-linear-gradient(left, #bdb7a1, #f8f6ea); /* IE 10 */
-    background: -o-linear-gradient(left, #bdb7a1, #f8f6ea); /* Opera 11.10+ */
+    background: -webkit-gradient(linear, left top, right top, from(#bdb7a1), to(#fcfaf5)); /* Safari 4-5, Chrome 1-9 */
+    background: -webkit-linear-gradient(left, #bdb7a1, #fcfaf5); /* Safari 5.1, Chrome 10+ */
+    background: -moz-linear-gradient(left, #bdb7a1, #fcfaf5); /* Firefox 3.6+ */
+    background: -ms-linear-gradient(left, #bdb7a1, #fcfaf5); /* IE 10 */
+    background: -o-linear-gradient(left, #bdb7a1, #fcfaf5); /* Opera 11.10+ */
     margin: 0 0 25px 0;
 }
