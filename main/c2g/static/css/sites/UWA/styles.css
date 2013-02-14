@@ -1,4 +1,9 @@
 
+body {
+    background-color: #ffffff;
+}
+
+
 /**************
 home unit boxes
 ****************/
@@ -47,26 +52,56 @@ a:hover {color:#1F5EB7;}
 	overflow:hidden}
 
 .stanford-logo {
-    background-image: url(../../../graphics/sites/UWA/uwa-logo.gif);
+    background-image: url(../../../graphics/sites/UWA/uwa-c2g-long.png);
     background-repeat: no-repeat;
     background-size: auto auto;
     display: block;
-    height: 40px;
+    height: 54px;
     overflow-x: hidden;
     overflow-y: hidden;
-    padding-bottom: 13px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 13px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0px;
     text-indent: -999px;
-    width: 198px;
-    float: left;}
+    width: 203px;
+    float: left;
+    background-position: 5px 5px;
+}
+
+.stanford-logo a {
+    display: block;
+    height: 54px;
+}
 
 .tagline {
     float: right;
     margin-top: 37px;
     padding-right: 20px;
 }
+
+#bottom-menu {
+    font-size: 14px;
+    padding-top: 0px;
+    padding-left: 80px;
+    text-align: center;
+}
+
+#bottom-menu ul {
+    margin-bottom: 0px;
+    padding-top: 5px;
+
+
+}
+
+.uwalogo {float: left; padding-left: 5px;}
+
+.tagline {
+    float: right;
+    margin-top: 37px;
+    padding-right: 20px;
+}
+
 
 .top-nav {
     
@@ -84,7 +119,7 @@ a:hover {color:#1F5EB7;}
   background: #666;}
 
 .home .hero-header {
-    background-image: url("../../../graphics/sites/UWA/Winthrop-Hall-Yellow-for-Lightbox.png");
+    background-image: url("../../../graphics/sites/UWA/Winthrop-Hall-Yellow-for-Lightbox.jpg");
     padding-bottom: 40px;
     padding-left: 0px;
     padding-right: 0px;
@@ -148,6 +183,37 @@ ACCORDION
 }
 
 
+/*FORMS */
+
+.well, .registration .well {border-color: #89CBE5;
+    background: #F5F5F5}
+
+
+.btn-primary {
+
+    color: #333333;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    *background-color: #e6e6e6;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    border: 1px solid #a2a2a2;
+
+}
+
+.form-actions {
+    background:#E0E0E0;
+    border-top:1px solid #89CBE5;
+    box-shadow: none;
+}
+
 /********
 UNITS _MOVED TO BODY.CSS
 *********/
@@ -193,7 +259,7 @@ Instructor  boxes
 	float: left;
 	position: relative;
 	padding-right: 10px;
-	height: 200px;
+	height: 160px;
 	width: 120px;
 }
 
@@ -258,12 +324,30 @@ FOOTER
 ***********/   
    
    #global-footer {
-    background:url(../../../graphics/core/footer-hp-bgrepeat.jpg) repeat-x;}
-    
+    background:url(../../../graphics/core/footer-hp-bgrepeat.jpg) repeat-x;
+    padding-left: 20px;
+   }
+
+
     .footer ul a {color: #666;}
     
     .footer .vcard {
-    clear: left;
-    color: #666;
-    font-size: 11px;
+        text-align: center;
+        clear: left;
+        color: #666;
+        font-size: 11px;
+}
+
+/*******
+BUTTONS
+*********/
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-primary.disabled,
+.btn-primary[disabled] {
+    background-color: #efefef;
+    *background-color: #efefef;
+    color: #000;
 }

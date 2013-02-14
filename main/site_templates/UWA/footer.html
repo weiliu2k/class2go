@@ -10,14 +10,11 @@
                 <div id="bottom-text" class="span11">
                     <div id="bottom-menu">
                         <ul class="unstyled">
-                        	<li>CRICOS Code: 00126G</li>
-                        	<li><a href="http://www.uwa.edu.au/campus_map">Campus Map</a></li>
-                        	<li><a href="http://www.uwa.edu.au/contact">Contact UWA</a></li>
-                        	<li><a href="http://www.uwa.edu.au/accessibility">Accessibility</a></li>    
-                            <li><a href="http://www.uwa.edu.au">UWA Home</a></li>
+                            <li>    <a class="uwalogo" href="http://uwa.edu.au"><img src="{{ STATIC_URL }}graphics/sites/UWA/UWALogo.png"></a></li>
+                            <li>CRICOS Code: 00126G</li>
                             <li><a href="{% url 'c2g.views.tos' %}">Terms of Use</a></li>
                             <li><a href="{% url 'c2g.views.tos' %}#copyright">Copyright Complaints</a></li>
-                            <li><a href="{% url 'c2g.views.contactus' %}">Technical Support</a></li>
+                            <li><a href="{% url 'c2g.views.contactus' %}">Contact Us</a></li>
                         </ul>
                     </div>
                     <p class="vcard">&copy; <span class="fn org">The University of Western Australia</span>, <span class="adr"><span class="locality">Crawley</span>, <span class="region">WA</span> <span class="postal-code">6009</span></span></p>

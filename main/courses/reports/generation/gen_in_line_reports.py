@@ -1,11 +1,13 @@
 from __future__ import division
 from c2g.models import Exam, ExamScore
+from c2g.readonly import use_readonly_database
 from django.db.models import Count, Q
 from datetime import datetime
 from courses.reports.generation.get_quiz_data import get_student_scores
 from courses.reports.generation.gen_quiz_summary_report import construct_scores_dict
 
-def gen_spec_in_line_report(report_name, course, username):
+@use_readonly_database
+def gen_spec_in_line_report(report_name, course, username, green_param, blue_param):
 
     if report_name == 'quizzes_summary': 
         
@@ -41,10 +43,10 @@ def gen_spec_in_line_report(report_name, course, username):
             
             total_gt_67 = count_gt_67.setdefault(exam['title'], 0)
             
-            if total_gt_67 > 0 and (total_gt_67/total)*100 >=50:
+            if total_gt_67 > 0 and ((total_gt_67/total)*100 >= int(green_param)):
                 row_color[exam['title']] = "green"
-            elif (total_gt_67 > 0) and ((total_gt_67/total)*100 >=40):
-                row_color[exam['title']] = "orange"
+            elif (total_gt_67 > 0) and ((total_gt_67/total)*100 >= int(blue_param)):
+                row_color[exam['title']] = "blue"
             else:
                 row_color[exam['title']] = "red"
         
