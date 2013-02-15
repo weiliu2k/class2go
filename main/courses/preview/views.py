@@ -37,12 +37,16 @@ def preview(request, course_prefix, course_suffix):
     """
     Much code borrowed from registration.views.register
     """
+    hn = request.get_host()
+    if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
+        hn = settings.SITE_URL
+
     if request.common_page_data['is_course_admin']:
-        return redirect('http://'+request.get_host()+reverse('courses.views.main', args=[course_prefix, course_suffix]))
+        return redirect('http://'+hn+reverse('courses.views.main', args=[course_prefix, course_suffix]))
     
     if request.common_page_data['is_course_member'] and not request.common_page_data['course'].preview_only_mode and \
        date.today() >= request.common_page_data['course'].calendar_start :
-        return redirect('http://'+request.get_host()+reverse('courses.views.main', args=[course_prefix, course_suffix]))
+        return redirect('http://'+hn+reverse('courses.views.main', args=[course_prefix, course_suffix]))
 
     if not backend.registration_allowed(request):
         return redirect(disallowed_url)
