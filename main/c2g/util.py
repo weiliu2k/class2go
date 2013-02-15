@@ -28,8 +28,12 @@ def redirects_use_http(response, request):
     '''This function changes all REDIRECT responses to http if they are https.
         Useful for downgrades after login/reg, etc.
     '''
+    hn = request.get_host()
+    if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
+        hn = settings.SITE_URL
+
     if isinstance(response, HttpResponseRedirect):
-        return HttpResponseRedirect(urlparse.urljoin('http://'+request.get_host()+'/',response['Location']))
+        return HttpResponseRedirect(urlparse.urljoin('http://'+hn+'/',response['Location']))
     return response
 
 
@@ -40,7 +44,10 @@ def upgrade_to_https_and_downgrade_upon_redirect(view):
     @wraps (view)
     def inner(request, *args, **kw):
         #explicitly upgrading
+        hn = request.get_host()
+        if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
+            hn = settings.SITE_URL
         if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod') and not request.is_secure():
-            return redirect('https://'+request.get_host()+request.get_full_path())
+            return redirect('https://'+hn+request.get_full_path())
         return redirects_use_http(view(request, *args, **kw),request)
     return inner
