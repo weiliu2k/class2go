@@ -23,6 +23,16 @@ def get_site_url():
     url = 'http://%s/' % (site.domain)
     return url
 
+def get_host_no_port(request):
+    hn = request.get_host()
+    if request.get_host().endswith(":443"):
+        hn = hn[:-4]
+
+    if request.get_host().endswith(":80"):
+        hn = hn[:-3]
+
+    return hn
+
 
 def redirects_use_http(response, request):
     '''This function changes all REDIRECT responses to http if they are https.
@@ -30,7 +40,7 @@ def redirects_use_http(response, request):
     '''
     hn = request.get_host()
     if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
-        hn = settings.SITE_URL
+        hn = get_host_no_port(request)
 
     if isinstance(response, HttpResponseRedirect):
         return HttpResponseRedirect(urlparse.urljoin('http://'+hn+'/',response['Location']))
@@ -46,7 +56,8 @@ def upgrade_to_https_and_downgrade_upon_redirect(view):
         #explicitly upgrading
         hn = request.get_host()
         if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
-            hn = settings.SITE_URL
+            hn = get_host_no_port(request)
+
         if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod') and not request.is_secure():
             return redirect('https://'+hn+request.get_full_path())
         return redirects_use_http(view(request, *args, **kw),request)

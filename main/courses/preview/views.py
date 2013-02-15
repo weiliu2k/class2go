@@ -17,7 +17,7 @@ from django.contrib.auth.views import login
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import login as auth_login
 from django.conf import settings
-from c2g.util import upgrade_to_https_and_downgrade_upon_redirect
+from c2g.util import upgrade_to_https_and_downgrade_upon_redirect, get_host_no_port
 from django.views.decorators.debug import sensitive_post_parameters
 from c2g.models import Video, Instructor, CourseInstructor
 
@@ -39,7 +39,7 @@ def preview(request, course_prefix, course_suffix):
     """
     hn = request.get_host()
     if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
-        hn = settings.SITE_URL
+        hn = get_host_no_port(request)
 
     if request.common_page_data['is_course_admin']:
         return redirect('http://'+hn+reverse('courses.views.main', args=[course_prefix, course_suffix]))
