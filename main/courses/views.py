@@ -14,6 +14,7 @@ from courses.forms import *
 from courses.actions import auth_view_wrapper
 
 from c2g.models import CurrentTermMap
+from c2g.util import get_host_no_port
 import settings, logging
 import datetime
 
@@ -59,7 +60,8 @@ def main(request, course_prefix, course_suffix):
         if not common_page_data['is_course_admin']:
             redir = reverse('courses.preview.views.preview',args=[course_prefix, course_suffix])
             if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
-                redir = 'https://'+settings.SITE_URL+redir
+                redir = 'https://'+request.get_host()+redir
+
             return redirect(redir)
 
     course = common_page_data['course']
