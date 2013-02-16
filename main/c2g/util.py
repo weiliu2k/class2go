@@ -23,17 +23,6 @@ def get_site_url():
     url = 'http://%s/' % (site.domain)
     return url
 
-def get_host_no_port(request):
-    hn = request.get_host()
-    if request.get_host().endswith(":443"):
-        hn = hn[:-4]
-
-    if request.get_host().endswith(":80"):
-        hn = hn[:-3]
-
-    return hn
-
-
 def redirects_use_http(response, request):
     '''This function changes all REDIRECT responses to http if they are https.
         Useful for downgrades after login/reg, etc.
