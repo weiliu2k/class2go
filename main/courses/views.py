@@ -60,7 +60,8 @@ def main(request, course_prefix, course_suffix):
         if not common_page_data['is_course_admin']:
             redir = reverse('courses.preview.views.preview',args=[course_prefix, course_suffix])
             if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
-                redir = 'https://'+get_host_no_port(request)+redir
+                redir = 'https://'+request.get_host()+redir
+
             return redirect(redir)
 
     course = common_page_data['course']
