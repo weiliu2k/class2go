@@ -14,7 +14,6 @@ from courses.forms import *
 from courses.actions import auth_view_wrapper
 
 from c2g.models import CurrentTermMap
-from c2g.util import get_host_no_port
 import settings, logging
 import datetime
 
