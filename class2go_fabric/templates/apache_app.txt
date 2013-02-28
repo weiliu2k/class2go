@@ -39,7 +39,7 @@
     </Location>
     {% endif %}
 
-    WSGIDaemonProcess {{ app_name }} processes=<%= @node['cpu']['total'] %> threads=15 maximum-requests=10000 python-path=/home/ubuntu/{{ app_name }}/main
+    WSGIDaemonProcess {{ app_name }} processes=1 threads=15 maximum-requests=10000 python-path=/home/ubuntu/{{ app_name }}/main
     WSGIProcessGroup {{ app_name }}
 
     ErrorLog ${APACHE_LOG_DIR}/{{ app_name }}-error.log

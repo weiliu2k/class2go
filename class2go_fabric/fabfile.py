@@ -52,6 +52,18 @@ def init_base_ubuntu():
     file_write('/etc/hostname',settings.EC2_TAG)
     run('start hostname')
 
+    # need to change hosts file to avoid warnings on sudo
+
+    run_local('scp ./files/update-hosts.sh '+ env.user + '@' + env.host_string + "/home/"+settings.ADMIN_HOME+"/update-hosts.sh")
+    file_ensure("/home/"+settings.ADMIN_HOME+"/update-hosts.sh", mode = "00755",
+                owner = settings.ADMIN_USER,
+                group=settings.ADMIN_GROUP)
+
+    run('cd /home/'+settings.ADMIN_HOME+'; ./update-hosts.sh remove ' + settings.EC2_TAG + '; ./update-hosts.sh add ' + settings.EC2_TAG)
+
+    run('cd /home/'+settings.ADMIN_HOME+'; rm ./update-hosts.sh')
+
+
     t =  loader.get_template('bash_aliases.txt')
 
     node_type = settings.EC2_TAG.upper()
@@ -63,11 +75,12 @@ def init_base_ubuntu():
                owner = settings.ADMIN_USER,
                group=settings.ADMIN_GROUP)
 
-    contents =  file_read('./files/dot-bashrc')
+    run_local('scp ./files/dot-bashrc '+env.user + '@' + env.host_string + "/home/"+settings.ADMIN_HOME+"/.bashrc")
 
-    file_write("/home/"+settings.ADMIN_HOME+"/.bashrc", contents,mode = "00644",
+    file_ensure("/home/"+settings.ADMIN_HOME+"/.bashrc", mode = "00644",
                owner = settings.ADMIN_USER,
                group=settings.ADMIN_GROUP)
+
 
     run('apt-get update')
     package_ensure('mosh')
@@ -118,7 +131,7 @@ def init_apache():
         file_write("/etc/apache2/sites-available/"+app_settings.app_name, t.render(c),mode = "00644", owner ="root", group="root")
 
         # not sure why this didn't work as run as sudo
-        run("a2ensite " + settings.APP_NAME)
+        run("a2ensite " + app_settings.app_name)
 
         # redirectors
 
@@ -229,7 +242,7 @@ def class2go_deploy():
         if not dir_exists("/home/"+settings.ADMIN_USER+"/"+app_settings.app_name):
             cwd = "cd /home/"+settings.ADMIN_USER+"/"
             cmd = "git clone "+app_settings.git_repo+" "+ app_settings.app_name
-            run(cwd+";"+cmd)
+            run(cwd+";"+cmd,sudo=False)
 
         cwd = "cd /home/"+settings.ADMIN_USER+"/"+app_settings.app_name
         cmd = "git remote prune origin"
@@ -350,8 +363,9 @@ def init_dns():
     python_package_ensure('boto')
     python_package_ensure('dnspython')
 
-    contents = file_local_read('./files/cli53')
-    file_write('/usr/local/bin/cli53', contents, mode="00755",owner="root",group="root")
+    run_local('scp ./files/cli53 '+env.user + '@' + env.host_string + ":/usr/local/bin/cli53")
+
+    file_ensure('/usr/local/bin/cli53',  mode="00755",owner="root",group="root")
     dir_ensure("/etc/route53",mode="00755",owner="root",group="root")
 
     t =  loader.get_template('route53-config.txt')
@@ -418,8 +432,9 @@ def init_util_kelvinator():
 
     package_ensure('libx264-dev')
 
-    contents = file_local_read('./files/ffmpeg')
-    file_write('/usr/local/bin/ffmpeg', contents, mode="00777",owner="root",group="root")
+    run_local('scp ./files/ffmpeg '+env.user + '@' + env.host_string + ":/usr/local/bin/ffmpeg")
+
+    file_ensure('/usr/local/bin/ffmpeg', mode="00777",owner="root",group="root")
 
 
 def init_gdata():
@@ -431,14 +446,15 @@ def init_gdata():
 
     package_ensure('libx264-dev')
 
-    contents = file_local_read('./files/gdata-2.0.17-c2g.tar.gz')
-    file_write('/tmp/gdata-2.0.17-c2g.tar.gz', contents, mode="00644",owner="root",group="root")
+    run_local('scp ./files/gdata-2.0.17-c2g.tar.gz ubuntu@'+env.host_string+':/tmp/gdata-2.0.17-c2g.tar.gz')
+
+    file_ensure('/tmp/gdata-2.0.17-c2g.tar.gz', mode="00644",owner="root",group="root")
 
     # install
-    run('cd /tmp; tar zxf gdata-2.0.17-c2g.tar.gz; cd /tmp/gdata-2.0.17-c2g.tar.gz; python setyp.py install')
+    run('cd /tmp; tar zxf gdata-2.0.17-c2g.tar.gz; cd /tmp/gdata-2.0.17; python setup.py install')
 
     # cleanup
-    run('/tmp; rm -r gdata-2.0.17; rm gdata-2.0.17-c2g.tar.gz ')
+    run('cd /tmp; rm -r gdata-2.0.17; rm gdata-2.0.17-c2g.tar.gz ')
 
 
 def init_shib():
@@ -508,7 +524,6 @@ def init_scalyr():
 
     file_write("/opt/scalyrAgent/configs/agentConfig.json", t.render(c), owner ="root", group="root",check=False)
 
-
     t =  loader.get_template('events.properties.txt')
 
     c = Context({'scalyr_write_key':settings.SCALYR_WRITE_KEY })
@@ -546,7 +561,7 @@ def init_collectstatic():
     for key,value in settings.APPS.items():
         app_settings = AppSettings(key,value)
 
-        cwd = '/home/"+settings.ADMIN_USER+"/'+app_settings.app_name+'/main'
+        cwd = '/home/'+settings.ADMIN_USER+'/'+app_settings.app_name+'/main'
         cmd = 'python manage.py collectstatic --noinput --clear > /tmp/class2go-collectstatic-'+app_settings.app_name+'.log'
 
         run('cd '+cwd+';'+cmd);
