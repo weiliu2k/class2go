@@ -24,8 +24,11 @@ APP_TYPE = "dev"
 
 if APP_TYPE == "dev":
     from dev_settings import *
-else:
+elif APP_TYPE == "prod":
     from prod_settings import *
+elif APP_TYPE == "staging":
+    from staging_settings import *
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
