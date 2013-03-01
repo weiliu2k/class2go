@@ -30,6 +30,7 @@ from django.contrib.auth.decorators import permission_required
 from django.db.models import Q
 from pysimplesoap.client import SoapClient
 from datetime import date
+from django.http import Http404
 
 
 def index(request):
@@ -186,7 +187,13 @@ def default_login(request):
 
 @never_cache
 def shib_login(request):
-    
+
+    # it is possible to navigate directly to this function even when not using Shibboleth
+    # should have a check and redirect to 404
+
+    if settings.SITE_NAME_SHORT != "Stanford":
+        raise Http404
+
     #check if there is valid remote user.
     #if one exists, try to match them
     #if one does not exist, create it and assign to proper institution

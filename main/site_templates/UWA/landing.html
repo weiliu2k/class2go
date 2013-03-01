@@ -21,7 +21,7 @@
     </div>
 
 {% block topnav %}
-    <div class="top-nav" style="top:24px;">
+    <div class="top-nav" style="top:37px;">
 {% if user.is_authenticated %}
        <li>
           <form action="{% url 'auth_logout' %}?next=/{{common_page_data.course_prefix}}/{{common_page_data.course_suffix}}" method="POST">
