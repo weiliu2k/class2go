@@ -10,8 +10,8 @@ import time
 from django.conf import settings
 from class2go_fabric import *
 
-# env.use_ssh_config = True
-
+if settings.VM_TYPE == "VAGRANT":
+    env.use_ssh_config = True
 env.user = settings.ADMIN_USER
 
 class AppSettings:
@@ -24,6 +24,55 @@ class AppSettings:
         self.use_shib = app_value['USE_SHIB']
         self.shib_id = app_value['SHIB_ID']
         self.git_repo = app_value['GIT_REPO']
+
+def setup_dev_vagrant_mysql():
+
+    if not is_sudo():
+        mode_sudo()
+
+    package_ensure('mysql-server')
+    package_ensure('mysql-client')
+
+
+def init_dev_vagrant_db():
+
+    run('cd class2go/main; ./manage.py syncdb')
+    run('cd class2go/main; ./manage.py migrate')
+    run('cd class2go/main; ./manage.py syncdb --database=celery')
+    run('cd class2go/main; ./manage.py migrate --database=celery')
+
+def setup_dev_vagrant():
+
+    if not is_sudo():
+        mode_sudo()
+
+    run('uname -a')
+
+    run('apt-get update')
+    package_ensure('git-core')
+    package_ensure('python-pip')
+    python_package_ensure('django')
+    package_ensure('libmysqlclient-dev')
+    package_ensure('python-dev')
+
+    if not dir_exists('/home/vagrant/class2go'):
+        run('git clone https://github.com/Stanford-Online/class2go.git')
+
+    # Following are needed for Ubuntu dev env
+    run('pip install distribute --upgrade')
+    package_ensure('libsqlite3-dev')
+    package_ensure('libxml2-dev')
+    package_ensure('libxslt-dev')
+    package_ensure('python-dateutil')
+
+
+
+    run('cd class2go; pip install -r requirements.txt')
+
+
+
+    #currently bombs with dateutil?
+    run('cd class2go; pip install -r suggested_requirements.txt')
 
 
 def update_ubuntu():
@@ -38,12 +87,35 @@ def update_ubuntu():
         #run('apt-get upgrade')
 
 
+def test_file():
+    if not is_sudo():
+        mode_sudo()
+
+    # run('rm /home/ubuntu/testfile')
+    # file_upload("/home/ubuntu/testfile","./files/gdata-2.0.17-c2g.tar.gz")
+
+
+    # return
+    if file_exists('/home/ubuntu/testfile'):
+        print 'removing file'
+        run('rm /home/ubuntu/testfile')
+
+    file_upload("/home/testfile","./files/gdata-2.0.17-c2g.tar.gz", scp=True)
+
+    return
+
+    contents = file_local_read("./files/gdata-2.0.17-c2g.tar.gz")
+    file_write("/home/ubuntu/testfile",contents,scp=True)
+    file_ensure("/home/ubuntu/testfile")
 
 def init_base_ubuntu():
 
     """
     Installs all basic packages for Ubuntu
     """
+
+
+
     print(_yellow("...Initialising Base Ubuntu..."))
 
     if not is_sudo():
@@ -124,6 +196,7 @@ def init_apache():
         t =  loader.get_template('apache_app.txt')
         c = Context({ "server_name":app_settings.server_name, "server_alias": app_settings.server_alias,
                    "app_name":app_settings.app_name, "use_shib":app_settings.use_shib, "shib_id":app_settings.shib_id,
+                   "admin_home":settings.ADMIN_HOME
                    })
 
 
@@ -325,8 +398,9 @@ def init_database():
                   "grader_endpoint": settings.GRADER_ENDPOINT
         })
 
+        print settings.ADMIN_USER
         file_write("/home/"+settings.ADMIN_USER+"/"+app_settings.app_name+"/main/database.py", t.render(c),
-                    mode = "00644", owner =settings.ADMIN_USER, group=settings.ADMIN_GROUP)
+                    mode = "00644", owner =settings.ADMIN_USER, group=settings.ADMIN_GROUP,scp=True)
 
 
     dir_ensure("/opt/assets",mode="00777",owner="root",group="root")
@@ -336,7 +410,6 @@ def init_logging():
     """
     Sets up logging
     """
-
     if (not is_sudo()):
         mode_sudo()
 
@@ -442,11 +515,11 @@ def init_gdata():
     if (not is_sudo()):
         mode_sudo()
 
-    print(_yellow("...Initialising GDATA..."))
+    print(_yellow("...Initialising GData..."))
 
     package_ensure('libx264-dev')
 
-    run_local('scp ./files/gdata-2.0.17-c2g.tar.gz ubuntu@'+env.host_string+':/tmp/gdata-2.0.17-c2g.tar.gz')
+    run_local('scp ./files/gdata-2.0.17-c2g.tar.gz '+settings.ADMIN_USER+'@'+env.host_string+':/tmp/gdata-2.0.17-c2g.tar.gz')
 
     file_ensure('/tmp/gdata-2.0.17-c2g.tar.gz', mode="00644",owner="root",group="root")
 

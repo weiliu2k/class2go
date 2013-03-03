@@ -11,10 +11,6 @@ from django.conf import settings
 from class2go_fabric import *
 from fabfile import *
 
-# env.use_ssh_config = True
-
-env.user = settings.ADMIN_USER
-
 def setup_app():
     update_ubuntu()
     init_gdata()
