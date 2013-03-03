@@ -20,10 +20,13 @@ DATABASES = {
     }
 }
 
-APP_TYPE = "dev"
+APP_TYPE = "dev_vagrant"
+VM_TYPE = "VAGRANT"                      # EC2, VAGRANT, LOCALHOST
 
 if APP_TYPE == "dev":
     from dev_settings import *
+elif APP_TYPE == "dev_vagrant":
+    from dev_vagrant_settings import *
 elif APP_TYPE == "prod":
     from prod_settings import *
 elif APP_TYPE == "staging":

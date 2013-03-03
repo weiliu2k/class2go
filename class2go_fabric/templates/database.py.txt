@@ -1,3 +1,5 @@
+import os
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
@@ -26,6 +28,12 @@ DATABASES = {
 # When PRODUCTION=True we don't show stackdumps on errors.  Careful, no quotes.
 PRODUCTION = {{  production }}
 MAINTENANCE_LANDING_PAGE = {{  maintenance_landing_page }}
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+
+LOGGING_DIR = os.path.join(PROJECT_ROOT, "logs")
+LOCAL_CACHE_LOCATION = os.path.join(PROJECT_ROOT, "cache-default")
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 
 INSTANCE = '{{  instance }}'
 APP = '{{  app_name }}'
