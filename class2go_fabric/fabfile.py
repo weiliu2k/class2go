@@ -491,7 +491,7 @@ def init_reporting():
 
     run("{ crontab -l -u user; echo" + cmd + "; } | crontab -u user ")
 
-    cmd = '* 10 20 * 0,7 (cd /home/'+settings.ADMIN_USER+'/class2go/reports; ./manage.py gen_active_course_reports)'
+    cmd = '* 10 20 * 0,7 (cd /home/'+settings.ADMIN_USER+'/class2go/main; ./manage.py gen_active_course_reports)'
 
     run("{ crontab -l -u user; echo" + cmd + "; } | crontab -u user ")
 
