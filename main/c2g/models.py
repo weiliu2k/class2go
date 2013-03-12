@@ -122,6 +122,7 @@ class Course(TimestampMixin, Stageable, Deletable, models.Model):
     handle = models.CharField(max_length=255, null=True, db_index=True)
     preview_only_mode = models.BooleanField(default=True)
     institution_only = models.BooleanField(default=False)
+    preenroll_only = models.BooleanField(default=False)
     share_to = models.ManyToManyField("self",symmetrical=False,related_name='share_from',null=True, blank=True)
     short_description = models.TextField(blank=True)
     prerequisites = models.TextField(blank=True)
@@ -140,8 +141,8 @@ class Course(TimestampMixin, Stageable, Deletable, models.Model):
 
         if not self.logo.name or not self.logo.storage.exists(self.logo.name): 
             return settings.STATIC_URL + "graphics/core/class2go.png"
-        
-        url = self.logo.storage.url(self.logo.name)
+
+        url = self.logo.storage.url_monkeypatched(self.logo.name, querystring_auth=False)
         return url
 
 
@@ -763,7 +764,7 @@ class CourseCertificate(TimestampMixin, models.Model):
             if is_storage_local():
                 url = get_site_url() + default_storage.url(asset_path)
             else:
-                url = default_storage.url_monkeypatched(asset_path, response_headers={'response-content-disposition': 'attachement'})
+                url = default_storage.url_monkeypatched(asset_path, response_headers={'response-content-disposition': 'attachment'})
         return url
 
     def __repr__(self):
@@ -2391,8 +2392,8 @@ class Instructor(TimestampMixin, models.Model):
     def photo_dl_link(self):
         if not self.photo.storage.exists(self.photo.name):
             return ""
-        
-        url = self.photo.storage.url(self.photo.name)
+
+        url = self.photo.storage.url_monkeypatched(self.photo.name, querystring_auth=False)
         return url
     
     def __unicode__(self):
@@ -2879,5 +2880,10 @@ class ContentGroup(models.Model):
     class Meta:
         db_table = u'c2g_content_group'
         
+
+class StudentInvitation(TimestampMixin, models.Model):
+    email = models.CharField(max_length=128, db_index=True)
+    course = models.ForeignKey(Course, db_index=True)
+
 
 
