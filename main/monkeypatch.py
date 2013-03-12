@@ -5,10 +5,8 @@ But then submit your code upstream. While you're waiting for review, add a
 monkeypatch here.
 """
 
-
 def s3boto_dlurl(self, name, response_headers=None, querystring_auth=True):
     """Copy s3boto.S3BotoStorage.url() implementation with flexibility.
-    
     response_headers is normally unsupported, but useful for creating URLs
     that point to resources with peculiar configurations, i.e., 
     'content-disposition': 'attachment'.
@@ -21,7 +19,9 @@ def s3boto_dlurl(self, name, response_headers=None, querystring_auth=True):
     if self.custom_domain:
         return "%s://%s/%s" % ('https' if self.secure_urls else 'http',
                                self.custom_domain, name)
+
     # If response_headers are set, use class-default querysting_auth behavior
+
     if response_headers is not None:
         querystring_auth = self.querystring_auth
 
