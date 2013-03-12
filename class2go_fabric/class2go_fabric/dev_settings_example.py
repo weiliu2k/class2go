@@ -92,5 +92,6 @@ GOOGLE_CLIENT_ID = "nnnnnnnnnnnn.apps.googleusercontent.com"
 GOOGLE_CLIENT_SECRET = "sssssssssssssssssssss"
 
 
-
+USE_SHIB = False
+SHIB_ID = "1234567890"
 

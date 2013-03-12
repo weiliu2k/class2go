@@ -27,7 +27,9 @@ def deploy_update():
 
     run('git clone https://github.com/uwacsp/class2go.git')
 
-    run('cd class2go/main; cp ../../'+ new_dir + '/settings.py .;' + ' cp ../../'+ new_dir + '/database.py .')
+    run('chown -R ubuntu class2go')
+
+    run('cd class2go/main; cp ../../'+ new_dir + '/main/settings.py .;' + ' cp ../../'+ new_dir + '/main/database.py .')
 
     run('cd class2go/main; sudo python manage.py collectstatic --noinput')
 

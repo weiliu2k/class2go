@@ -121,12 +121,12 @@ def init_base_ubuntu():
     if not is_sudo():
         mode_sudo()
 
-    file_write('/etc/hostname',settings.EC2_TAG, scp=True)
-    run('start hostname')
+    file_write('hostname',settings.EC2_TAG, scp=True)
+    run('mv hostname /etc/hostname; start hostname')
 
     # need to change hosts file to avoid warnings on sudo
 
-    file_upload('./files/update-hosts.sh', '/home/'+settings.ADMIN_HOME+'/update-hosts.sh')
+    file_upload('/home/'+settings.ADMIN_HOME+'/update-hosts.sh', './files/update-hosts.sh', scp=True)
     file_ensure("/home/"+settings.ADMIN_HOME+"/update-hosts.sh", mode = "00755",
                 owner = settings.ADMIN_USER,
                 group=settings.ADMIN_GROUP)
@@ -147,7 +147,7 @@ def init_base_ubuntu():
                owner = settings.ADMIN_USER,
                group=settings.ADMIN_GROUP, scp=True)
 
-    file_upload("/home/"+settings.ADMIN_HOME+"/.bashrc", "./files/dot-bashrc")
+    file_upload("/home/"+settings.ADMIN_HOME+"/.bashrc", "./files/dot-bashrc", scp=True)
 
     file_ensure("/home/"+settings.ADMIN_HOME+"/.bashrc", mode = "00644",
                owner = settings.ADMIN_USER,
@@ -165,7 +165,7 @@ def init_base_ubuntu():
     package_ensure('python-mysqldb')
     python_package_ensure('django')
     python_package_ensure('South')
-    run('apt-get install libjpeg-dev')
+    run('apt-get install libjpeg-dev -y')
     file_link('/usr/lib/x86_64-linux-gnu/libjpeg.so','/usr/lib/libjpeg.so',owner='root',group='root')
 
     python_package_ensure('PIL')
@@ -201,7 +201,15 @@ def init_apache():
 
 
         package_ensure('libapache2-mod-wsgi')
-        file_write("/etc/apache2/sites-available/"+app_settings.app_name, t.render(c),mode = "00644", owner ="root", group="root",scp=True)
+
+
+
+
+        file_write(app_settings.app_name+"apache", t.render(c), scp=True)
+
+        run('mv ' + app_settings.app_name+"apache " + "/etc/apache2/sites-available/"+app_settings.app_name)
+
+        file_ensure("/etc/apache2/sites-available/"+app_settings.app_name, mode = "00644", owner ="root", group="root")
 
         # not sure why this didn't work as run as sudo
         run("a2ensite " + app_settings.app_name)
@@ -213,7 +221,9 @@ def init_apache():
             t =  loader.get_template('apache_redirect.txt')
             c = Context({ "hostname_from": value['FROM'], "hostname_to": value['TO'] })
 
-            file_write("/etc/apache2/sites-available/"+app_settings.app_name+"-redirect", t.render(c),mode = "00644", owner ="root", group="root", scp=True)
+            file_write(app_settings.app_name+"-redirect", t.render(c), scp=True)
+            run("mv " + app_settings.app_name+"-redirect /etc/apache2/sites-available/"+app_settings.app_name+"-redirect")
+            file_ensure("/etc/apache2/sites-available/"+app_settings.app_name+"-redirect",mode = "00644", owner ="root", group="root")
             run("a2ensite " + app_settings.app_name+"-redirect")
 
         run('a2dissite default')
@@ -241,6 +251,8 @@ def init_python():
     python_package_ensure('django_coverage')
     python_package_ensure('xhtml2pdf')
     python_package_ensure('markdown')
+
+
 
 def init_celery():
     """
@@ -302,6 +314,7 @@ def class2go_deploy():
 
     print(_yellow("...Deploying Application..."))
 
+    # for dev
 
     for key,value in settings.APPS.items():
         app_settings = AppSettings(key,value)
@@ -315,8 +328,10 @@ def class2go_deploy():
         if not dir_exists("/home/"+settings.ADMIN_USER+"/"+app_settings.app_name):
             cwd = "cd /home/"+settings.ADMIN_USER+"/"
             cmd = "git clone "+app_settings.git_repo+" "+ app_settings.app_name
-            run(cwd+";"+cmd,sudo=False)
+            run(cwd+";"+cmd)
+            run('chown -R '+ settings.ADMIN_USER + ' ' + app_settings.app_name)
 
+        dir_ensure(app_settings.app_name + "/main/static", mode='00777')
         cwd = "cd /home/"+settings.ADMIN_USER+"/"+app_settings.app_name
         cmd = "git remote prune origin"
         run(cwd+";"+cmd)
@@ -415,11 +430,15 @@ def init_logging():
 
     print(_yellow("...Initialising Logging..."))
 
+    # if dev then logging is in the home directory?
+
+    dir_ensure("class2go/main/logs",mode="00777")
     dir_ensure("/var/log/django",mode="00777",owner="root",group="root")
 
     for key,value in settings.APPS.items():
         app_settings = AppSettings(key,value)
 
+        file_ensure("class2go/main/logs/"+app_settings.app_name+"-django.log",mode='00666')
         file_ensure("/var/log/django/"+app_settings.app_name+"-django.log",mode='00666',owner='root',group='root')
 
 
@@ -436,7 +455,7 @@ def init_dns():
     python_package_ensure('boto')
     python_package_ensure('dnspython')
 
-    file_upload('./files/cli53 ', '/usr/local/bin/cli53')
+    file_upload('/usr/local/bin/cli53', './files/cli53', scp=True)
     file_ensure('/usr/local/bin/cli53',  mode="00755",owner="root",group="root")
 
     dir_ensure("/etc/route53",mode="00755",owner="root",group="root")
@@ -452,13 +471,18 @@ def init_dns():
                   "dns_ttl": settings.TTL
     })
 
-    file_write("/etc/route53/config", t.render(c), mode='00644', owner ="root", group="root", scp=True)
+    file_write("config", t.render(c), scp=True)
+    run('mv config /etc/route53/config')
+    file_ensure("/etc/route53/config", mode='00644', owner ="root", group="root")
 
-    contents = file_local_read('./files/update-route53-dns.sh')
-    file_write('/usr/sbin/update-route53-dns.sh', contents, mode="00755",owner="root",group="root", scp=True)
+    file_upload('update-route53-dns.sh', './files/update-route53-dns.sh')
+    run('mv update-route53-dns.sh /usr/sbin/update-route53-dns.sh')
+    file_ensure('/usr/sbin/update-route53-dns.sh', mode="00755",owner="root",group="root")
 
-    contents = file_local_read('./files/update-route53-dns.conf')
-    file_write('/etc/init/update-route53-dns.conf', contents, mode="00644",owner="root",group="root", scp=True)
+    file_upload('update-route53-dns.conf', './files/update-route53-dns.conf')
+    run('mv update-route53-dns.conf /etc/init/update-route53-dns.conf')
+    file_ensure('/etc/init/update-route53-dns.conf', mode="00644",owner="root",group="root")
+
 
     run('start update-route53-dns')
 
@@ -540,7 +564,7 @@ def init_gdata():
 
     package_ensure('libx264-dev')
 
-    file_upload('./files/gdata-2.0.17-c2g.tar.gz','/tmp/gdata-2.0.17-c2g.tar.gz')
+    file_upload('/tmp/gdata-2.0.17-c2g.tar.gz', './files/gdata-2.0.17-c2g.tar.gz', scp=True)
 
     file_ensure('/tmp/gdata-2.0.17-c2g.tar.gz', mode="00644",owner="root",group="root")
 
