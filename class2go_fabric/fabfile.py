@@ -121,12 +121,12 @@ def init_base_ubuntu():
     if not is_sudo():
         mode_sudo()
 
-    file_write('/etc/hostname',settings.EC2_TAG)
+    file_write('/etc/hostname',settings.EC2_TAG, scp=True)
     run('start hostname')
 
     # need to change hosts file to avoid warnings on sudo
 
-    run_local('scp ./files/update-hosts.sh '+ env.user + '@' + env.host_string + "/home/"+settings.ADMIN_HOME+"/update-hosts.sh")
+    file_upload('./files/update-hosts.sh', '/home/'+settings.ADMIN_HOME+'/update-hosts.sh')
     file_ensure("/home/"+settings.ADMIN_HOME+"/update-hosts.sh", mode = "00755",
                 owner = settings.ADMIN_USER,
                 group=settings.ADMIN_GROUP)
@@ -145,9 +145,9 @@ def init_base_ubuntu():
 
     file_write("/home/"+settings.ADMIN_HOME+"/.bash_aliases", t.render(c),mode = "00644",
                owner = settings.ADMIN_USER,
-               group=settings.ADMIN_GROUP)
+               group=settings.ADMIN_GROUP, scp=True)
 
-    run_local('scp ./files/dot-bashrc '+env.user + '@' + env.host_string + "/home/"+settings.ADMIN_HOME+"/.bashrc")
+    file_upload("/home/"+settings.ADMIN_HOME+"/.bashrc", "./files/dot-bashrc")
 
     file_ensure("/home/"+settings.ADMIN_HOME+"/.bashrc", mode = "00644",
                owner = settings.ADMIN_USER,
@@ -201,7 +201,7 @@ def init_apache():
 
 
         package_ensure('libapache2-mod-wsgi')
-        file_write("/etc/apache2/sites-available/"+app_settings.app_name, t.render(c),mode = "00644", owner ="root", group="root")
+        file_write("/etc/apache2/sites-available/"+app_settings.app_name, t.render(c),mode = "00644", owner ="root", group="root",scp=True)
 
         # not sure why this didn't work as run as sudo
         run("a2ensite " + app_settings.app_name)
@@ -213,7 +213,7 @@ def init_apache():
             t =  loader.get_template('apache_redirect.txt')
             c = Context({ "hostname_from": value['FROM'], "hostname_to": value['TO'] })
 
-            file_write("/etc/apache2/sites-available/"+app_settings.app_name+"-redirect", t.render(c),mode = "00644", owner ="root", group="root")
+            file_write("/etc/apache2/sites-available/"+app_settings.app_name+"-redirect", t.render(c),mode = "00644", owner ="root", group="root", scp=True)
             run("a2ensite " + app_settings.app_name+"-redirect")
 
         run('a2dissite default')
@@ -279,13 +279,13 @@ def init_celery():
         t =  loader.get_template('celeryd-init-script.txt')
         c = Context({ "app_name":app_settings.app_name })
 
-        file_write("/etc/init.d/celeryd-/"+app_settings.app_name, t.render(c),mode = "00755", owner ="root", group="root")
+        file_write("/etc/init.d/celeryd-/"+app_settings.app_name, t.render(c),mode = "00755", owner ="root", group="root", scp=True)
 
         # configure celery config
 
         t =  loader.get_template('celeryd-init-config.txt')
 
-        file_write("/etc/default/celeryd-/"+app_settings.app_name, t.render(c),mode = "00644", owner ="root", group="root")
+        file_write("/etc/default/celeryd-/"+app_settings.app_name, t.render(c),mode = "00644", owner ="root", group="root", scp=True)
 
         # run celery
 
@@ -350,7 +350,7 @@ def init_dbdump():
                   "readonly_database_password": settings.READONLY_DATABASE_PASSWORD, "readonly_database_instance": settings.READONLY_DATABASE_INSTANCE })
 
     file_write("/etc/cron/daily.d/proddump-daily", t.render(c),mode = "00755", owner =settings.ADMIN_USER,
-                group=settings.ADMIN_GROUP)
+                group=settings.ADMIN_GROUP, scp=True)
 
 def init_database():
     """
@@ -436,9 +436,9 @@ def init_dns():
     python_package_ensure('boto')
     python_package_ensure('dnspython')
 
-    run_local('scp ./files/cli53 '+env.user + '@' + env.host_string + ":/usr/local/bin/cli53")
-
+    file_upload('./files/cli53 ', '/usr/local/bin/cli53')
     file_ensure('/usr/local/bin/cli53',  mode="00755",owner="root",group="root")
+
     dir_ensure("/etc/route53",mode="00755",owner="root",group="root")
 
     t =  loader.get_template('route53-config.txt')
@@ -452,15 +452,36 @@ def init_dns():
                   "dns_ttl": settings.TTL
     })
 
-    file_write("/etc/route53/config", t.render(c), mode='00644', owner ="root", group="root")
+    file_write("/etc/route53/config", t.render(c), mode='00644', owner ="root", group="root", scp=True)
 
     contents = file_local_read('./files/update-route53-dns.sh')
-    file_write('/usr/sbin/update-route53-dns.sh', contents, mode="00755",owner="root",group="root")
+    file_write('/usr/sbin/update-route53-dns.sh', contents, mode="00755",owner="root",group="root", scp=True)
 
     contents = file_local_read('./files/update-route53-dns.conf')
-    file_write('/etc/init/update-route53-dns.conf', contents, mode="00644",owner="root",group="root")
+    file_write('/etc/init/update-route53-dns.conf', contents, mode="00644",owner="root",group="root", scp=True)
 
     run('start update-route53-dns')
+
+def run_reports():
+
+    run('cd ./class2go/reports; ./users_by_class.sh')
+    cmd = 'scp '+settings.ADMIN_USER+'@'+fabric.api.env.host_string+':~/class2go/reports/users_by_class.png .'
+    run_local(cmd)
+    sendmail_cmd = 'python ./files/sendmail.py -u ' + settings.REPORT_SMTP_USERNAME + ' -p '+ settings.REPORT_SMTP_PASSWORD +\
+                   ' -f ' + settings.REPORT_SMTP_FROM + ' -t ' + settings.REPORT_SMTP_TO + ' -a users_by_class.png ' + \
+                   ' -s "Daily report" -m "Daily report"'
+    print(sendmail_cmd)
+    run_local(sendmail_cmd)
+
+    run('cd ./class2go/reports; ./users_by_day.sh')
+    cmd = 'scp '+settings.ADMIN_USER+'@'+fabric.api.env.host_string+':~/class2go/reports/users_by_day.png .'
+    run_local(cmd)
+    sendmail_cmd = 'python ./files/sendmail.py -u ' + settings.REPORT_SMTP_USERNAME + ' -p '+ settings.REPORT_SMTP_PASSWORD + \
+                   ' -f ' + settings.REPORT_SMTP_FROM + ' -t ' + settings.REPORT_SMTP_TO + ' -a users_by_day.png ' + \
+                   ' -s "Daily report" -m "Daily report"'
+    print(sendmail_cmd)
+    run_local(sendmail_cmd)
+
 
 
 def init_reporting():
@@ -481,7 +502,7 @@ def init_reporting():
                   "readonly_database_instance": settings.READONLY_DATABASE_INSTANCE })
 
     file_write("/home/"+settings.ADMIN_USER+"/.my.cnf", t.render(c),mode = "00644",
-                owner =settings.ADMIN_USER, group=settings.ADMIN_GROUP)
+                owner =settings.ADMIN_USER, group=settings.ADMIN_GROUP, scp=True)
 
     cmd = '* 10 * * 0,7 (cd /home/'+settings.ADMIN_USER+'/class2go/reports; ./users_by_class.sh ' + settings.REPORT_EMAIL + ')'
 
@@ -505,7 +526,7 @@ def init_util_kelvinator():
 
     package_ensure('libx264-dev')
 
-    run_local('scp ./files/ffmpeg '+env.user + '@' + env.host_string + ":/usr/local/bin/ffmpeg")
+    run_upload('./files/ffmpeg','/usr/local/bin/ffmpeg')
 
     file_ensure('/usr/local/bin/ffmpeg', mode="00777",owner="root",group="root")
 
@@ -519,7 +540,7 @@ def init_gdata():
 
     package_ensure('libx264-dev')
 
-    run_local('scp ./files/gdata-2.0.17-c2g.tar.gz '+settings.ADMIN_USER+'@'+env.host_string+':/tmp/gdata-2.0.17-c2g.tar.gz')
+    file_upload('./files/gdata-2.0.17-c2g.tar.gz','/tmp/gdata-2.0.17-c2g.tar.gz')
 
     file_ensure('/tmp/gdata-2.0.17-c2g.tar.gz', mode="00644",owner="root",group="root")
 
@@ -553,21 +574,21 @@ def init_shib():
 
     c = Context({ "shib_entity_id":settings.SHIB_ID, "shib_sp_key": settings.SHIB_SP_KEY, "shib_sp_cert": settings.SHIB_SP_CERT })
 
-    file_write("/etc/shibboleth/shibboleth2.xml", t.render(c), mode="00644", owner ="root", group="root")
+    file_write("/etc/shibboleth/shibboleth2.xml", t.render(c), mode="00644", owner ="root", group="root", scp=True)
 
     t =  loader.get_template('attribute-map.xml.txt')
-    file_write("/etc/shibboleth/attribute-map.xml", t.render(c), mode = "00644", owner ="root", group="root")
+    file_write("/etc/shibboleth/attribute-map.xml", t.render(c), mode = "00644", owner ="root", group="root", scp=True)
 
     t =  loader.get_template('class.pem.txt')
-    file_write("/etc/shibboleth/class.pem", t.render(c),mode = "00644", owner ="_shibd", group="_shibd")
+    file_write("/etc/shibboleth/class.pem", t.render(c),mode = "00644", owner ="_shibd", group="_shibd", scp=True)
 
     t =  loader.get_template('class.key.txt')
-    file_write("/etc/shibboleth/class.key", t.render(c),mode = "00600", owner ="_shibd", group="_shibd")
+    file_write("/etc/shibboleth/class.key", t.render(c),mode = "00600", owner ="_shibd", group="_shibd", scp=True)
 
     dir_ensure("/etc/shibboleth/metadata",mode='00755', owner='_shibd', group='_shibd')
 
     contents = file_local_read('./files/Stanford-metadata.xml')
-    file_write('/etc/shibboleth/metadata/Stanford-metadata.xml', contents, mode="00644",owner="root",group="root")
+    file_write('/etc/shibboleth/metadata/Stanford-metadata.xml', contents, mode="00644",owner="root",group="root", scp=True)
 
 
 def init_scalyr():
@@ -595,13 +616,13 @@ def init_scalyr():
 
     c = Context({ })
 
-    file_write("/opt/scalyrAgent/configs/agentConfig.json", t.render(c), owner ="root", group="root",check=False)
+    file_write("/opt/scalyrAgent/configs/agentConfig.json", t.render(c), owner ="root", group="root",check=False, scp=True)
 
     t =  loader.get_template('events.properties.txt')
 
     c = Context({'scalyr_write_key':settings.SCALYR_WRITE_KEY })
 
-    file_write("/opt/scalyrAgent/configs/events.properties", t.render(c), owner ="root", group="root")
+    file_write("/opt/scalyrAgent/configs/events.properties", t.render(c), owner ="root", group="root", scp=True)
 
     run('cd /opt/scalyrAgent; bash agent.sh install_rcinit')
 
@@ -674,7 +695,7 @@ def init_s3cmd():
                   "aws_access_secret": settings.AWS_SECRET_ACCESS_KEY
                                    })
 
-    file_write("/opt/class2go/s3cmd.conf", t.render(c), mode='00644', owner =settings.ADMIN_USER, group=settings.ADMIN_GROUP)
+    file_write("/opt/class2go/s3cmd.conf", t.render(c), mode='00644', owner =settings.ADMIN_USER, group=settings.ADMIN_GROUP, scp=True)
 
 
 

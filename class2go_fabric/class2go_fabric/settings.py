@@ -20,8 +20,8 @@ DATABASES = {
     }
 }
 
-APP_TYPE = "dev_vagrant"
-VM_TYPE = "VAGRANT"                      # EC2, VAGRANT, LOCALHOST
+APP_TYPE = "dev"
+VM_TYPE = "EC2"                      # EC2, VAGRANT, LOCALHOST
 
 if APP_TYPE == "dev":
     from dev_settings import *

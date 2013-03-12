@@ -6,7 +6,7 @@ EC2_SECURITY = "prod"
 EC2_INSTANCE_TYPE = "m1.small"
 EC2_KEY_PAIR = "KeyPair"
 EC2_TAG = "app2.dev"
-
+EC2_ELB = "UWAC2GDev"
 
 # "c2g_fab_web" => {
 # AWS GLOBAL
