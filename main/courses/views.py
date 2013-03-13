@@ -11,7 +11,7 @@ from django.views.decorators.cache import cache_page
 
 from courses.forms import *
 
-from courses.actions import auth_view_wrapper
+from courses.actions import auth_view_wrapper, is_member_of_course
 
 from c2g.models import CurrentTermMap
 import settings, logging
@@ -53,9 +53,11 @@ def main(request, course_prefix, course_suffix):
     #    raise Http404
 
     common_page_data=request.common_page_data
-    ##JASON 9/5/12###
-    ##For Launch, but I don't think it needs to be removed later##
-    if common_page_data['course'].preview_only_mode:
+
+    user = request.user
+    course = common_page_data['course']
+
+    if course.preview_only_mode or not user.is_authenticated() or (user.is_authenticated() and not is_member_of_course(course, user)):
         if not common_page_data['is_course_admin']:
             redir = reverse('courses.preview.views.preview',args=[course_prefix, course_suffix])
             if (settings.INSTANCE == 'stage' or settings.INSTANCE == 'prod'):
@@ -63,18 +65,19 @@ def main(request, course_prefix, course_suffix):
 
             return redirect(redir)
 
-    course = common_page_data['course']
-    announcement_list = Announcement.objects.getByCourse(course=common_page_data['course']).order_by('-time_created')[:11]
+
+    announcement_list = Announcement.objects.getByCourse(course=course).order_by('-time_created')[:11]
     if len(announcement_list) > 10:
         many_announcements = True
         announcement_list = announcement_list[0:10]
     else:
         many_announcements = False
     
-    if request.user.is_authenticated():
+    if user.is_authenticated():
         is_logged_in = 1
     else:
         is_logged_in = 0
+
 
     return render_to_response('courses/view.html',
             {'common_page_data':    common_page_data,
