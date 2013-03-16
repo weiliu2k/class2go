@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.test import LiveServerTestCase
 from nose.plugins.attrib import attr
@@ -61,6 +60,8 @@ class SeleniumTestBase(LiveServerTestCase):
         inputEle.submit()
 
         # wait at most 10 seconds or until we see evidence of login
+
+
         if settings.SITE_NAME_SHORT == "Stanford":
             WebDriverWait(browser, 10).until(lambda browser : browser.find_element_by_xpath('//span[contains(text(), "Welcome")]'))
         else:
