@@ -2398,7 +2398,10 @@ class Instructor(TimestampMixin, models.Model):
         if not self.photo.storage.exists(self.photo.name):
             return ""
 
-        url = self.photo.storage.url_monkeypatched(self.photo.name, querystring_auth=False)
+        if settings.DEFAULT_FILE_STORAGE == 'django.core.files.storage.FileSystemStorage':
+            url = self.photo.storage.url(self.photo.name, querystring_auth=False)
+        else:
+            url = self.photo.storage.url_monkeypatched(self.photo.name, querystring_auth=False)
         return url
     
     def __unicode__(self):

@@ -257,6 +257,12 @@ Instructor  boxes
 .instructor-box {
 }
 
+div.instructor-box  {
+    overflow:hidden;
+    padding-bottom: 20px;
+}
+
+
 .instructor-box .row {
 	background-color: #FCFCFC;
 	border: 1px solid #EEEEEE;
