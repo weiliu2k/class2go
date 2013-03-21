@@ -23,11 +23,11 @@ def get_site_url():
     url = 'http://%s/' % (site.domain)
     return url
 
+
 def redirects_use_http(response, request):
     '''This function changes all REDIRECT responses to http if they are https.
         Useful for downgrades after login/reg, etc.
     '''
-
     if isinstance(response, HttpResponseRedirect):
         return HttpResponseRedirect(urlparse.urljoin('http://'+request.get_host()+'/',response['Location']))
     return response
