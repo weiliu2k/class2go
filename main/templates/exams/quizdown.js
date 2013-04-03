@@ -34,6 +34,7 @@ c2gXMLParse.parseQuizDown = function () {
                    //console.log(obj.meta);
                    var outer_mDOM = c2gXMLParse.importMeta(obj.meta);
                    c2gXMLParse.markdown2quiz(obj.html, outer_mDOM);
+                   c2gXMLParse.renderPreview();
                }
                
            });
@@ -71,7 +72,7 @@ c2gXMLParse.importMeta = function (meta) {
                  k == "late_penalty"         || kslug == "late_penalty"         ||
                  k == "num_subs_permitted"   || kslug == "num_subs_permitted"   ||
                  k == "resubmission_penalty" || kslug == "resubmission_penalty" ||
-                 k == "description") {
+                 k == "description"          || kslug == "daily_late_penalty") {
             $('#'+kslug).val(value);
         }
         else if (k == "invideo" && value.toLowerCase() != "false") {
