@@ -32,8 +32,6 @@ def preview(request, course_prefix, course_suffix):
     """
     Much code borrowed from registration.views.register
     """
-
-
     if request.common_page_data['is_course_admin']:
         return redirect('http://'+request.get_host()+reverse('courses.views.main', args=[course_prefix, course_suffix]))
     

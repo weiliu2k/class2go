@@ -2518,7 +2518,6 @@ class Instructor(TimestampMixin, models.Model):
     def photo_dl_link(self):
         if not self.photo.storage.exists(self.photo.name):
             return ""
-
         if is_storage_local():
             url = get_site_url() + self.photo.storage.url(self.photo.name)
         else:

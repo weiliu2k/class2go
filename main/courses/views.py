@@ -82,7 +82,7 @@ def main(request, course_prefix, course_suffix):
     share_block_title = None
     share_block_type = 'standard'
     
-    if user.is_authenticated():
+    if request.user.is_authenticated():
         is_logged_in = 1
         
         # Pass whether people get a cert and what it is to main page for when they finish course.
