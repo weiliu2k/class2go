@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/core/responsive.css" />
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.22/themes/ui-lightness/jquery-ui.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/core/body.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/core/font-awesome.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/core/divs.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/core/analogclock.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/sites/{{ SITE_NAME_SHORT }}/styles.css" />
@@ -188,6 +189,7 @@
 
     {% include  "footer.html"  %}
 
+    {% block jabber_block %}{% endblock %}
 
     {% block bottom_scripts %}
     <script type="text/javascript" src="{{ STATIC_URL }}js/core/jquery-ui-timepicker-addon.js"></script>
@@ -303,20 +305,10 @@
 	Accessibility toggle
 	*/
         
-        var menuVoiceoverSetup = function() {
+        $(document).ready(function (){
             var expanded = ", expanded, click to collapse";
             var collapsed = ", collapsed, click to expand";
             
-            /*
-                Initial Setting: collapsed
-            .focus
-                collapsed    1st voiceover - good
-            .keydown
-                expanded    2nd voiceover - !!!!
-            .keypress
-            .click
-                collapsed    3rd voiceover - good
-            */
             $('.dropdown a, .accordion-heading a').keydown(function(event){
                 if ($(this).hasClass('closed')) {
                     $('.hidden-accessible', this).text(expanded);
@@ -330,12 +322,7 @@
                 $('.hidden-accessible', this).text(collapsed);
                 $(this).addClass('closed');
             });
-        }
-        
-        $(document).ready(function (){
-            menuVoiceoverSetup();
         });
-        
     </script>
     {% endblock bottom_scripts %}
     <script type="text/javascript">
