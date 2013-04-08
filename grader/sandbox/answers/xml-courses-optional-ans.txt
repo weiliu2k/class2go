@@ -1,0 +1,219 @@
+[
+    #Answers to query exercise set 1 (10 exercises)
+    #Each answer consists of an array of tuples
+    
+    #1
+    ('''CS124''', 'XPath'),    
+    
+    #2
+    ('''CS124 LING180''', 'XPath'),      
+    
+    #3
+    ('''CS107 CS228''', 'XPath'),
+    
+    #4
+    ('''10''', 'XPath'),
+    
+    #5
+    ('''<Title>Introduction to Databases</Title>''', 'XPath'),
+    
+    #6
+    ('''<Title>Programming Methodology</Title>
+<Title>Programming Abstractions</Title>''', 'XPath'),
+    
+    #7
+    ('''<Title>Machine Learning</Title>''', 'XPath'),    
+    
+    #8
+    ('''CS106B CS107 CS109 EE108B''', 'XPath'),      
+
+    #9
+    ('''<Summary>
+   <Course Enrollment="60">
+      <Title>From Languages to Information</Title>
+   </Course>
+   <Course Enrollment="90">
+      <Title>Compilers</Title>
+   </Course>
+   <Course Enrollment="110">
+      <Title>Structured Probabilistic Models: Principles and Techniques</Title>
+   </Course>
+   <Course Enrollment="130">
+      <Title>Introduction to Databases</Title>
+   </Course>
+   <Course Enrollment="180">
+      <Title>Artificial Intelligence: Principles and Techniques</Title>
+   </Course>
+   <Course Enrollment="280">
+      <Title>Introduction to Probability for Computer Scientists</Title>
+   </Course>
+   <Course Enrollment="320">
+      <Title>Machine Learning</Title>
+   </Course>
+   <Course Enrollment="500">
+      <Title>Computer Organization and Systems</Title>
+   </Course>
+   <Course Enrollment="620">
+      <Title>Programming Abstractions</Title>
+   </Course>
+   <Course Enrollment="1070">
+      <Title>Programming Methodology</Title>
+   </Course>
+</Summary>''', 'XPath'),        
+    
+    #10
+    ('''<Professors>
+   <Professor>
+      <First_Name>Alex</First_Name>
+      <Middle_Initial>S.</Middle_Initial>
+      <Last_Name>Aiken</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>William</First_Name>
+      <Middle_Initial>J.</Middle_Initial>
+      <Last_Name>Dally</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Mark</First_Name>
+      <Middle_Initial>A.</Middle_Initial>
+      <Last_Name>Horowitz</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Dan</First_Name>
+      <Last_Name>Jurafsky</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Daphne</First_Name>
+      <Last_Name>Koller</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Beth</First_Name>
+      <Last_Name>Levin</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Subhasish</First_Name>
+      <Last_Name>Mitra</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Andrew</First_Name>
+      <Last_Name>Ng</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Oyekunle</First_Name>
+      <Last_Name>Olukotun</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Eric</First_Name>
+      <Last_Name>Roberts</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Mehran</First_Name>
+      <Last_Name>Sahami</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Sebastian</First_Name>
+      <Last_Name>Thrun</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Jennifer</First_Name>
+      <Last_Name>Widom</Last_Name>
+   </Professor>
+</Professors>''', 'XPath'),           
+    
+    #11
+    ('''<Inverted_Course_Catalog>
+   <Professor>
+      <First_Name>Alex</First_Name>
+      <Middle_Initial>S.</Middle_Initial>
+      <Last_Name>Aiken</Last_Name>
+      <Courses>
+         <Course>CS143</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>William</First_Name>
+      <Middle_Initial>J.</Middle_Initial>
+      <Last_Name>Dally</Last_Name>
+      <Courses>
+         <Course>EE108B</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Mark</First_Name>
+      <Middle_Initial>A.</Middle_Initial>
+      <Last_Name>Horowitz</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Dan</First_Name>
+      <Last_Name>Jurafsky</Last_Name>
+      <Courses>
+         <Course>CS124</Course>
+         <Course>LING180</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Daphne</First_Name>
+      <Last_Name>Koller</Last_Name>
+      <Courses>
+         <Course>CS228</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Beth</First_Name>
+      <Last_Name>Levin</Last_Name>
+   </Professor>
+   <Professor>
+      <First_Name>Subhasish</First_Name>
+      <Last_Name>Mitra</Last_Name>
+      <Courses>
+         <Course>EE108A</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Andrew</First_Name>
+      <Last_Name>Ng</Last_Name>
+      <Courses>
+         <Course>CS221</Course>
+         <Course>CS229</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Oyekunle</First_Name>
+      <Last_Name>Olukotun</Last_Name>
+      <Courses>
+         <Course>EE108B</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Eric</First_Name>
+      <Last_Name>Roberts</Last_Name>
+      <Courses>
+         <Course>CS106A</Course>
+         <Course>CS106B</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Mehran</First_Name>
+      <Last_Name>Sahami</Last_Name>
+      <Courses>
+         <Course>CS106A</Course>
+         <Course>CS109</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Sebastian</First_Name>
+      <Last_Name>Thrun</Last_Name>
+      <Courses>
+         <Course>CS221</Course>
+      </Courses>
+   </Professor>
+   <Professor>
+      <First_Name>Jennifer</First_Name>
+      <Last_Name>Widom</Last_Name>
+      <Courses>
+         <Course>CS145</Course>
+      </Courses>
+   </Professor>
+</Inverted_Course_Catalog>''', 'XPath'),   
+    
+]

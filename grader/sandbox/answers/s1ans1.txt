@@ -1,0 +1,11 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+    ([('Raiders of the Lost Ark',), ('E.T.',)], False),
+    ([(1937,), (1939,), (1981,), (2009,)], True),
+    ([('Star Wars',), ('Titanic',)], False),
+    ([('Avatar', 'James Cameron'), ('Titanic', 'James Cameron'), ('E.T.', 'Steven Spielberg'), ('Raiders of the Lost Ark', 'Steven Spielberg')], True),
+    ([('Snow White', 4.5)], False),
+]

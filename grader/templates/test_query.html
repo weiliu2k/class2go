@@ -1,0 +1,121 @@
+<html>
+<head>
+  <title>C2G DB-Class Exercise Test</title> 
+
+  <!-- CSS -->
+  <link type="text/css" rel="stylesheet" href="/static/css/c2g_grader.css" />
+</head>
+<body>
+
+<h1><a href="/">Exercises</a> <span class="separator">&raquo;</span> SQL Movie-Rating Query Exercises (assigned)</h1>
+<span class="instructions">
+  <b>Note:</b> Your queries are executed using SQLite, so you must conform to the SQL constructs supported by SQLite.
+</span>
+
+<!-- Question 1 -->
+<div class="question" data-qnum="1">
+    {% csrf_token %}
+    <h2>Question 1</h2>
+  <p>
+    Find the titles of all movies directed by Steven Spielberg.
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 2 -->
+<div class="question" data-qnum="2">
+  <h2>Question 2</h2>
+  <p>
+    Find all years that have a movie that received a rating of 4 or 5, and sort them in increasing order.
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 3 -->
+<div class="question" data-qnum="3">
+  <h2>Question 3</h2>
+  <p>
+    Find the titles of all movies that have no ratings. 
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 4 -->
+<div class="question" data-qnum="4">
+  <h2>Question 4</h2>
+  <p>
+    Some reviewers didn't provide a date with their rating. Find the names of all reviewers who have ratings with a NULL value for the date. 
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 5 -->
+<div class="question" data-qnum="5">
+  <h2>Question 5</h2>
+  <p>
+    Write a query to return the ratings data in a more readable format: reviewer name, movie title, stars, and ratingDate. Also, sort the data, first by reviewer name, then by movie title, and lastly by number of stars. 
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 6 -->
+<div class="question" data-qnum="6">
+  <h2>Question 6</h2>
+  <p>
+    For all cases where the same reviewer rated the same movie twice and gave it a higher rating the second time, return the reviewer's name and the title of the movie. 
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 7 -->
+<div class="question" data-qnum="7">
+  <h2>Question 7</h2>
+  <p>
+    For each movie that has at least one rating, find the highest number of stars that movie received. Return the movie title and number of stars. Sort by movie title. 
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 8 -->
+<div class="question" data-qnum="8">
+  <h2>Question 8</h2>
+  <p>
+    For each movie, return the title and the 'rating spread', that is, the difference between highest and lowest ratings given to that movie. Sort by rating spread from highest to lowest, then by movie title. 
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+<!-- Question 9 -->
+<div class="question" data-qnum="9">
+  <h2>Question 9</h2>
+  <p>
+    Find the difference between the average rating of movies released before 1980 and the average rating of movies released after 1980. (Make sure to calculate the average rating for each movie, then the average of those averages for movies before 1980 and movies after. Don't just calculate the overall average rating before and after 1980.)
+  </p>
+  <textarea placeholder="Enter your query here..."></textarea>
+  <button class="submit">Run Query</button>
+  <div class="output"></div>
+</div>
+
+</body>
+
+<!-- Javascripts -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+<script src="/static/js/c2g_grader.js"></script>
+
+</html>

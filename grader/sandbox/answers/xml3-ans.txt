@@ -1,0 +1,44 @@
+[
+    #Answers to query exercise set 3 (6 exercises)
+    #Each answer consists of an array of tuples
+    ('''
+        1565000
+    ''', 'XPath'),
+    ('''
+        <name>Mexico</name>
+        <name>Singapore</name>
+    ''', 'XPath'),
+    ('''
+        3.2017746666666668E7
+    ''', 'XQuery'),
+    ('''
+        China India
+    ''', 'XPath'),
+    ('''
+        <result>
+           <French>
+              <country>Belgium</country>
+              <country>France</country>
+              <country>French Guiana</country>
+              <country>Guadeloupe</country>
+              <country>Guinea</country>
+              <country>Haiti</country>
+              <country>Saint Pierre and Miquelon</country>
+              <country>Switzerland</country>
+           </French>
+           <German>
+              <country>Austria</country>
+              <country>Belgium</country>
+              <country>Germany</country>
+              <country>Namibia</country>
+              <country>Switzerland</country>
+           </German>
+        </result>
+    ''', 'XQuery'),
+    ('''
+        <result>
+           <highest density="31052.3125">Macau</highest>
+           <lowest density="0.026752619966905682">Greenland</lowest>
+        </result>
+    ''', 'XQuery'),
+]

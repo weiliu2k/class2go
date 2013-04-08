@@ -1,0 +1,34 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+([(1381, u'Tiffany', 9), (1510, u'Jordan', 9), (1689, u'Gabriel', 9),  (1709, u'Cassandra', 9), (1101, u'Haley', 10), (1468, u'Kris', 10), (1641, u'Brittany', 10), (1782, u'Andrew', 10),  (1247, u'Alexis', 11), (1316, u'Austin', 11), (1501, u'Jessica', 11), (1911, u'Gabriel', 11)], False, "select * from Highschooler order by ID"),
+
+    #2 solution: delete from Likes where Likes.ID2 in (select F.ID2 from Friend F where F.ID1 = Likes.ID1) and Likes.ID1 not in (select L2.ID2 from Likes L2 where L2.ID1 = Likes.ID2)
+      ([(u'Gabriel', 9, u'Cassandra', 9),
+        (u'Cassandra', 9, u'Gabriel', 9),
+        (u'Andrew', 10, u'Cassandra', 9),
+        (u'Alexis', 11, u'Kris', 10),
+        (u'Austin', 11, u'Jordan', 12),
+        (u'Jessica', 11, u'Kyle', 12),
+        (u'John', 12, u'Haley', 10),
+        (u'Kyle', 12, u'Jessica', 11)], False, """select H1.name, H1.grade, H2.name, H2.grade from Likes L, Highschooler H1, Highschooler H2 where L.ID1 = H1.ID and L.ID2 = H2.ID order by H1.name, H1.grade"""), 
+        
+      ([(1709, u'Cassandra', 9, 7),
+        (1689, u'Gabriel', 9, 8),
+        (1510, u'Jordan', 9, 5),
+        (1381, u'Tiffany', 9, 6),
+        (1782, u'Andrew', 10, 10),
+        (1641, u'Brittany', 10, 3),
+        (1101, u'Haley', 10, 3),
+        (1468, u'Kris', 10, 6),
+        (1247, u'Alexis', 11, 7),
+        (1316, u'Austin', 11, 6),
+        (1911, u'Gabriel', 11, 5),
+        (1501, u'Jessica', 11, 7),
+        (1025, u'John', 12, 2),
+        (1304, u'Jordan', 12, 8),
+        (1934, u'Kyle', 12, 7),
+        (1661, u'Logan', 12, 4)], False, """select ID, name, grade, (select count(*) from Friend where id1 = H.id) from Highschooler H order by ID"""), 
+]

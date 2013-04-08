@@ -1,0 +1,43 @@
+[
+    #Answers to query exercise set 1 (9 exercises)
+    #Each answer consists of an array of tuples
+    ('''
+  <Title>Computer Science</Title>
+
+  <Title>Electrical Engineering</Title>
+
+  <Title>Linguistics</Title>
+    ''', 'XSLT'),
+    ('''
+ <Department>
+   <Title>Computer Science</Title>
+   <Chair>
+      <Professor>
+        <First_Name>Jennifer</First_Name>
+        <Last_Name>Widom</Last_Name>
+      </Professor>
+    </Chair>
+</Department>
+
+  <Department>
+   <Title>Electrical Engineering</Title>
+   <Chair>
+      <Professor>
+        <First_Name>Mark</First_Name>
+        <Middle_Initial>A.</Middle_Initial>
+        <Last_Name>Horowitz</Last_Name>
+      </Professor>    
+    </Chair>
+</Department>
+
+  <Department>
+   <Title>Linguistics</Title>
+   <Chair>    
+      <Professor>
+        <First_Name>Beth</First_Name>
+        <Last_Name>Levin</Last_Name>    
+      </Professor>
+    </Chair>
+</Department>
+    ''', 'XSLT'),
+]

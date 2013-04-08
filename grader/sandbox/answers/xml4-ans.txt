@@ -1,0 +1,997 @@
+[
+    #Answers to query exercise set 4 (3 exercises)
+    #Each answer consists of an array of tuples
+    ('''
+<country name="Malawi" population="9452844" area="118480"/>
+<country name="Mali" population="9653261" area="1240000">
+    <language percentage="80">Bambara</language>
+  </country>
+<country name="Niger" population="9113001" area="1267000"/>
+<country name="Portugal" population="9865114" area="92080">
+    <language percentage="100">Portuguese</language>
+  </country>
+<country name="Senegal" population="9092749" area="196190">
+    <city>
+      <name>Dakar</name>
+      <population>1382000</population>
+    </city>
+  </country>
+<country name="Somalia" population="9639151" area="637660"/>
+<country name="Tunisia" population="9019687" area="163610"/>
+<country name="Zambia" population="9159072" area="752610"/>
+    ''', 'XSLT'),
+    ('''
+<html>
+   <table border="1">
+      <tr>
+         <td>
+            <b>Pakistan</b>
+         </td>
+         <td>129275664</td>
+         <td>803940</td>
+         <td>8</td>
+      </tr>
+      <tr>
+         <td>
+            <b>Iran</b>
+         </td>
+         <td>66094264</td>
+         <td>1648000</td>
+         <td>7</td>
+      </tr>
+      <tr>
+         <td>
+            <b>Georgia</b>
+         </td>
+         <td>5219810</td>
+         <td>69700</td>
+         <td>4</td>
+      </tr>
+      <tr>
+         <td>
+            <b>Macedonia</b>
+         </td>
+         <td>2104035</td>
+         <td>25333</td>
+         <td>4</td>
+      </tr>
+      <tr>
+         <td>
+            <b>Switzerland</b>
+         </td>
+         <td>7207060</td>
+         <td>41290</td>
+         <td>4</td>
+      </tr>
+   </table>
+</html>
+    ''', 'XSLT'),
+    ('''
+<countries>
+  <country languages="3" cities="0">
+      <name>Afghanistan</name>
+      <population>22664136</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Albania</name>
+      <population>3249136</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Algeria</name>
+      <population>29183032</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>American Samoa</name>
+      <population>59566</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Andorra</name>
+      <population>72766</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Angola</name>
+      <population>10342899</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Anguilla</name>
+      <population>10424</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Antigua and Barbuda</name>
+      <population>65647</population>
+   </country>
+  <country languages="0" cities="4">
+      <name>Argentina</name>
+      <population>34672996</population>
+   </country>
+  <country languages="2" cities="1">
+      <name>Armenia</name>
+      <population>3463574</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Aruba</name>
+      <population>67794</population>
+   </country>
+  <country languages="1" cities="5">
+      <name>Australia</name>
+      <population>18260864</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Austria</name>
+      <population>8023244</population>
+   </country>
+  <country languages="3" cities="1">
+      <name>Azerbaijan</name>
+      <population>7676953</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Bahamas</name>
+      <population>259367</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Bahrain</name>
+      <population>590042</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>Bangladesh</name>
+      <population>123062800</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Barbados</name>
+      <population>257030</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Belarus</name>
+      <population>10415973</population>
+   </country>
+  <country languages="3" cities="0">
+      <name>Belgium</name>
+      <population>10170241</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Belize</name>
+      <population>219296</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Benin</name>
+      <population>5709529</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Bermuda</name>
+      <population>62099</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Bhutan</name>
+      <population>1822625</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Bolivia</name>
+      <population>7165257</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Bosnia and Herzegovina</name>
+      <population>2656240</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Botswana</name>
+      <population>1477630</population>
+   </country>
+  <country languages="0" cities="11">
+      <name>Brazil</name>
+      <population>162661216</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>British Virgin Islands</name>
+      <population>13195</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Brunei</name>
+      <population>299939</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Bulgaria</name>
+      <population>8612757</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Burkina Faso</name>
+      <population>10623323</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Burma</name>
+      <population>45975624</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Burundi</name>
+      <population>5943057</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Cambodia</name>
+      <population>10861218</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Cameroon</name>
+      <population>14261557</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Canada</name>
+      <population>28820672</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Cape Verde</name>
+      <population>449066</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Cayman Islands</name>
+      <population>34646</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Central African Republic</name>
+      <population>3274426</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Chad</name>
+      <population>6976845</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Chile</name>
+      <population>14333258</population>
+   </country>
+  <country languages="0" cities="41">
+      <name>China</name>
+      <population>1210004992</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Christmas Island</name>
+      <population>813</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Cocos Islands</name>
+      <population>609</population>
+   </country>
+  <country languages="1" cities="4">
+      <name>Colombia</name>
+      <population>36813160</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Comoros</name>
+      <population>569237</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Congo</name>
+      <population>2527841</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Cook Islands</name>
+      <population>19561</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Costa Rica</name>
+      <population>3463083</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Cote dIvoire</name>
+      <population>14762445</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Croatia</name>
+      <population>5004112</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Cuba</name>
+      <population>10951334</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Cyprus</name>
+      <population>744609</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Czech Republic</name>
+      <population>10321120</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Denmark</name>
+      <population>5249632</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Djibouti</name>
+      <population>427642</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Dominica</name>
+      <population>82926</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Dominican Republic</name>
+      <population>8088881</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>Ecuador</name>
+      <population>11466291</population>
+   </country>
+  <country languages="0" cities="3">
+      <name>Egypt</name>
+      <population>63575108</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>El Salvador</name>
+      <population>5828987</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Equatorial Guinea</name>
+      <population>431282</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Eritrea</name>
+      <population>3427883</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Estonia</name>
+      <population>1459428</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Ethiopia</name>
+      <population>57171664</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Falkland Islands</name>
+      <population>2374</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Faroe Islands</name>
+      <population>43857</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Fiji</name>
+      <population>782381</population>
+   </country>
+  <country languages="2" cities="0">
+      <name>Finland</name>
+      <population>5105230</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>France</name>
+      <population>58317448</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>French Guiana</name>
+      <population>151187</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>French Polynesia</name>
+      <population>224911</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Gabon</name>
+      <population>1172798</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Gambia</name>
+      <population>1204984</population>
+   </country>
+  <country languages="4" cities="1">
+      <name>Georgia</name>
+      <population>5219810</population>
+   </country>
+  <country languages="1" cities="4">
+      <name>Germany</name>
+      <population>83536112</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Ghana</name>
+      <population>17698272</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Gibraltar</name>
+      <population>28765</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Greece</name>
+      <population>10538594</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Greenland</name>
+      <population>58203</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Grenada</name>
+      <population>94961</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Guadeloupe</name>
+      <population>407768</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Guam</name>
+      <population>156974</population>
+   </country>
+  <country languages="2" cities="0">
+      <name>Guatemala</name>
+      <population>11277614</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Guernsey</name>
+      <population>62920</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Guinea</name>
+      <population>7411981</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Guinea-Bissau</name>
+      <population>1151330</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Guyana</name>
+      <population>712091</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Haiti</name>
+      <population>6731539</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Holy See</name>
+      <population>840</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Honduras</name>
+      <population>5605193</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Hungary</name>
+      <population>10002541</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Iceland</name>
+      <population>270292</population>
+   </country>
+  <country languages="1" cities="18">
+      <name>India</name>
+      <population>952107712</population>
+   </country>
+  <country languages="0" cities="6">
+      <name>Indonesia</name>
+      <population>206611600</population>
+   </country>
+  <country languages="7" cities="5">
+      <name>Iran</name>
+      <population>66094264</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Iraq</name>
+      <population>21422292</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Ireland</name>
+      <population>3566833</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Israel</name>
+      <population>5421995</population>
+   </country>
+  <country languages="0" cities="3">
+      <name>Italy</name>
+      <population>57460272</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Jamaica</name>
+      <population>2595275</population>
+   </country>
+  <country languages="1" cities="11">
+      <name>Japan</name>
+      <population>125449704</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Jersey</name>
+      <population>87848</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Jordan</name>
+      <population>4212152</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Kazakstan</name>
+      <population>16916464</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Kenya</name>
+      <population>28176686</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Kiribati</name>
+      <population>80919</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Kuwait</name>
+      <population>1950047</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Kyrgyzstan</name>
+      <population>4529648</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Laos</name>
+      <population>4975772</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Latvia</name>
+      <population>2468982</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Lebanon</name>
+      <population>3776317</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Lesotho</name>
+      <population>1970781</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Liberia</name>
+      <population>2109789</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Libya</name>
+      <population>5445436</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Liechtenstein</name>
+      <population>31122</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Lithuania</name>
+      <population>3646041</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Luxembourg</name>
+      <population>415870</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Macau</name>
+      <population>496837</population>
+   </country>
+  <country languages="4" cities="0">
+      <name>Macedonia</name>
+      <population>2104035</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Madagascar</name>
+      <population>13670507</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Malawi</name>
+      <population>9452844</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Malaysia</name>
+      <population>19962892</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Maldives</name>
+      <population>270758</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Mali</name>
+      <population>9653261</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Malta</name>
+      <population>375576</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Man</name>
+      <population>73837</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Marshall Islands</name>
+      <population>58363</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Martinique</name>
+      <population>399151</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Mauritania</name>
+      <population>2336048</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Mauritius</name>
+      <population>1140256</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Mayotte</name>
+      <population>100838</population>
+   </country>
+  <country languages="0" cities="5">
+      <name>Mexico</name>
+      <population>95772464</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Micronesia</name>
+      <population>125377</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Moldova</name>
+      <population>4463847</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Monaco</name>
+      <population>31719</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Mongolia</name>
+      <population>2496617</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Montserrat</name>
+      <population>12771</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>Morocco</name>
+      <population>29779156</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Mozambique</name>
+      <population>17877928</population>
+   </country>
+  <country languages="3" cities="0">
+      <name>Namibia</name>
+      <population>1677243</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Nauru</name>
+      <population>10273</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Nepal</name>
+      <population>22094032</population>
+   </country>
+  <country languages="1" cities="2">
+      <name>Netherlands</name>
+      <population>15568034</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Netherlands Antilles</name>
+      <population>208968</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>New Caledonia</name>
+      <population>187784</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>New Zealand</name>
+      <population>3547983</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Nicaragua</name>
+      <population>4272352</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Niger</name>
+      <population>9113001</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>Nigeria</name>
+      <population>103912488</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Niue</name>
+      <population>2174</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Norfolk Island</name>
+      <population>2209</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>North Korea</name>
+      <population>23904124</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Northern Mariana Islands</name>
+      <population>52284</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Norway</name>
+      <population>4383807</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Oman</name>
+      <population>2186548</population>
+   </country>
+  <country languages="8" cities="8">
+      <name>Pakistan</name>
+      <population>129275664</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Palau</name>
+      <population>16952</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Panama</name>
+      <population>2655094</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Papua New Guinea</name>
+      <population>4394537</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Paraguay</name>
+      <population>5504146</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Peru</name>
+      <population>24523408</population>
+   </country>
+  <country languages="0" cities="4">
+      <name>Philippines</name>
+      <population>74480848</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Pitcairn Islands</name>
+      <population>56</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Poland</name>
+      <population>38642564</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Portugal</name>
+      <population>9865114</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Puerto Rico</name>
+      <population>3819023</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Qatar</name>
+      <population>547761</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Reunion</name>
+      <population>679198</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Romania</name>
+      <population>21657162</population>
+   </country>
+  <country languages="1" cities="13">
+      <name>Russia</name>
+      <population>148178480</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Rwanda</name>
+      <population>6853359</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Saint Helena</name>
+      <population>6782</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Saint Kitts and Nevis</name>
+      <population>41369</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Saint Lucia</name>
+      <population>157862</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Saint Pierre and Miquelon</name>
+      <population>6809</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Saint Vincent and the Grenadines</name>
+      <population>118344</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>San Marino</name>
+      <population>24521</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Sao Tome and Principe</name>
+      <population>144128</population>
+   </country>
+  <country languages="1" cities="1">
+      <name>Saudi Arabia</name>
+      <population>19409058</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Senegal</name>
+      <population>9092749</population>
+   </country>
+  <country languages="2" cities="1">
+      <name>Serbia and Montenegro</name>
+      <population>10614558</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Seychelles</name>
+      <population>77575</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Sierra Leone</name>
+      <population>4793121</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Singapore</name>
+      <population>3396924</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Slovakia</name>
+      <population>5374362</population>
+   </country>
+  <country languages="2" cities="0">
+      <name>Slovenia</name>
+      <population>1951443</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Solomon Islands</name>
+      <population>412902</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Somalia</name>
+      <population>9639151</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>South Africa</name>
+      <population>41743460</population>
+   </country>
+  <country languages="0" cities="6">
+      <name>South Korea</name>
+      <population>45482292</population>
+   </country>
+  <country languages="3" cities="2">
+      <name>Spain</name>
+      <population>39181112</population>
+   </country>
+  <country languages="2" cities="0">
+      <name>Sri Lanka</name>
+      <population>18553074</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Sudan</name>
+      <population>31547544</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Suriname</name>
+      <population>436418</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Svalbard</name>
+      <population>2715</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Swaziland</name>
+      <population>998730</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Sweden</name>
+      <population>8900954</population>
+   </country>
+  <country languages="4" cities="0">
+      <name>Switzerland</name>
+      <population>7207060</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Syria</name>
+      <population>15608648</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>Taiwan</name>
+      <population>21465880</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Tajikistan</name>
+      <population>5916373</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Tanzania</name>
+      <population>29058470</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Thailand</name>
+      <population>58851356</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Togo</name>
+      <population>4570530</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Tonga</name>
+      <population>106466</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Trinidad and Tobago</name>
+      <population>1272385</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Tunisia</name>
+      <population>9019687</population>
+   </country>
+  <country languages="0" cities="4">
+      <name>Turkey</name>
+      <population>62484480</population>
+   </country>
+  <country languages="3" cities="0">
+      <name>Turkmenistan</name>
+      <population>4149283</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Turks and Caicos Islands</name>
+      <population>14302</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Tuvalu</name>
+      <population>10146</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Uganda</name>
+      <population>20158176</population>
+   </country>
+  <country languages="0" cities="5">
+      <name>Ukraine</name>
+      <population>50864008</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>United Arab Emirates</name>
+      <population>3057337</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>United Kingdom</name>
+      <population>58489976</population>
+   </country>
+  <country languages="0" cities="10">
+      <name>United States</name>
+      <population>266476272</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Uruguay</name>
+      <population>3238952</population>
+   </country>
+  <country languages="3" cities="1">
+      <name>Uzbekistan</name>
+      <population>23418380</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Vanuatu</name>
+      <population>177504</population>
+   </country>
+  <country languages="0" cities="2">
+      <name>Venezuela</name>
+      <population>21983188</population>
+   </country>
+  <country languages="0" cities="3">
+      <name>Vietnam</name>
+      <population>73976976</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Virgin Islands</name>
+      <population>97120</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Wallis and Futuna</name>
+      <population>14659</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Western Sahara</name>
+      <population>222631</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Western Samoa</name>
+      <population>214384</population>
+   </country>
+  <country languages="1" cities="0">
+      <name>Yemen</name>
+      <population>13483178</population>
+   </country>
+  <country languages="0" cities="1">
+      <name>Zaire</name>
+      <population>46498540</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Zambia</name>
+      <population>9159072</population>
+   </country>
+  <country languages="0" cities="0">
+      <name>Zimbabwe</name>
+      <population>11271314</population>
+   </country>
+</countries>
+    ''', 'XSLT'),
+]

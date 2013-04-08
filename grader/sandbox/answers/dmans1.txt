@@ -1,0 +1,9 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+([(209, u'Roger Ebert')], False, "select * from Reviewer"),
+      ([(3.5,), (5.0,), (3.333333333333333,), (3.333333333333333,), (5.0,), (4.666666666666667,), (4.333333333333333,), (3.75,)], False, """select * from Rating where stars = 5"""), 
+      ([(7,)], False, """select * from Movie"""),
+]

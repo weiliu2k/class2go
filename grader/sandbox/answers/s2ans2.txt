@@ -1,0 +1,11 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+    ([('Alexis',), ('Andrew',), ('Cassandra',), ('Jessica',), ('Jordan',)], False),
+    ([('Andrew', 10, 'Cassandra', 9, 'Gabriel', 9), ('Gabriel', 11, 'Alexis', 11, 'Kris', 10)], False),
+    ([('John', 12, 'Haley', 10), ('Alexis', 11, 'Kris', 10), ('Brittany', 10, 'Kris', 10), ('Austin', 11, 'Jordan', 12)], False),
+    ([('Cassandra', 9), ('Kris', 10)], False),
+    ([('Alexis', 11), ('Andrew', 10)], False),
+]

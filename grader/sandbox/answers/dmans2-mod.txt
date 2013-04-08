@@ -1,0 +1,10 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+("delete from Highschooler where grade = 12", False, "select * from Highschooler"),
+      ("""delete from Likes
+where exists (select * from Friend where ID1 = Likes.ID1 and ID2 = Likes.ID2)
+and not exists (select * from Likes L2 where L2.ID2 = Likes.ID1 and L2.ID1 = Likes.ID2)""", False, """select * from Likes where exists (select * from Friend where ID1 = Likes.ID1 and ID2 = Likes.ID2)"""), 
+]

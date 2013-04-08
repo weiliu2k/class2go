@@ -1,0 +1,177 @@
+[
+    #Answers to query exercise set 1 (9 exercises)
+    #Each answer consists of an array of tuples
+    ('''
+<Department>
+  <Title>Computer Science</Title>
+  <Chair>
+    <Professor>
+      <First_Name>Jennifer</First_Name>
+      <Last_Name>Widom</Last_Name>
+    </Professor>
+  </Chair>
+</Department>
+<Department>
+  <Title>Electrical Engineering</Title>
+  <Chair>
+    <Professor>
+      <First_Name>Mark</First_Name>
+      <Middle_Initial>A.</Middle_Initial>
+      <Last_Name>Horowitz</Last_Name>
+    </Professor>    
+  </Chair>
+</Department>
+<Department>
+  <Title>Linguistics</Title>
+  <Chair>    
+    <Professor>
+      <First_Name>Beth</First_Name>
+      <Last_Name>Levin</Last_Name>    
+    </Professor>
+  </Chair>
+</Department>
+    ''', 'XSLT'),
+    
+   ('''
+<Course Number="CS106A" Enrollment="1070">
+  <Title>Programming Methodology</Title>
+  <Description>Introduction to the engineering of computer applications emphasizing modern software engineering principles.</Description>
+  <Instructors>
+    <Lecturer>
+      <First_Name>Jerry</First_Name>
+      <Middle_Initial>R.</Middle_Initial>
+      <Last_Name>Cain</Last_Name>
+    </Lecturer>
+    <Professor>
+      <First_Name>Eric</First_Name>
+      <Last_Name>Roberts</Last_Name>
+    </Professor>
+    <Professor>
+      <First_Name>Mehran</First_Name>
+      <Last_Name>Sahami</Last_Name>
+    </Professor>
+  </Instructors>
+</Course>
+<Course Number="CS106B" Enrollment="620">
+  <Title>Programming Abstractions</Title>
+  <Description>Abstraction and its relation to programming.</Description>
+  <Instructors>
+    <Professor>
+      <First_Name>Eric</First_Name>
+      <Last_Name>Roberts</Last_Name>
+    </Professor>
+    <Lecturer>
+      <First_Name>Jerry</First_Name>
+      <Middle_Initial>R.</Middle_Initial>
+      <Last_Name>Cain</Last_Name>
+    </Lecturer>
+  </Instructors>
+  <Prerequisites>
+    <Prereq>CS106A</Prereq>
+  </Prerequisites>
+</Course>
+    ''', 'XSLT'),
+    
+   ('''
+<Course_Catalog>
+  <Department Code="CS">
+    <Title>Computer Science</Title>
+    <Chair>
+      <Professor>
+        <First_Name>Jennifer</First_Name>
+        <Last_Name>Widom</Last_Name>
+      </Professor>
+    </Chair>
+    <Course Number="CS124" Enrollment="60">
+      <Title>From Languages to Information</Title>
+      <Description>Natural language processing. Cross-listed as LING180.</Description>
+      <Instructors>
+        <Professor>
+          <First_Name>Dan</First_Name>
+          <Last_Name>Jurafsky</Last_Name>    
+        </Professor>
+      </Instructors>
+      <Prerequisites>
+        <Prereq>CS107</Prereq>
+        <Prereq>CS109</Prereq>
+      </Prerequisites>   
+    </Course>
+  </Department>
+  <Department Code="EE">
+    <Title>Electrical Engineering</Title>
+    <Chair>
+      <Professor>
+        <First_Name>Mark</First_Name>
+        <Middle_Initial>A.</Middle_Initial>
+        <Last_Name>Horowitz</Last_Name>
+      </Professor>    
+    </Chair>
+  </Department>
+  <Department Code="LING">
+    <Title>Linguistics</Title>
+    <Chair>    
+      <Professor>
+        <First_Name>Beth</First_Name>
+        <Last_Name>Levin</Last_Name>    
+      </Professor>
+    </Chair>
+    <Course Number="LING180" Enrollment="60">
+      <Title>From Languages to Information</Title>
+      <Description>Natural language processing. Cross-listed as CS124.</Description>
+      <Instructors>
+        <Professor>
+          <First_Name>Dan</First_Name>
+          <Last_Name>Jurafsky</Last_Name>    
+        </Professor>
+      </Instructors>
+      <Prerequisites>
+        <Prereq>CS107</Prereq>
+        <Prereq>CS109</Prereq>
+      </Prerequisites>   
+    </Course>
+  </Department>
+</Course_Catalog>
+    ''', 'XSLT'),
+
+   ('''
+<Course Number="EE108A" Title="Digital Systems I">
+  <Description>Digital circuit, logic, and system design.</Description>
+  <Instructor>Mitra</Instructor>
+</Course>
+<Course Number="EE108B" Title="Digital Systems II">
+  <Description>The design of processor-based digital systems.</Description>
+  <Instructor>Dally</Instructor>
+  <Instructor>Olukotun</Instructor>
+</Course>
+    ''', 'XSLT'),
+
+   ('''
+<table border="1">
+  <tr>
+    <td><i>CS107</i></td>
+    <td><b>Computer Organization and Systems</b></td>
+    <td>500</td>
+  </tr>
+  <tr>
+    <td><i>CS109</i></td>
+    <td><b>Introduction to Probability for Computer Scientists</b></td>
+    <td>280</td>
+  </tr>
+  <tr>
+    <td><i>CS229</i></td>
+    <td><b>Machine Learning</b></td>
+    <td>320</td>
+  </tr>
+  <tr>
+    <td><i>CS106B</i></td>
+    <td><b>Programming Abstractions</b></td>
+    <td>620</td>
+  </tr>
+  <tr>
+    <td><i>CS106A</i></td>
+    <td><b>Programming Methodology</b></td>
+    <td>1070</td>
+  </tr>
+</table>
+    ''', 'XSLT'),    
+]
