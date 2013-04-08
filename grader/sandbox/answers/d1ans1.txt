@@ -1,0 +1,65 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+    ('''
+        <Last_Name>Widom</Last_Name>
+        <Last_Name>Horowitz</Last_Name>
+        <Last_Name>Levin</Last_Name> 
+    ''', 'XPath'),
+    ('''
+        <Title>Computer Science</Title>
+        <Title>Electrical Engineering</Title>
+    ''', 'XPath'),
+    ('''
+<Title>Programming Methodology</Title>
+    ''', 'XQuery'),
+    ('''
+<Summary>
+<Course Enrollment="60">
+    <Title>From Languages to Information</Title>
+  </Course>
+  <Course Enrollment="90">
+    <Title>Compilers</Title>
+  </Course>
+  <Course Enrollment="110">
+    <Title>Structured Probabilistic Models: Principles and Techniques</Title>
+  </Course>
+  <Course Enrollment="130">
+    <Title>Introduction to Databases</Title>
+  </Course>
+  <Course Enrollment="180">
+    <Title>Artificial Intelligence: Principles and Techniques</Title>
+  </Course>
+  <Course Enrollment="280">
+    <Title>Introduction to Probability for Computer Scientists</Title>
+  </Course>
+  <Course Enrollment="320">
+    <Title>Machine Learning</Title>
+  </Course>
+  <Course Enrollment="500">
+    <Title>Computer Organization and Systems</Title>
+  </Course>
+  <Course Enrollment="620">
+    <Title>Programming Abstractions</Title>
+  </Course>
+  <Course Enrollment="1070">
+    <Title>Programming Methodology</Title>
+  </Course>
+</Summary>
+    ''', 'XQuery'),
+    ('''
+        <Department>
+          <Title>Computer Science</Title>
+          <Last_Name>Widom</Last_Name>
+        </Department>
+        <Department>
+          <Title>Electrical Engineering</Title>
+          <Last_Name>Horowitz</Last_Name>
+        </Department>
+        <Department>
+          <Title>Linguistics</Title>
+          <Last_Name>Levin</Last_Name>
+        </Department>
+    ''', 'XSLT'),
+]

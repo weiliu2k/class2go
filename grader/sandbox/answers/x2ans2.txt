@@ -1,0 +1,48 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+    ('''1565000''', 'XPath'),
+    ('''Bangladesh Brazil China India Indonesia Japan Nigeria Pakistan Russia United States''', 'XPath'),
+    ('''South Korea''', 'XQuery'),
+    ('''
+<result>
+  <French>
+    <country>Belgium</country>
+    <country>France</country>
+    <country>French Guiana</country>
+    <country>Guadeloupe</country>
+    <country>Guinea</country>
+    <country>Haiti</country>
+    <country>Saint Pierre and Miquelon</country>
+    <country>Switzerland</country>
+  </French>
+  <German>
+    <country>Austria</country>
+    <country>Belgium</country>
+    <country>Germany</country>
+    <country>Namibia</country>
+    <country>Switzerland</country>
+  </German>
+</result>
+    ''', 'XQuery'),
+    ('''
+<country name="Malawi" population="9452844" area="118480"/>
+<country name="Mali" population="9653261" area="1240000">
+  <language percentage="80">Bambara</language>
+</country>
+<country name="Niger" population="9113001" area="1267000"/>
+<country name="Portugal" population="9865114" area="92080">
+  <language percentage="100">Portuguese</language>
+</country>
+<country name="Senegal" population="9092749" area="196190">
+  <city>
+    <name>Dakar</name>
+    <population>1382000</population>
+  </city>
+</country>
+<country name="Somalia" population="9639151" area="637660"/>
+<country name="Tunisia" population="9019687" area="163610"/>
+<country name="Zambia" population="9159072" area="752610"/>
+    ''', 'XSLT'),
+]

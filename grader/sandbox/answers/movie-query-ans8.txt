@@ -1,0 +1,23 @@
+[
+    #Answers to query exercise set 1 (9 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+    ([(u'E.T.',), (u'Raiders of the Lost Ark',)], False),
+    ([(1937,), (1939,), (1981,), (2009,)], True),
+              ([(u'Star Wars',), (u'Titanic',)], False),
+                  ([(u'Daniel Lewis',), (u'Chris Jackson',)], False),
+
+    ([(u'Ashley White', u'E.T.', 3, u'2011-01-02'), (u'Brittany Harris', u'Raiders of the Lost Ark', 2, u'2011-01-30'), (u'Brittany Harris', u'Raiders of the Lost Ark', 4, u'2011-01-12'), (u'Brittany Harris', u'The Sound of Music', 2, u'2011-01-20'), (u'Chris Jackson', u'E.T.', 2, u'2011-01-22'), (u'Chris Jackson', u'Raiders of the Lost Ark', 4, None), (u'Chris Jackson', u'The Sound of Music', 3, u'2011-01-27'), (u'Daniel Lewis', u'Snow White', 4, None), (u'Elizabeth Thomas', u'Avatar', 3, u'2011-01-15'), (u'Elizabeth Thomas', u'Snow White', 5, u'2011-01-19'), (u'James Cameron', u'Avatar', 5, u'2011-01-20'), (u'Mike Anderson', u'Gone with the Wind', 3, u'2011-01-09'), (u'Sarah Martinez', u'Gone with the Wind', 2, u'2011-01-22'), (u'Sarah Martinez', u'Gone with the Wind', 4, u'2011-01-27')], True),
+                      ([(u'Sarah Martinez', u'Gone with the Wind')], False),
+  
+    ([(u'Avatar', 5), (u'E.T.', 3), (u'Gone with the Wind', 4), (u'Raiders of the Lost Ark', 4), (u'Snow White', 5), (u'The Sound of Music', 3)], True),
+
+    ([(u'Avatar', 2), (u'Gone with the Wind', 2), (u'Raiders of the Lost Ark', 2), (u'E.T.', 1), (u'Snow White', 1), (u'The Sound of Music', 1)], True),      
+    ([(0.05555555555555536,)], False),
+
+
+
+
+
+]

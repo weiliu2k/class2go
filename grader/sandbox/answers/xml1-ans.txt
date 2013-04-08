@@ -1,0 +1,55 @@
+[
+    #Answers to query exercise set 1 (9 exercises)
+    #Each answer consists of an array of tuples
+    ('''
+        <Title>Computer Science</Title>
+        <Title>Programming Methodology</Title>
+        <Title>Programming Abstractions</Title>
+        <Title>Computer Organization and Systems</Title>
+        <Title>Introduction to Probability for Computer Scientists</Title>
+        <Title>From Languages to Information</Title>
+        <Title>Compilers</Title>
+        <Title>Introduction to Databases</Title>
+        <Title>Artificial Intelligence: Principles and Techniques</Title>
+        <Title>Structured Probabilistic Models: Principles and Techniques</Title>
+        <Title>Machine Learning</Title>
+        <Title>Electrical Engineering</Title>
+        <Title>Digital Systems I</Title>
+        <Title>Digital Systems II</Title>
+        <Title>Linguistics</Title>
+        <Title>From Languages to Information</Title>
+    ''', 'XPath'),
+    ('''
+        <Last_Name>Widom</Last_Name>
+        <Last_Name>Horowitz</Last_Name>
+        <Last_Name>Levin</Last_Name> 
+    ''', 'XPath'),
+    ('''
+        <Title>Programming Methodology</Title>
+        <Title>Programming Abstractions</Title>
+    ''', 'XPath'),
+    ('''
+        <Title>Computer Science</Title>
+        <Title>Electrical Engineering</Title>
+    ''', 'XPath'),
+    ('''
+        <Last_Name>Cain</Last_Name>
+        <Last_Name>Cain</Last_Name>
+        <Last_Name>Aiken</Last_Name>
+        <Last_Name>Horowitz</Last_Name>
+        <Last_Name>Dally</Last_Name>
+    ''', 'XPath'),
+    ('''
+        2
+    ''', 'XPath'),
+    ('''
+        336
+    ''', 'XQuery'),
+    ('''
+        <Last_Name>Zelenski</Last_Name>
+        <Last_Name>Widom</Last_Name>
+    ''', 'XPath'),
+    ('''
+        <Title>Programming Methodology</Title>
+    ''', 'XQuery'),
+]

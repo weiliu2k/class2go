@@ -1,0 +1,11 @@
+[
+    #Answers to social-network query exercises (5 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+    ([(u'Andrew', 10, u'Cassandra', 9, u'Gabriel', 9), (u'Gabriel', 11, u'Alexis', 11, u'Kris', 10)], False),   
+    ([(u'Austin', 11)], False),
+    ([(2.5,)], False),
+    ([(7,)], False),
+    ([(u'Alexis', 11), (u'Andrew', 10)], False),
+]

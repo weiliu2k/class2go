@@ -1,0 +1,8 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+([(12,)], False, "select * from Highschooler"),
+      ([(1689, 1709), (1709, 1689), (1782, 1709), (1247, 1468), (1316, 1304), (1501, 1934), (1934, 1501), (1025, 1101)], False, """select * from Likes where exists (select * from Friend where ID1 = Likes.ID1 and ID2 = Likes.ID2)"""), 
+]

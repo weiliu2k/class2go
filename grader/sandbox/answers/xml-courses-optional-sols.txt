@@ -1,0 +1,87 @@
+1.
+doc("courses.xml")//Course[contains(Description,"Cross-listed as LING180")]/data(@Number)
+
+2.
+doc("courses.xml")//Course[Title = following::Course/Title or Title = preceding::Course/Title]/data(@Number)
+
+3.
+doc("courses.xml")//Course[Instructors/*[First_Name="Daphne" or First_Name="Julie"]]/data(@Number)
+
+4.
+count(doc("courses.xml")//Course[count(Instructors//Lecturer)=0])
+
+let $nl := doc("courses.xml")//Course[count(Instructors//Lecturer)=0]
+return count($nl)
+
+5.
+doc("courses.xml")//Course[Instructors/Professor/Last_Name=doc("courses.xml")//Chair/Professor/Last_Name]/Title
+
+for $c in doc("courses.xml")//Course
+for $p in $c/Instructors/Professor
+for $h in doc("courses.xml")//Chair/Professor
+where $p/First_Name=$h/First_Name and $p/Last_Name=$h/Last_Name
+return $c/Title
+
+6.
+doc("courses.xml")//Course[Instructors[Lecturer and Professor]]/Title
+
+for $c in doc("courses.xml")//Course
+where $c/Instructors/Professor
+and $c/Instructors/Lecturer
+return $c/Title
+
+7.
+doc("courses.xml")//Course[Instructors[*/Last_Name="Ng" and count(*[Last_Name="Thrun"])=0]]/Title
+
+for $c in doc("courses.xml")//Course[*//Last_Name="Ng"]
+where every $l in $c//Last_Name satisfies $l != "Thrun"
+return $c/Title
+
+8.
+doc("courses.xml")//Course[*//Prereq = doc("courses.xml")//Course[Instructors/Professor[First_Name="Eric" and Last_Name="Roberts"]]/@Number]/data(@Number)
+
+for $c in doc("courses.xml")//Course
+for $p in doc("courses.xml")//Course[Instructors/Professor[First_Name="Eric" and Last_Name="Roberts"]]
+where $c//Prereq=$p/@Number
+return data($c/@Number)
+
+9.
+<Summary> {
+for $c in doc("courses.xml")//Department[@Code="CS"]/Course
+order by xs:int($c/@Enrollment)
+return 
+  <Course> {$c/@Enrollment} {$c/Title} </Course>
+} </Summary>
+
+10.
+<Professors> {
+for $ln in distinct-values(doc("courses.xml")//Professor/Last_Name)
+for $fn in distinct-values(doc("courses.xml")//Professor[Last_Name=$ln]/First_Name)
+order by $ln
+return
+<Professor>
+  <First_Name> {$fn} </First_Name>
+  { for $mi in distinct-values(doc("courses.xml")//Professor[Last_Name=$ln]/Middle_Initial) return <Middle_Initial> {$mi} </Middle_Initial> }
+  <Last_Name> {$ln} </Last_Name>
+</Professor>
+} </Professors>
+
+11.
+<Inverted_Course_Catalog> {
+for $ln in distinct-values(doc("courses.xml")//Professor/Last_Name)
+for $fn in distinct-values(doc("courses.xml")//Professor[Last_Name=$ln]/First_Name)
+order by $ln
+return
+<Professor>
+  <First_Name> {$fn} </First_Name>
+  { for $mi in distinct-values(doc("courses.xml")//Professor[Last_Name=$ln]/Middle_Initial) return <Middle_Initial> {$mi} </Middle_Initial> }
+  <Last_Name> {$ln} </Last_Name>
+  { let $cnum := count(doc("courses.xml")//Course[*//Last_Name=$ln])
+    where $cnum > 0
+    return
+    <Courses>
+    { for $c in doc("courses.xml")//Course[*//Last_Name=$ln]
+      return <Course> {data($c/@Number)} </Course> }
+    </Courses> }
+</Professor>
+} </Inverted_Course_Catalog>

@@ -1,0 +1,60 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of
+    #1) an array of tuples
+    #2) a boolean indicating whether the order matters - False for all
+    #3) verification query
+    #4) list of modifications
+    #5) English description of modifications in #4
+
+
+#1
+([(u'Alexis', 11, u'Kris', 10), (u'Andrew', 10, u'Cassandra', 9), (u'Austin', 11, u'Jordan', 12), (u'Brittany', 10, u'Kris', 10), (u'Cassandra', 9, u'Gabriel', 9), (u'Friendly', 9, u'Cassandra', 9), (u'Friendly', 9, u'Gabriel', 9), (u'Friendly', 9, u'Jordan', 9), (u'Friendly', 9, u'Tiffany', 9), (u'Friendly', 11, u'Alexis', 11), (u'Friendly', 11, u'Austin', 11), (u'Friendly', 11, u'Gabriel', 11), (u'Friendly', 11, u'Jessica', 11), (u'Gabriel', 9, u'Cassandra', 9), (u'Gabriel', 11, u'Alexis', 11), (u'Jessica', 11, u'Kyle', 12), (u'John', 12, u'Haley', 10), (u'Kyle', 12, u'Jessica', 11)], False,
+"select H1.name, H1.grade, H2.name, H2.grade from Likes L, Highschooler H1, Highschooler H2 where L.ID1 = H1.ID and L.ID2 = H2.ID order by H1.name, H1.grade, H2.name, H2.grade", """insert into Highschooler values (1000, 'Friendly', 9);
+insert into Highschooler values (2000, 'Friendly', 11);
+insert into Highschooler values (3000, 'Unfriendly', 10)""",
+''),
+
+#2
+([(1025, u'John', 12), (1101, u'Haley', 10), (1247, u'Alexis', 11), (1304, u'Jordan', 12), (1316, u'Austin', 11), (1381, u'Tiffany', 9), (1468, u'Kris', 10), (1501, u'Jessica', 11), (1510, u'Jordan', 9), (1641, u'Brittany', 10), (1661, u'Logan', 12), (1689, u'Gabriel', 9), (1709, u'Cassandra', 9), (1782, u'Andrew', 10), (1911, u'Gabriel', 11), (1934, u'Kyle', 12), (2121, u'Caitlin', 9), (2122, u'Don', 9), (2123, u'Elaine', None), (2124, u'Frank', None), (2125, u'Gale', 10)], False, "select * from Highschooler order by ID", """insert into Highschooler values (2121, 'Caitlin', null);
+insert into Highschooler values (2122, 'Don', null);
+insert into Highschooler values (2123, 'Elaine', 7);
+insert into Highschooler values (2124, 'Frank', 20);
+insert into Highschooler values (2125, 'Gale', 10)
+""",
+''),
+
+#3
+([(u'Alexis', 11, u'Cassandra', 9), (u'Alexis', 11, u'Jessica', 11), (u'Alexis', 11, u'Tiffany', 9), (u'Andrew', 10, u'Austin', 11), (u'Andrew', 10, u'Gabriel', 9), (u'Andrew', 10, u'Jordan', 12), (u'Andrew', 10, u'Kris', 10), (u'Austin', 11, u'Andrew', 10), (u'Austin', 11, u'Kyle', 12), (u'Brittany', 10, u'Haley', 10), (u'Cassandra', 9, u'Alexis', 11), (u'Cassandra', 9, u'Gabriel', 9), (u'Cassandra', 9, u'Haley', 10), (u'Gabriel', 9, u'Andrew', 10), (u'Gabriel', 9, u'Cassandra', 9), (u'Gabriel', 9, u'Jordan', 9), (u'Gabriel', 11, u'Jessica', 11), (u'Haley', 10, u'Brittany', 10), (u'Haley', 10, u'Cassandra', 9), (u'Haley', 10, u'Kris', 10), (u'Jessica', 11, u'Alexis', 11), (u'Jessica', 11, u'Gabriel', 11), (u'Jessica', 11, u'Kyle', 12), (u'John', 12, u'Logan', 12), (u'Jordan', 9, u'Gabriel', 9), (u'Jordan', 9, u'Kyle', 12), (u'Jordan', 9, u'Tiffany', 9), (u'Jordan', 12, u'Andrew', 10), (u'Jordan', 12, u'Kyle', 12), (u'Jordan', 12, u'Logan', 12), (u'Kris', 10, u'Andrew', 10), (u'Kris', 10, u'Haley', 10), (u'Kyle', 12, u'Austin', 11), (u'Kyle', 12, u'Jessica', 11), (u'Kyle', 12, u'Jordan', 9), (u'Kyle', 12, u'Jordan', 12), (u'Logan', 12, u'John', 12), (u'Logan', 12, u'Jordan', 12), (u'Tiffany', 9, u'Alexis', 11), (u'Tiffany', 9, u'Jordan', 9)], False, 
+"select H1.name, H1.grade, H2.name, H2.grade from Friend F, Highschooler H1, Highschooler H2 where F.ID1 = H1.ID and F.ID2 = H2.ID order by H1.name, H1.grade, H2.name, H2.grade", """delete from Friend where ID1 = 1641 and ID2 = 1468;
+delete from Friend where ID1 = 1247 and ID2 = 1911;
+insert into Friend values (1510, 1934);
+insert into Friend values (1101, 1709)""",
+"""Deleted friendship (Brittany, 10, Kris, 10);
+Deleted friendship (Alexis, 11, Gabriel, 11);
+Inserted friendship (Jordan, 9, Kyle, 12);
+Inserted friendship (Haley, 10, Cassandra, 9)"""),
+
+#4
+([(1247, u'Alexis', 11), (1782, u'Andrew', 10), (1316, u'Austin', 12), (1641, u'Brittany', 10), (1709, u'Cassandra', 9), (1689, u'Gabriel', 9), (1911, u'Gabriel', 11), (1101, u'Haley', 10), (1501, u'Jessica', 11), (1025, u'John', 12), (1510, u'Jordan', 9), (1304, u'Jordan', 12), (1468, u'Kris', 10), (1381, u'Tiffany', 9)], True, "select * from Highschooler order by name, grade", "update Highschooler set grade = grade + 1 where name = 'Austin' or name = 'Kyle' or name = 'Logan'",
+''),
+
+#5
+([(1247, u'Alexis', 11), (1782, u'Andrew', 11), (1316, u'Austin', 12), (1641, u'Brittany', 10), (1709, u'Cassandra', 9), (1689, u'Gabriel', 9), (1911, u'Gabriel', 11), (1101, u'Haley', 10), (1501, u'Jessica', 11), (1510, u'Jordan', 9), (1468, u'Kris', 10), (1381, u'Tiffany', 9)], True, "select * from Highschooler order by name, grade", "update Highschooler set grade = grade + 1 where name = 'Austin' or name = 'Kyle' or name = 'Logan'",
+''),
+
+#6
+([(u'Alexis', 11, u'Cassandra', 9), (u'Alexis', 11, u'Gabriel', 11), (u'Alexis', 11, u'Tiffany', 9), (u'Andrew', 10, u'Austin', 11), (u'Andrew', 10, u'Gabriel', 9), (u'Andrew', 10, u'Jordan', 12), (u'Andrew', 10, u'Kris', 10), (u'Austin', 11, u'Andrew', 10), (u'Brittany', 10, u'Haley', 10), (u'Brittany', 10, u'Kris', 10), (u'Cassandra', 9, u'Alexis', 11), (u'Cassandra', 9, u'Gabriel', 9), (u'Gabriel', 9, u'Andrew', 10), (u'Gabriel', 9, u'Cassandra', 9), (u'Gabriel', 9, u'Jordan', 9), (u'Gabriel', 11, u'Alexis', 11), (u'Gabriel', 11, u'Jessica', 11), (u'Haley', 10, u'Brittany', 10), (u'Haley', 10, u'Kris', 10), (u'Jessica', 11, u'Gabriel', 11), (u'Jessica', 11, u'Kyle', 12), (u'John', 12, u'Logan', 12), (u'Jordan', 9, u'Gabriel', 9), (u'Jordan', 9, u'Tiffany', 9), (u'Jordan', 12, u'Andrew', 10), (u'Jordan', 12, u'Kyle', 12), (u'Jordan', 12, u'Logan', 12), (u'Kris', 10, u'Andrew', 10), (u'Kris', 10, u'Brittany', 10), (u'Kris', 10, u'Haley', 10), (u'Kyle', 12, u'Jessica', 11), (u'Kyle', 12, u'Jordan', 12), (u'Logan', 12, u'John', 12), (u'Logan', 12, u'Jordan', 12), (u'Tiffany', 9, u'Alexis', 11), (u'Tiffany', 9, u'Jordan', 9)], False,
+"select H1.name, H1.grade, H2.name, H2.grade from Friend F, Highschooler H1, Highschooler H2 where F.ID1 = H1.ID and F.ID2 = H2.ID order by H1.name, H1.grade, H2.name, H2.grade",
+"""update Likes set ID2 = 1501 where ID1 = 1911; update Likes set ID2 = 1316 where ID1 = 1501; update Likes set ID2 = 1304 where ID1 = 1934; update Likes set ID1 = 1661, ID2 = 1641 where ID1 = 1025; update Likes set ID2 = 1468 where ID1 = 1247""",
+"""Changed Gabriel-11 to like Jessica-11 instead of Alexis-11;
+Changed Jessica-11 to like Austin-11 instead of Kyle-12;
+Changed Kyle-12 to like Jordan-12 instead of Jessica-11;
+Changed 'John-12 liking Haley-10' to 'Logan-12 liking Brittany-10';
+Changed Alexis-11 to like Kris-10 instead of Kris-10 (so no actual change)"""),
+
+#7
+([(u'dummydata for extra workbench', 11)], False,
+"dummy verif", """dummymod""",
+''),
+]

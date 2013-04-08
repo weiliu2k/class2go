@@ -1,0 +1,29 @@
+[
+    #Answers to optional movie query exercises (9 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+    ([(u'Mike Anderson',), (u'Sarah Martinez',)], False),
+    
+    ([(u'James Cameron', u'Avatar', 5)], False),
+    
+    ([(u'Ashley White',), (u'Avatar',), (u'Brittany Harris',), (u'Chris Jackson',), (u'Daniel Lewis',), (u'E.T.',), (u'Elizabeth Thomas',), (u'Gone with the Wind',), (u'James Cameron',), (u'Mike Anderson',), (u'Raiders of the Lost Ark',), (u'Sarah Martinez',), (u'Snow White',), (u'Star Wars',), (u'The Sound of Music',), (u'Titanic',)], True),
+
+    ([(u'Gone with the Wind',), (u'Star Wars',), (u'Avatar',), (u'Snow White',), (u'Titanic',)], False),    
+    
+    ([(u'Ashley White', u'Chris Jackson'), (u'Brittany Harris', u'Chris Jackson'), (u'Daniel Lewis', u'Elizabeth Thomas'), (u'Elizabeth Thomas', u'James Cameron'), (u'Mike Anderson', u'Sarah Martinez'), ], False),    
+    
+    ([(u'Sarah Martinez', u'Gone with the Wind', 2), (u'Brittany Harris', u'The Sound of Music', 2), (u'Chris Jackson', u'E.T.', 2), (u'Brittany Harris', u'Raiders of the Lost Ark', 2)], False),
+    
+    ([(u'Snow White', 4.5), (u'Avatar', 4.0), (u'Raiders of the Lost Ark', 3.33333333333), (u'Gone with the Wind', 3.0), (u'E.T.', 2.5), (u'The Sound of Music', 2.5)], True),
+    
+    ([(u'Brittany Harris',), (u'Chris Jackson',)], False),
+    
+    ([(u'Avatar', u'James Cameron'), (u'Titanic', u'James Cameron'), (u'E.T.', u'Steven Spielberg'), (u'Raiders of the Lost Ark', u'Steven Spielberg'),], True),
+    
+    ([(u'Snow White', 4.5)], False),
+    
+    ([(u'The Sound of Music', 2.5), (u'E.T.', 2.5)], False),
+    
+    ([(u'James Cameron', u'Avatar', 5), (u'Robert Wise', u'The Sound of Music', 3), (u'Steven Spielberg', u'Raiders of the Lost Ark', 4), (u'Victor Fleming', u'Gone with the Wind', 4)], False),
+]

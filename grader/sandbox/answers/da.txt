@@ -1,0 +1,15 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+    ([['cheese\n',],['mushroom\n',],['supreme\n',]], False),
+    ([['Amy\n',],['Hil\n',]], False),
+    ([['Little Caesars\n',],['New York Pizza\n',],['Straw Hat\n',]], False),
+    ([['Little Caesars\n',]], False),
+    ([['Amy\n',],['Ben\n',],['Dan\n',],['Eli\n',],['Gus\n',]], False),
+    ([['cheese\n',],['pepperoni\n',],['sausage\n',]], False),
+    ([['24\n',]], False),
+    ([['Chicago Pizza\n',]], False),
+    ([['Chicago Pizza\n',],['New York Pizza\n',],['Pizza Hut\n',]], False),
+]

@@ -1,0 +1,9 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+([(209, u'Roger Ebert')], False, "select * from Reviewer where rID=209"),
+      ([(4.666666666666667,)], False, """select avg(stars) from Movie M, Rating R where M.mID = R.mID and title = 'Snow White'"""), 
+      ([(7,)], False, """select count(*) from Movie where year > 1960"""),
+]

@@ -1,0 +1,22 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+([(201, u'Sarah Martinez'), (202, u'Daniel Lewis'), (203, u'Brittany Harris'), (204, u'Mike Anderson'), (205, u'Chris Jackson'), (206, u'Elizabeth Thomas'), (207, u'James Cameron'), (208, u'Ashley White'), (209, u'Roger Ebert')], False, "select * from Reviewer order by rID, name"),
+
+      ([(206, 106, 5, u'2011-01-19'), (207, 107, 5, u'2011-01-20'), (207, 101, 5, None), (207, 102, 5, None), (207, 103, 5, None), (207, 104, 5, None), (207, 105, 5, None), (207, 106, 5, None), (207, 107, 5, None), (207, 108, 5, None)], False, """select * from Rating where stars = 5 order by rID, mID"""), 
+      
+      ([(101, u'Gone with the Wind', 1939, u'Victor Fleming'), (102, u'Star Wars', 1977, u'George Lucas'), (103, u'The Sound of Music', 1965, u'Robert Wise'), (104, u'E.T.', 1982, u'Steven Spielberg'), (105, u'Titanic', 1997, u'James Cameron'), (106, u'Snow White', 1962, None), (107, u'Avatar', 2034, u'James Cameron'), (108, u'Raiders of the Lost Ark', 1981, u'Steven Spielberg')], False, """select * from Movie order by mID"""),
+      
+      #4 solution: delete from Rating where Rating.stars < 4 and ((select year from Rating R2, Movie M2 where R2.mID = M2.mID and R2.mID = Rating.mID) < 1975 or (select year from Rating R2, Movie M2 where R2.mID = M2.mID and R2.mID = Rating.mID) > 2000)
+      ([(201, 101, 4, u'Gone with the Wind', 1939),
+        (202, 106, 4, u'Snow White', 1937),
+        (203, 108, 4, u'Raiders of the Lost Ark', 1981),
+        (203, 108, 2, u'Raiders of the Lost Ark', 1981),
+        (205, 104, 2, u'E.T.', 1982),
+        (205, 108, 4, u'Raiders of the Lost Ark', 1981),
+        (206, 106, 5, u'Snow White', 1937),
+        (207, 107, 5, u'Avatar', 2009),
+        (208, 104, 3, u'E.T.', 1982)], False, """select R.rID, R.mID, R.stars, M.title, M.year from Rating R join Movie M on (R.mID = M.mID) order by R.rID, R.mID"""),
+]

@@ -1,0 +1,55 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of
+    #1) an array of tuples
+    #2) a boolean indicating whether the order matters - False for all
+    #3) verification query
+    #4) list of modifications
+    #5) English description of modifications in #4
+    #6) query of view
+#1
+([('dummy placeholder for query workbench', 12)], False, "select * from V", """update V set stars=1 where stars=5; update V set stars=4 where stars=3""",
+'', ''),
+
+#2
+([(101, u'Late Favorite', 1939, u'Victor Fleming'), (102, u'Star Wars', 1977, u'George Lucas'), (103, u'Late Favorite', 1965, u'Robert Wise'), (104, u'E.T.', 1982, u'Steven Spielberg'), (105, u'Titanic', 1997, u'James Cameron'), (106, u'Snow White', 1937, None), (107, u'Avatar', 2009, u'James Cameron'), (108, u'Raiders of the Lost Ark', 1981, u'Steven Spielberg')], False,
+"select * from Movie order by mID", '''update LateRating set title = "Late Favorite" where stars > 2; update LateRating set mID = 100, title = "Don't change"''',
+'', 'select * from LateRating'),
+
+#3
+([(201, 101, 2, u'2011-01-22'), (201, 101, 2, u'2011-01-27'), (202, 106, 4, None), (203, 103, 2, u'2011-01-20'), (203, 108, 2, u'2011-01-30'), (203, 108, 4, u'2011-01-12'), (204, 101, 3, u'2011-01-09'), (205, 103, 1, u'2011-01-27'), (205, 104, 2, u'2011-01-22'), (205, 108, 4, None), (206, 106, 5, u'2011-01-19'), (206, 107, 3, u'2011-01-15'), (207, 107, 5, u'2011-01-20'), (208, 104, 3, u'2011-01-02')], False, "select * from Rating order by mID, stars", """update LateRating set stars = stars - 2 where stars > 2; update LateRating set mID = 100, stars = stars + 2; update LateRating set ratingDate = null, stars = stars + 2""",
+'', 'select * from LateRating'),
+
+#4
+([(103, u'The Sound of Music', 2), (103, u'The Sound of Music', 3), (106, u'Snow White', 4), (106, u'Snow White', 5), (107, u'Avatar', 3), (107, u'Avatar', 5), (151, u'Gone with the Wind', 2), (151, u'Gone with the Wind', 3), (151, u'Gone with the Wind', 4), (154, u'E.T.', 2), (154, u'E.T.', 3), (158, u'Raiders of the Lost Ark', 2), (158, u'Raiders of the Lost Ark', 4), (158, u'Raiders of the Lost Ark', 4)], False, "select M.mID, title, stars from Movie M, Rating R where M.mID = R.mID order by M.mID, stars", """update LateRating set mID = mID+50 where stars = 2""",
+'', 'select * from LateRating'),
+
+#5
+([(104, u'E.T.', 2), (104, u'E.T.', 3), (106, u'Snow White', 4), (106, u'Snow White', 5), (107, u'Avatar', 3), (107, u'Avatar', 5), (108, u'Raiders of the Lost Ark', 2), (108, u'Raiders of the Lost Ark', 4), (108, u'Raiders of the Lost Ark', 4), (151, u'Worth seeing', 2), (151, u'Worth seeing', 3), (151, u'Worth seeing', 5), (153, u'Worth seeing', 2), (153, u'Worth seeing', 5)], False, "select M.mID, title, stars from Movie M, Rating R where M.mID = R.mID order by M.mID, stars", """update LateRating set mID = mID+50, title = "Worth seeing", stars = 5 where stars >= 3; update LateRating set title = "Mediocre", ratingDate = null where stars = 2""",
+'', 'select * from LateRating'),
+
+#6
+([(203, 108, 2, u'2011-01-30'), (206, 107, 3, u'2011-01-15'), (202, 106, 4, None), (206, 106, 5, u'2011-01-19'), (205, 104, 2, u'2011-01-22'), (208, 104, 3, u'2011-01-02'), (203, 103, 2, u'2011-01-20'), (205, 103, 3, u'2011-01-27'), (201, 101, 2, u'2011-01-22'), (201, 101, 4, u'2011-01-27'), (204, 101, 3, u'2011-01-09')], False, "select * from Rating order by mID desc", """delete from HighlyRated where mID > 106""",
+'', 'select * from HighlyRated'),
+
+#7
+([(203, 108, 3, u'2011-01-12'), (203, 108, 2, u'2011-01-30'), (205, 108, 3, None), (206, 107, 3, u'2011-01-15'), (207, 107, 3, u'2011-01-20'), (202, 106, 4, None), (206, 106, 5, u'2011-01-19'), (205, 104, 2, u'2011-01-22'), (208, 104, 3, u'2011-01-02'), (203, 103, 2, u'2011-01-20'), (205, 103, 3, u'2011-01-27'), (201, 101, 2, u'2011-01-22'), (201, 101, 4, u'2011-01-27'), (204, 101, 3, u'2011-01-09')], False, "select * from Rating order by mID desc", """delete from HighlyRated where mID > 106""",
+'', 'select * from HighlyRated'),
+
+#8
+([(201, 104, 5, None), (206, 106, 5, u'2011-01-19'), (207, 107, 5, u'2011-01-20'), (201, 101, 4, u'2011-01-27'), (202, 106, 4, None), (203, 108, 4, u'2011-01-12'), (205, 108, 4, None), (204, 101, 3, u'2011-01-09'), (205, 103, 3, u'2011-01-27'), (208, 104, 3, u'2011-01-02'), (206, 107, 3, u'2011-01-15'), (201, 101, 2, u'2011-01-22'), (203, 103, 2, u'2011-01-20'), (205, 104, 2, u'2011-01-22'), (203, 108, 2, u'2011-01-30')], False, "select * from Rating order by stars desc, mID", """insert into HighlyRated values (104, "E.T."); insert into HighlyRated values (105, "Titanic 2")""",
+'', 'select * from HighlyRated'),
+
+#9
+([(201, 101, 2, u'2011-01-22'), (201, 101, 4, u'2011-01-27'), (204, 101, 3, u'2011-01-09'), (203, 103, 2, u'2011-01-20'), (205, 103, 3, u'2011-01-27'), (202, 106, 4, None), (206, 106, 5, u'2011-01-19'), (206, 107, 3, u'2011-01-15'), (207, 107, 5, u'2011-01-20'), (203, 108, 4, u'2011-01-12'), (203, 108, 2, u'2011-01-30'), (205, 108, 4, None)], False, "select * from Rating order by mID", """insert into NoRating values (104, "E.T."); insert into NoRating values (110, "Avatar")""",
+'', 'select * from NoRating'),
+
+#10
+([(107, u'Avatar', 2009, u'James Cameron'), (104, u'E.T.', 1982, u'Steven Spielberg'), (101, u'Gone with the Wind', 1939, u'Victor Fleming'), (108, u'Raiders of the Lost Ark', 1981, u'Steven Spielberg'), (106, u'Snow White', 1937, None), (102, u'Star Wars', 1977, u'George Lucas'), (103, u'The Sound of Music', 1965, u'Robert Wise')], False, "select * from Movie order by title", '''delete from NoRating where title = "Titanic"''',
+'', 'select * from NoRating'),
+
+#11
+([(201, 102, 1, None), (201, 105, 1, None), (201, 101, 2, u'2011-01-22'), (203, 103, 2, u'2011-01-20'), (203, 108, 2, u'2011-01-30'), (205, 104, 2, u'2011-01-22'), (204, 101, 3, u'2011-01-09'), (205, 103, 3, u'2011-01-27'), (206, 107, 3, u'2011-01-15'), (208, 104, 3, u'2011-01-02'), (201, 101, 4, u'2011-01-27'), (202, 106, 4, None), (203, 108, 4, u'2011-01-12'), (205, 108, 4, None), (206, 106, 5, u'2011-01-19'), (207, 107, 5, u'2011-01-20')], False, "select * from Rating order by stars", '''delete from NoRating''',
+'', 'select * from NoRating'),
+
+]

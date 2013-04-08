@@ -1,0 +1,54 @@
+[
+    #Answers to XSLT world-countries optional exercises.
+    
+    ('''
+<Stan>Afghanistan</Stan>
+<Stan>Kazakstan</Stan>
+<Stan>Kyrgyzstan</Stan>
+<Stan>Pakistan</Stan>
+<Stan>Tajikistan</Stan>
+<Stan>Turkmenistan</Stan>
+<Stan>Uzbekistan</Stan>
+    ''', 'XSLT'),
+    
+   ('''
+<countries>
+  <country name="Armenia" population="3463574" area="29800">
+    <city>
+      <name>Yerevan</name>
+      <population>1200000</population>
+    </city>
+    <language percentage="2">Russian</language>
+    <language percentage="96">Armenian</language>
+  </country>
+  <country name="Netherlands" population="15568034" area="37330">
+    <city>
+      <name>Amsterdam</name>
+      <population>1101407</population>
+    </city>
+    <city>
+      <name>Rotterdam</name>
+      <population>1078747</population>
+    </city>
+    <language percentage="100">Dutch</language>
+  </country>
+  <country name="Singapore" population="3396924" area="632.6">
+    <city>
+      <name>Singapore</name>
+      <population>2558000</population>
+    </city>
+  </country>
+  <country name="Taiwan" population="21465880" area="35980">
+    <city>
+      <name>Kaohsiung</name>
+      <population>1426518</population>
+    </city>
+    <city>
+      <name>Taipei</name>
+      <population>2626138</population>
+    </city>
+  </country>  
+</countries>
+    ''', 'XSLT'),
+    
+]

@@ -1,0 +1,11 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+("insert into reviewer values (209, 'Roger Ebert')", False, "select * from Reviewer"),
+      ("""insert into Rating select (select rID from Reviewer where name =      'James Cameron'), mID, 5, null from Movie""", False, """select * from Rating where stars = 5"""), 
+      ("""update Movie
+        set year = year+25
+        where 4 <= (select avg(stars) from Rating where mID = Movie.mID)""", False, """select * from Movie"""),
+]

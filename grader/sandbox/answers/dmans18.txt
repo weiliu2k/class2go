@@ -1,0 +1,9 @@
+[
+    #Answers to query exercise set 1 (4 exercises)
+    #Each answer consists of an array of tuples
+    #and a boolean indicating whether the order matters
+
+([(201, u'Sarah Martinez'), (202, u'Daniel Lewis'), (203, u'Brittany Harris'), (204, u'Mike Anderson'), (205, u'Chris Jackson'), (206, u'Elizabeth Thomas'), (207, u'James Cameron'), (208, u'Ashley White'), (209, u'Roger Ebert')], False, "select * from Reviewer"),
+      ([(206, 106, 5, u'2011-01-19'), (207, 107, 5, u'2011-01-20'), (207, 101, 5, None), (207, 102, 5, None), (207, 103, 5, None), (207, 104, 5, None), (207, 105, 5, None), (207, 106, 5, None), (207, 107, 5, None), (207, 108, 5, None)], False, """select * from Rating where stars = 5"""), 
+      ([(101, u'Gone with the Wind', 1939, u'Victor Fleming'), (102, u'Star Wars', 1977, u'George Lucas'), (103, u'The Sound of Music', 1965, u'Robert Wise'), (104, u'E.T.', 1982, u'Steven Spielberg'), (105, u'Titanic', 1997, u'James Cameron'), (106, u'Snow White', 1962, None), (107, u'Avatar', 2034, u'James Cameron'), (108, u'Raiders of the Lost Ark', 1981, u'Steven Spielberg')], False, """select * from Movie"""),
+]
